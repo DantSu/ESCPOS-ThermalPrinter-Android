@@ -27,6 +27,7 @@ Useful library to help Android developers to print with (Bluetooth, TCP, USB) th
   - [EscPosPrinter](#user-content-class--comdantsuescposprinterescposprinter)
   - [PrinterTextParserImg](#user-content-class--comdantsuescposprintertextparserprintertextparserimg)
 - [Contributing](#contributing)
+- [Contributors](#contributors)
 
 
 ## Android version
@@ -458,3 +459,12 @@ Please fork this repository and contribute back using pull requests.
 
 Any contributions, large or small, major features, bug fixes, are welcomed and appreciated but will be thoroughly reviewed
 
+## Contributors
+
+### Main developer
+
+- [Franck ALARY](http://www.developpeur-web.dantsu.com/fr/)
+
+### Features developers
+
+- [Name - TCP Protocol]()
