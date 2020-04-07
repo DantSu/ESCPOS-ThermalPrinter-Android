@@ -1,4 +1,4 @@
-[![](https://jitpack.io/v/DantSu/ThermalPrinter-ESCPOS-Android.svg)](https://jitpack.io/#DantSu/ThermalPrinter-ESCPOS-Android/1.0.0)
+[![](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/1.0.0)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Android library for Thermal Printer ESC/POS Command
@@ -43,7 +43,7 @@ Developed for SDK version 16 (Android 4.1 Jelly Bean) and above.
 
 ## Installation
 
-**Step 1.** Add the [JitPack](https://jitpack.io/#DantSu/ThermalPrinter-ESCPOS-Android/1.1.2) repository to your build file. Add it in your root `/build.gradle` at the end of repositories:
+**Step 1.** Add the [JitPack](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/1.1.2) repository to your build file. Add it in your root `/build.gradle` at the end of repositories:
 
 ```
 allprojects {
@@ -59,7 +59,7 @@ allprojects {
 ```
 dependencies {
     ...
-    implementation 'com.github.DantSu:ThermalPrinter-ESCPOS-Android:1.0.0'
+    implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:1.0.0'
 }
 ```
 
@@ -79,7 +79,7 @@ if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != Pa
 }
 ```
 
-## Bluetooth code example
+### Bluetooth code example
 
 The code below is an example to write in your activity :
 
@@ -126,7 +126,7 @@ Below a picture of the receipt printed with the code above :
 
 Be sure to have `<uses-permission android:name="android.permission.INTERNET"/>` in your `AndroidMenifest.xml`.
 
-## TCP code example
+### TCP code example
 
 The code below is an example to write in your activity :
 
@@ -209,7 +209,7 @@ public void printUsb() {
 }
 ```
 
-## USB code example
+### USB code example
 
 The code below is an example to write in your activity :
 
@@ -363,7 +363,7 @@ Easy way to get the first bluetooth printer paired / connected.
 #### Method : `getList()`
 Get a list of bluetooth printers.
 - **return** `BluetoothConnection[]`
-- 
+
 ### Class : `com.dantsu.escposprinter.connection.usb.UsbPrintersConnections`
 
 #### **Static** Method : `selectFirstConnected()`
