@@ -27,7 +27,6 @@ Useful library to help Android developers to print with (Bluetooth, TCP, USB) th
   - [EscPosPrinter](#user-content-class--comdantsuescposprinterescposprinter)
   - [PrinterTextParserImg](#user-content-class--comdantsuescposprintertextparserprintertextparserimg)
 - [Contributing](#contributing)
-- [Contributors](#contributors)
 
 
 ## Android version
