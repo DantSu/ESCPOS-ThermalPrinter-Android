@@ -15,8 +15,7 @@ import com.google.zxing.qrcode.encoder.Encoder;
 import com.google.zxing.qrcode.encoder.QRCode;
 
 public class EscPosPrinterCommands {
-    public static final byte[] WESTERN_EUROPE_ENCODING = new byte[]{0x1B, 0x74, 0x06};
-
+    private final byte[] SET_ENCODING = new byte[]{0x1B, 0x74, (byte) EscPosPrinterConfig.CHARACTER_TABLE};
     public static final byte LF = 0x0A;
 
     public static final byte[] TEXT_ALIGN_LEFT = new byte[]{0x1B, 0x61, 0x00};
@@ -263,9 +262,9 @@ public class EscPosPrinterCommands {
         }
 
         try {
-            byte[] textBytes = text.getBytes("ISO-8859-1");
+            byte[] textBytes = text.getBytes(EscPosPrinterConfig.CHARSET_ENCODING);
 
-            this.printerConnection.write(EscPosPrinterCommands.WESTERN_EUROPE_ENCODING);
+            this.printerConnection.write(SET_ENCODING);
             this.printerConnection.write(EscPosPrinterCommands.TEXT_SIZE_NORMAL);
             this.printerConnection.write(EscPosPrinterCommands.TEXT_WEIGHT_NORMAL);
             this.printerConnection.write(EscPosPrinterCommands.TEXT_UNDERLINE_OFF);
@@ -407,9 +406,9 @@ public class EscPosPrinterCommands {
 
         try {
 
-            this.printerConnection.write(EscPosPrinterCommands.WESTERN_EUROPE_ENCODING);
+            this.printerConnection.write(SET_ENCODING);
 
-            byte[] textBytes = text.getBytes("ISO-8859-1");
+            byte[] textBytes = text.getBytes(EscPosPrinterConfig.CHARSET_ENCODING);
 
             int
                     commandLength = textBytes.length + 3,
