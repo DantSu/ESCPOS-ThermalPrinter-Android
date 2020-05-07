@@ -21,6 +21,7 @@ Useful library to help Android developers to print with (Bluetooth, TCP, USB) th
   - [USB permission](#usb-permission)
   - [USB code example](#usb-code-example)
 - [Formatted text : syntax guide](#formatted-text--syntax-guide)
+- [Configuration](#configuration)
 - [Class list](#class-list)
   - [BluetoothPrintersConnections](#user-content-class--comdantsuescposprinterconnectionbluetoothbluetoothprintersconnections)
   - [UsbPrintersConnections](#user-content-class--comdantsuescposprinterconnectionusbusbprintersconnections)
