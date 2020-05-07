@@ -352,6 +352,16 @@ Prints a QR code with a width and height of 25 millimeters.
 - `</qrcode>` must be directly followed by a new line `\n`.
 - You can't write text on a line that contains `<qrcode></qrcode>`.
 
+## Configuration
+
+Library allow you change character table and encoding using `EscPosPrinterConfig` class. If not set, default value will be used.
+
+```
+//set before printing to change character table and charset encoding
+EscPosPrinterConfig.CHARACTER_TABLE = 0x06; //Western Europe 
+EscPosPrinterConfig.CHARSET_ENCODING = "ISO-8859-1";
+```
+
 ## Class list
 
 ### Class : `com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnections`
