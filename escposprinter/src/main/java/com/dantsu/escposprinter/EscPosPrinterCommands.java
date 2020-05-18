@@ -15,7 +15,6 @@ import com.google.zxing.qrcode.encoder.Encoder;
 import com.google.zxing.qrcode.encoder.QRCode;
 
 public class EscPosPrinterCommands {
-    public static final byte[] WESTERN_EUROPE_ENCODING = new byte[]{0x1B, 0x74, 0x06};
 
     public static final byte LF = 0x0A;
 
@@ -51,6 +50,7 @@ public class EscPosPrinterCommands {
     public static final int QRCODE_2 = 50;
 
     private DeviceConnection printerConnection;
+    private EscPosCharsetEncoding charsetEncoding;
 
 
 
@@ -176,7 +176,18 @@ public class EscPosPrinterCommands {
      * @param printerConnection an instance of a class which implement DeviceConnection
      */
     public EscPosPrinterCommands(DeviceConnection printerConnection) {
+        this(printerConnection, new EscPosCharsetEncoding("ISO-8859-1", 6));
+    }
+
+    /**
+     * Create new instance of EscPosPrinterCommands.
+     *
+     * @param printerConnection an instance of a class which implement DeviceConnection
+     * @param charsetEncoding Set the charset encoding.
+     */
+    public EscPosPrinterCommands(DeviceConnection printerConnection, EscPosCharsetEncoding charsetEncoding) {
         this.printerConnection = printerConnection;
+        this.charsetEncoding = charsetEncoding;
     }
 
     /**
@@ -263,9 +274,8 @@ public class EscPosPrinterCommands {
         }
 
         try {
-            byte[] textBytes = text.getBytes("ISO-8859-1");
-
-            this.printerConnection.write(EscPosPrinterCommands.WESTERN_EUROPE_ENCODING);
+            byte[] textBytes = text.getBytes(this.charsetEncoding.getName());
+            this.printerConnection.write(this.charsetEncoding.getCommand());
             this.printerConnection.write(EscPosPrinterCommands.TEXT_SIZE_NORMAL);
             this.printerConnection.write(EscPosPrinterCommands.TEXT_WEIGHT_NORMAL);
             this.printerConnection.write(EscPosPrinterCommands.TEXT_UNDERLINE_OFF);
@@ -406,10 +416,8 @@ public class EscPosPrinterCommands {
 
 
         try {
-
-            this.printerConnection.write(EscPosPrinterCommands.WESTERN_EUROPE_ENCODING);
-
-            byte[] textBytes = text.getBytes("ISO-8859-1");
+            this.printerConnection.write(this.charsetEncoding.getCommand());
+            byte[] textBytes = text.getBytes(this.charsetEncoding.getName());
 
             int
                     commandLength = textBytes.length + 3,

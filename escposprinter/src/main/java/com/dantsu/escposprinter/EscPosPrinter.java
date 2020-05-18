@@ -36,6 +36,19 @@ public class EscPosPrinter {
     /**
      * Create new instance of EscPosPrinter.
      *
+     * @param printerConnection Instance of class which implement DeviceConnection
+     * @param printerDpi DPI of the connected printer
+     * @param printingWidthMM Printing width in millimeters
+     * @param nbrCharactersPerLine The maximum number of characters that can be printed on a line.
+     * @param charsetEncoding Set the charset encoding.
+     */
+    public EscPosPrinter(DeviceConnection printerConnection, int printerDpi, float printingWidthMM, int nbrCharactersPerLine, EscPosCharsetEncoding charsetEncoding) {
+        this(printerConnection != null ? new EscPosPrinterCommands(printerConnection, charsetEncoding) : null, printerDpi, printingWidthMM, nbrCharactersPerLine);
+    }
+
+    /**
+     * Create new instance of EscPosPrinter.
+     *
      * @param printer Instance of EscPosPrinterCommands
      * @param printerDpi DPI of the connected printer
      * @param printingWidthMM Printing width in millimeters

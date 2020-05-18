@@ -1,9 +1,9 @@
-[![](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/1.0.0)
+[![Jitpack package repository - ESCPOS-ThermalPrinter-Android v1.0.0](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/1.0.0)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-# Android library for Thermal Printer ESC/POS Command
+# Android library for ESC/POS Thermal Printer
 
-Useful library to help Android developers to print with (Bluetooth, TCP, USB) thermal printers ESC/POS.
+Useful library to help Android developers to print with (Bluetooth, TCP, USB) ESC/POS thermal printers.
 
 
 ## Table of contents
@@ -26,6 +26,7 @@ Useful library to help Android developers to print with (Bluetooth, TCP, USB) th
   - [UsbPrintersConnections](#user-content-class--comdantsuescposprinterconnectionusbusbprintersconnections)
   - [EscPosPrinter](#user-content-class--comdantsuescposprinterescposprinter)
   - [PrinterTextParserImg](#user-content-class--comdantsuescposprintertextparserprintertextparserimg)
+  - [EscPosCharsetEncoding](#user-content-class--comdantsuescposprinterescposcharsetencoding)
 - [Contributing](#contributing)
 - [Contributors](#contributors)
 
@@ -132,14 +133,13 @@ Be sure to have `<uses-permission android:name="android.permission.INTERNET"/>` 
 The code below is an example to write in your activity :
 
 ```java
-final String hexImage = PrinterTextParserImg.bitmapToHexadecimalString(printer, this.getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo, DisplayMetrics.DENSITY_MEDIUM));
 new Thread(new Runnable() {
     public void run() {
         try {
             EscPosPrinter printer = new EscPosPrinter(new TcpConnection("192.168.1.3", 9300), 203, 48f, 32);
             printer
                 .printFormattedText(
-                    "[C]<img>" + +"</img>\n" +
+                    "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo, DisplayMetrics.DENSITY_MEDIUM)) + "</img>\n" +
                     "[L]\n" +
                     "[C]<u><font size='big'>ORDER N°045</font></u>\n" +
                     "[L]\n" +
@@ -377,11 +377,12 @@ Get a list of USB printers.
 
 ### Class : `com.dantsu.escposprinter.EscPosPrinter`
 
-#### Constructor : `EscPosPrinter(DeviceConnection printer, int printerDpi, float printingWidthMM, int nbrCharactersPerLine)`
+#### Constructor : `EscPosPrinter(DeviceConnection printer, int printerDpi, float printingWidthMM, int nbrCharactersPerLine [, EscPosCharsetEncoding charsetEncoding])`
 - **param** `DeviceConnection printer` : Instance of a connected printer
 - **param** `int printerDpi` : DPI of the connected printer
 - **param** `float printingWidthMM` : Printing width in millimeters
 - **param** `int nbrCharactersPerLine` : The maximum number of medium sized characters that can be printed on a line.
+- **param** `EscPosCharsetEncoding charsetEncoding` *(optional)* : Set the charset encoding.
 
 #### Method : `disconnectPrinter()`
 Close the connection with the printer.
@@ -452,6 +453,11 @@ Convert hexadecimal string of the image data to bytes ESC/POS command.
 - **param** `String hexString` : Hexadecimal string of the image data.
 - **return** `byte[]` : Bytes contain the image in ESC/POS command.
 
+### Class : `com.dantsu.escposprinter.EscPosCharsetEncoding`
+
+#### Constructor : `EscPosCharsetEncoding()`
+- **param** `charsetName` Name of charset encoding (Ex: ISO-8859-1)
+- **param** `escPosCharsetId` Id of charset encoding for your printer (Ex: 6)
 
 ## Contributing
 
