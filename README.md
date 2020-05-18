@@ -463,7 +463,7 @@ Convert hexadecimal string of the image data to bytes ESC/POS command.
 
 ### Class : `com.dantsu.escposprinter.EscPosCharsetEncoding`
 
-#### Constructor : `EscPosCharsetEncoding()`
+#### Constructor : `EscPosCharsetEncoding(String charsetName, int escPosCharsetId)`
 - **param** `charsetName` Name of charset encoding (Ex: ISO-8859-1)
 - **param** `escPosCharsetId` Id of charset encoding for your printer (Ex: 6)
 
