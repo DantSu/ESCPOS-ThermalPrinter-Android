@@ -28,7 +28,6 @@ Useful library to help Android developers to print with (Bluetooth, TCP, USB) ES
   - [PrinterTextParserImg](#user-content-class--comdantsuescposprintertextparserprintertextparserimg)
   - [EscPosCharsetEncoding](#user-content-class--comdantsuescposprinterescposcharsetencoding)
 - [Contributing](#contributing)
-- [Contributors](#contributors)
 
 
 ## Android version
@@ -464,13 +463,3 @@ Convert hexadecimal string of the image data to bytes ESC/POS command.
 Please fork this repository and contribute back using pull requests.
 
 Any contributions, large or small, major features, bug fixes, are welcomed and appreciated but will be thoroughly reviewed
-
-## Contributors
-
-### Main developer
-
-- [Franck ALARY](http://www.developpeur-web.dantsu.com/fr/)
-
-### Features developers
-
-- [Name - TCP Protocol]()
