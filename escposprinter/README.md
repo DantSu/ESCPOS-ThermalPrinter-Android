@@ -1,4 +1,4 @@
-[![Jitpack package repository - ESCPOS-ThermalPrinter-Android v1.0.0](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/1.0.0)
+[![Jitpack package repository - ESCPOS-ThermalPrinter-Android v1.0.1](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/1.0.1)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Android library for ESC/POS Thermal Printer
@@ -20,6 +20,7 @@ Useful library to help Android developers to print with (Bluetooth, TCP, USB) ES
 - [USB](#usb)
   - [USB permission](#usb-permission)
   - [USB code example](#usb-code-example)
+- [Charset encoding](#charset-encoding)
 - [Formatted text : syntax guide](#formatted-text--syntax-guide)
 - [Class list](#class-list)
   - [BluetoothPrintersConnections](#user-content-class--comdantsuescposprinterconnectionbluetoothbluetoothprintersconnections)
@@ -44,7 +45,7 @@ Developed for SDK version 16 (Android 4.1 Jelly Bean) and above.
 
 ## Installation
 
-**Step 1.** Add the [JitPack](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/1.1.2) repository to your build file. Add it in your root `/build.gradle` at the end of repositories:
+**Step 1.** Add the [JitPack](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/1.0.1) repository to your build file. Add it in your root `/build.gradle` at the end of repositories:
 
 ```
 allprojects {
@@ -60,7 +61,7 @@ allprojects {
 ```
 dependencies {
     ...
-    implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:1.0.0'
+    implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:1.0.1'
 }
 ```
 
@@ -246,6 +247,14 @@ printer
     );
 ```
 
+
+## Charset encoding
+
+To change charset encoding of the printer, use `EscPosCharsetEncoding` class :
+
+```java
+EscPosPrinter printer = new EscPosPrinter(deviceConnection, 203, 48f, 32, new EscPosCharsetEncoding("windows-1252", 16));
+```
 
 ## Formatted text : syntax guide
 
