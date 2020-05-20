@@ -55,7 +55,11 @@ public class PrinterTextParserBarcode implements IPrinterTextParserElement {
             String barCodeAttribute = barcodeAttributes.get(PrinterTextParser.ATTR_BARCODE_HEIGHT);
             if (barCodeAttribute == null)
                 throw new ParserException("Invalid barcode attribute: height");
-            this.height = printer.mmToPx(Float.parseFloat(barcodeAttributes.get(PrinterTextParser.ATTR_BARCODE_HEIGHT)));
+            try {
+                this.height = printer.mmToPx(Float.parseFloat(barCodeAttribute));
+            } catch(NumberFormatException nfe) {
+                throw new ParserException("Invalid barcode height value");
+            }
         }
 
         this.code = code;
