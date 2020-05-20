@@ -70,19 +70,13 @@ public class PrinterTextParserImg implements IPrinterTextParserElement {
      * @param hexString Hexadecimal string of the image data.
      * @return Bytes contain the image in ESC/POS command.
      */
-    public static byte[] hexadecimalStringToBytes(String hexString) {
-        byte[] bytes = new byte[0];
-        
-        try {
-            bytes = new byte[hexString.length() / 2];
-            for (int i = 0; i < bytes.length; i++) {
-                int pos = i * 2;
-                bytes[i] = (byte) Integer.parseInt(hexString.substring(pos, pos + 2), 16);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static byte[] hexadecimalStringToBytes(String hexString) throws NumberFormatException {
+        byte[] bytes = new byte[hexString.length() / 2];
+        for (int i = 0; i < bytes.length; i++) {
+            int pos = i * 2;
+            bytes[i] = (byte) Integer.parseInt(hexString.substring(pos, pos + 2), 16);
         }
-        
+
         return bytes;
     }
     

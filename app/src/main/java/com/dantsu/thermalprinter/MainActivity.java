@@ -26,6 +26,9 @@ import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnection
 import com.dantsu.escposprinter.connection.tcp.TcpConnection;
 import com.dantsu.escposprinter.connection.usb.UsbConnection;
 import com.dantsu.escposprinter.connection.usb.UsbPrintersConnections;
+import com.dantsu.escposprinter.exceptions.BrokenConnectionException;
+import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
+import com.dantsu.escposprinter.exceptions.ParserException;
 import com.dantsu.escposprinter.textparser.PrinterTextParserImg;
 
 public class MainActivity extends AppCompatActivity {
@@ -68,7 +71,11 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH}, MainActivity.PERMISSION_BLUETOOTH);
         } else {
-            this.printIt(BluetoothPrintersConnections.selectFirstPaired());
+            try {
+                this.printIt(BluetoothPrintersConnections.selectFirstPaired());
+            } catch(BrokenConnectionException | ParserException | EscPosEncodingException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -97,7 +104,11 @@ public class MainActivity extends AppCompatActivity {
                     UsbDevice usbDevice = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
                     if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
                         if (usbManager != null && usbDevice != null) {
-                            printIt(new UsbConnection(usbManager, usbDevice));
+                            try {
+                                printIt(new UsbConnection(usbManager, usbDevice));
+                            } catch (BrokenConnectionException | ParserException | EscPosEncodingException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
@@ -140,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
     ===================================ESC/POS PRINTER PART=========================================
     ==============================================================================================*/
 
-    public void printIt(DeviceConnection printerConnection) {
+    public void printIt(DeviceConnection printerConnection) throws BrokenConnectionException, ParserException, EscPosEncodingException {
         EscPosPrinter printer = new EscPosPrinter(printerConnection, 203, 48f, 32);
         printer
                 .printFormattedText(

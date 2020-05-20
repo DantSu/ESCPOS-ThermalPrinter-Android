@@ -3,6 +3,7 @@ package com.dantsu.escposprinter.textparser;
 import java.util.Arrays;
 
 import com.dantsu.escposprinter.EscPosPrinterCommands;
+import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
 
 public class PrinterTextParserString implements IPrinterTextParserElement {
     private String text;
@@ -35,7 +36,7 @@ public class PrinterTextParserString implements IPrinterTextParserElement {
      * @return this Fluent method
      */
     @Override
-    public PrinterTextParserString print(EscPosPrinterCommands printerSocket) {
+    public PrinterTextParserString print(EscPosPrinterCommands printerSocket) throws EscPosEncodingException {
         printerSocket.printText(this.text, this.textSize, this.textBold, this.textUnderline);
         return this;
     }

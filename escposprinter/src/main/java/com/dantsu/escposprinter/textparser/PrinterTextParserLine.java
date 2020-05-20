@@ -1,5 +1,8 @@
 package com.dantsu.escposprinter.textparser;
 
+import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
+import com.dantsu.escposprinter.exceptions.ParserException;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,7 +15,7 @@ public class PrinterTextParserLine {
     private int nbrCharColumnExceeded;
     private PrinterTextParserColumn[] columns;
     
-    public PrinterTextParserLine(PrinterTextParser textParser, String textLine) {
+    public PrinterTextParserLine(PrinterTextParser textParser, String textLine) throws ParserException, EscPosEncodingException {
         this.textParser = textParser;
         int nbrCharactersPerLine = this.getTextParser().getPrinter().getNbrCharactersPerLine();
     
