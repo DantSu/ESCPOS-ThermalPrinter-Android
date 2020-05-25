@@ -469,5 +469,19 @@ public class EscPosPrinterCommands {
         return this;
     }
 
+    /**
+     * Cut the paper
+     *
+     * @return Fluent interface
+     */
+    public EscPosPrinterCommands cutPaper() throws EscPosBrokenConnectionException {
+        if (!this.printerConnection.isConnected()) {
+            return this;
+        }
+
+        this.printerConnection.write(new byte[]{ 0x1D, 0x56, 0x31});
+        this.printerConnection.send();
+        return this;
+    }
 
 }

@@ -175,6 +175,23 @@ public class EscPosPrinter {
         
         return this;
     }
+
+    /**
+     * Print a formatted text and cut the paper. Read the README.md for more information about text formatting options.
+     *
+     * @param text Formatted text to be printed.
+     * @return Fluent interface
+     */
+    public EscPosPrinter printFormattedTextAndCut(String text) throws EscPosBrokenConnectionException, EscPosParserException, EscPosEncodingException {
+        if (this.printer == null || this.nbrCharactersPerLine == 0) {
+            return this;
+        }
+
+        this.printFormattedText(text);
+        this.printer.cutPaper();
+
+        return this;
+    }
     
     /**
      * Convert Bitmap object to ESC/POS image.
