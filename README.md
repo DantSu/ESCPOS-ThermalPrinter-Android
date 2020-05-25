@@ -256,6 +256,9 @@ To change charset encoding of the printer, use `EscPosCharsetEncoding` class :
 EscPosPrinter printer = new EscPosPrinter(deviceConnection, 203, 48f, 32, new EscPosCharsetEncoding("windows-1252", 16));
 ```
 
+`escPosCharsetId` may change with printer model.
+[Follow this link to find `escPosCharsetId` that works with many printers](https://www.epson-biz.com/modules/ref_escpos/index.php?content_id=32)
+
 ## Formatted text : syntax guide
 
 ### New line
