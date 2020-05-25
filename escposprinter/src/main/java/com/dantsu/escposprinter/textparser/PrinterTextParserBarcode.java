@@ -4,6 +4,7 @@ import java.util.Hashtable;
 
 import com.dantsu.escposprinter.EscPosPrinter;
 import com.dantsu.escposprinter.EscPosPrinterCommands;
+import com.dantsu.escposprinter.exceptions.ParserException;
 
 public class PrinterTextParserBarcode implements IPrinterTextParserElement {
     
@@ -13,7 +14,8 @@ public class PrinterTextParserBarcode implements IPrinterTextParserElement {
     private String code;
     private int barcodeType;
     
-    public PrinterTextParserBarcode(PrinterTextParserColumn printerTextParserColumn, String textAlign, Hashtable<String, String> barcodeAttributes, String code) {
+    public PrinterTextParserBarcode(PrinterTextParserColumn printerTextParserColumn, String textAlign,
+                                    Hashtable<String, String> barcodeAttributes, String code) throws ParserException {
         EscPosPrinter printer = printerTextParserColumn.getLine().getTextParser().getPrinter();
         code = code.trim();
         
@@ -28,35 +30,38 @@ public class PrinterTextParserBarcode implements IPrinterTextParserElement {
         }
         
         this.barcodeType = EscPosPrinterCommands.BARCODE_EAN13;
-        try {
-            if (barcodeAttributes.containsKey(PrinterTextParser.ATTR_BARCODE_TYPE)) {
-                switch (barcodeAttributes.get(PrinterTextParser.ATTR_BARCODE_TYPE)) {
-                    case PrinterTextParser.ATTR_BARCODE_TYPE_EAN8:
-                        this.barcodeType = EscPosPrinterCommands.BARCODE_EAN8;
-                        break;
-                    case PrinterTextParser.ATTR_BARCODE_TYPE_UPCA:
-                        this.barcodeType = EscPosPrinterCommands.BARCODE_UPCA;
-                        break;
-                    case PrinterTextParser.ATTR_BARCODE_TYPE_UPCE:
-                        this.barcodeType = EscPosPrinterCommands.BARCODE_UPCE;
-                        break;
-                }
+
+        if (barcodeAttributes.containsKey(PrinterTextParser.ATTR_BARCODE_TYPE)) {
+            String barCodeAttribute = barcodeAttributes.get(PrinterTextParser.ATTR_BARCODE_TYPE);
+            if (barCodeAttribute == null)
+                throw new ParserException("Invalid barcode attribute");
+            switch (barCodeAttribute) {
+                case PrinterTextParser.ATTR_BARCODE_TYPE_EAN8:
+                    this.barcodeType = EscPosPrinterCommands.BARCODE_EAN8;
+                    break;
+                case PrinterTextParser.ATTR_BARCODE_TYPE_UPCA:
+                    this.barcodeType = EscPosPrinterCommands.BARCODE_UPCA;
+                    break;
+                case PrinterTextParser.ATTR_BARCODE_TYPE_UPCE:
+                    this.barcodeType = EscPosPrinterCommands.BARCODE_UPCE;
+                    break;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         this.length = printer.getNbrCharactersPerLine();
-
         this.height = printer.mmToPx(10f);
-        try {
-            if (barcodeAttributes.containsKey(PrinterTextParser.ATTR_BARCODE_HEIGHT)) {
-                this.height = printer.mmToPx(Float.parseFloat(barcodeAttributes.get(PrinterTextParser.ATTR_BARCODE_HEIGHT)));
+
+        if (barcodeAttributes.containsKey(PrinterTextParser.ATTR_BARCODE_HEIGHT)) {
+            String barCodeAttribute = barcodeAttributes.get(PrinterTextParser.ATTR_BARCODE_HEIGHT);
+            if (barCodeAttribute == null)
+                throw new ParserException("Invalid barcode attribute: height");
+            try {
+                this.height = printer.mmToPx(Float.parseFloat(barCodeAttribute));
+            } catch(NumberFormatException nfe) {
+                throw new ParserException("Invalid barcode height value");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        
+
         this.code = code;
     }
 

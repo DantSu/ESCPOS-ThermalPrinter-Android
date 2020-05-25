@@ -26,6 +26,9 @@ import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnection
 import com.dantsu.escposprinter.connection.tcp.TcpConnection;
 import com.dantsu.escposprinter.connection.usb.UsbConnection;
 import com.dantsu.escposprinter.connection.usb.UsbPrintersConnections;
+import com.dantsu.escposprinter.exceptions.BrokenConnectionException;
+import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
+import com.dantsu.escposprinter.exceptions.ParserException;
 import com.dantsu.escposprinter.textparser.PrinterTextParserImg;
 
 public class MainActivity extends AppCompatActivity {
@@ -126,12 +129,8 @@ public class MainActivity extends AppCompatActivity {
 
         new Thread(new Runnable() {
             public void run() {
-                try {
-                    TcpConnection tcpConnection = new TcpConnection(ipAddress.getText().toString(), Integer.parseInt(portAddress.getText().toString()));
-                    printIt(tcpConnection);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                TcpConnection tcpConnection = new TcpConnection(ipAddress.getText().toString(), Integer.parseInt(portAddress.getText().toString()));
+                printIt(tcpConnection);
             }
         }).start();
     }
@@ -142,34 +141,38 @@ public class MainActivity extends AppCompatActivity {
 
     public void printIt(DeviceConnection printerConnection) {
         EscPosPrinter printer = new EscPosPrinter(printerConnection, 203, 48f, 32);
-        printer
-                .printFormattedText(
-                        "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, this.getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo, DisplayMetrics.DENSITY_MEDIUM)) + "</img>\n" +
-                                "[L]\n" +
-                                "[C]<u><font size='big'>ORDER N°045</font></u>\n" +
-                                "[L]\n" +
-                                "[C]================================\n" +
-                                "[L]\n" +
-                                "[L]<b>BEAUTIFUL SHIRT</b>[R]9.99e\n" +
-                                "[L]  + Size : S\n" +
-                                "[L]\n" +
-                                "[L]<b>AWESOME HAT</b>[R]24.99e\n" +
-                                "[L]  + Size : 57/58\n" +
-                                "[L]\n" +
-                                "[C]--------------------------------\n" +
-                                "[R]TOTAL PRICE :[R]34.98e\n" +
-                                "[R]TAX :[R]4.23e\n" +
-                                "[L]\n" +
-                                "[C]================================\n" +
-                                "[L]\n" +
-                                "[L]<font size='tall'>Customer :</font>\n" +
-                                "[L]Raymond DUPONT\n" +
-                                "[L]5 rue des girafes\n" +
-                                "[L]31547 PERPETES\n" +
-                                "[L]Tel : +33801201456\n" +
-                                "[L]\n" +
-                                "[C]<barcode type='ean13' height='10'>831254784551</barcode>\n" +
-                                "[C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>"
-                );
+        try {
+            printer
+                    .printFormattedText(
+                            "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, this.getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo, DisplayMetrics.DENSITY_MEDIUM)) + "</img>\n" +
+                                    "[L]\n" +
+                                    "[C]<u><font size='big'>ORDER N°045</font></u>\n" +
+                                    "[L]\n" +
+                                    "[C]================================\n" +
+                                    "[L]\n" +
+                                    "[L]<b>BEAUTIFUL SHIRT</b>[R]9.99e\n" +
+                                    "[L]  + Size : S\n" +
+                                    "[L]\n" +
+                                    "[L]<b>AWESOME HAT</b>[R]24.99e\n" +
+                                    "[L]  + Size : 57/58\n" +
+                                    "[L]\n" +
+                                    "[C]--------------------------------\n" +
+                                    "[R]TOTAL PRICE :[R]34.98e\n" +
+                                    "[R]TAX :[R]4.23e\n" +
+                                    "[L]\n" +
+                                    "[C]================================\n" +
+                                    "[L]\n" +
+                                    "[L]<font size='tall'>Customer :</font>\n" +
+                                    "[L]Raymond DUPONT\n" +
+                                    "[L]5 rue des girafes\n" +
+                                    "[L]31547 PERPETES\n" +
+                                    "[L]Tel : +33801201456\n" +
+                                    "[L]\n" +
+                                    "[C]<barcode type='ean13' height='10'>831254784551</barcode>\n" +
+                                    "[C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>"
+                    );
+        } catch(BrokenConnectionException | ParserException | EscPosEncodingException e) {
+            e.printStackTrace();
+        }
     }
 }

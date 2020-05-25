@@ -7,6 +7,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.EnumMap;
 
 import com.dantsu.escposprinter.connection.DeviceConnection;
+import com.dantsu.escposprinter.exceptions.BrokenConnectionException;
+import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
@@ -108,7 +110,7 @@ public class EscPosPrinterCommands {
      * @param data String data to convert in QR Code
      * @return Bytes contain the image in ESC/POS command
      */
-    public static byte[] QRCodeDataToBytes(String data, int size) {
+    public static byte[] QRCodeDataToBytes(String data, int size) throws EscPosEncodingException {
 
         ByteMatrix byteMatrix = null;
 
@@ -120,7 +122,7 @@ public class EscPosPrinterCommands {
             byteMatrix = code.getMatrix();
 
         } catch (WriterException e) {
-            e.printStackTrace();
+            throw new EscPosEncodingException("Unable to encode QR code");
         }
 
         if (byteMatrix == null) {
@@ -232,7 +234,7 @@ public class EscPosPrinterCommands {
      * @param text Text to be printed
      * @return Fluent interface
      */
-    public EscPosPrinterCommands printText(String text) {
+    public EscPosPrinterCommands printText(String text) throws EscPosEncodingException {
         return this.printText(text, null);
     }
 
@@ -243,7 +245,7 @@ public class EscPosPrinterCommands {
      * @param textSize Set the text size. Use EscPosPrinterCommands.TEXT_SIZE_... constants
      * @return Fluent interface
      */
-    public EscPosPrinterCommands printText(String text, byte[] textSize) {
+    public EscPosPrinterCommands printText(String text, byte[] textSize) throws EscPosEncodingException {
         return this.printText(text, textSize, null);
     }
 
@@ -255,7 +257,7 @@ public class EscPosPrinterCommands {
      * @param textBold Set the text weight. Use EscPosPrinterCommands.TEXT_WEIGHT_... constants
      * @return Fluent interface
      */
-    public EscPosPrinterCommands printText(String text, byte[] textSize, byte[] textBold) {
+    public EscPosPrinterCommands printText(String text, byte[] textSize, byte[] textBold) throws EscPosEncodingException {
         return this.printText(text, textSize, textBold, null);
     }
 
@@ -268,7 +270,7 @@ public class EscPosPrinterCommands {
      * @param textUnderline Set the underlining of the text. Use EscPosPrinterCommands.TEXT_UNDERLINE_... constants
      * @return Fluent interface
      */
-    public EscPosPrinterCommands printText(String text, byte[] textSize, byte[] textBold, byte[] textUnderline) {
+    public EscPosPrinterCommands printText(String text, byte[] textSize, byte[] textBold, byte[] textUnderline) throws EscPosEncodingException {
         if (!this.printerConnection.isConnected()) {
             return this;
         }
@@ -291,8 +293,8 @@ public class EscPosPrinterCommands {
             }
 
             this.printerConnection.write(textBytes);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            throw new EscPosEncodingException(e.getMessage());
         }
 
         return this;
@@ -449,7 +451,7 @@ public class EscPosPrinterCommands {
      *
      * @return Fluent interface
      */
-    public EscPosPrinterCommands newLine() {
+    public EscPosPrinterCommands newLine() throws BrokenConnectionException {
         return this.newLine(null);
     }
 
@@ -459,7 +461,7 @@ public class EscPosPrinterCommands {
      * @param align Set the alignment of text and barcodes. Use EscPosPrinterCommands.TEXT_ALIGN_... constants
      * @return Fluent interface
      */
-    public EscPosPrinterCommands newLine(byte[] align) {
+    public EscPosPrinterCommands newLine(byte[] align) throws BrokenConnectionException {
         if (!this.printerConnection.isConnected()) {
             return this;
         }
