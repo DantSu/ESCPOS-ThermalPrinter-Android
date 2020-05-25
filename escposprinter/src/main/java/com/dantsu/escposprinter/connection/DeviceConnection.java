@@ -1,6 +1,6 @@
 package com.dantsu.escposprinter.connection;
 
-import com.dantsu.escposprinter.exceptions.BrokenConnectionException;
+import com.dantsu.escposprinter.exceptions.EscPosBrokenConnectionException;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -40,7 +40,7 @@ public abstract class DeviceConnection {
     /**
      * Send data to the device.
      */
-    public void send() throws BrokenConnectionException {
+    public void send() throws EscPosBrokenConnectionException {
         try {
             this.stream.write(this.data);
             this.stream.flush();
@@ -51,7 +51,8 @@ public abstract class DeviceConnection {
                 Thread.sleep(waitingTime);
             }
         } catch (IOException | InterruptedException e) {
-            throw new BrokenConnectionException(e.getMessage());
+            e.printStackTrace();
+            throw new EscPosBrokenConnectionException(e.getMessage());
         }
     }
 }

@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -26,9 +27,9 @@ import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnection
 import com.dantsu.escposprinter.connection.tcp.TcpConnection;
 import com.dantsu.escposprinter.connection.usb.UsbConnection;
 import com.dantsu.escposprinter.connection.usb.UsbPrintersConnections;
-import com.dantsu.escposprinter.exceptions.BrokenConnectionException;
+import com.dantsu.escposprinter.exceptions.EscPosBrokenConnectionException;
 import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
-import com.dantsu.escposprinter.exceptions.ParserException;
+import com.dantsu.escposprinter.exceptions.EscPosParserException;
 import com.dantsu.escposprinter.textparser.PrinterTextParserImg;
 
 public class MainActivity extends AppCompatActivity {
@@ -127,12 +128,20 @@ public class MainActivity extends AppCompatActivity {
         final EditText ipAddress = (EditText) this.findViewById(R.id.edittext_tcp_ip);
         final EditText portAddress = (EditText) this.findViewById(R.id.edittext_tcp_port);
 
-        new Thread(new Runnable() {
-            public void run() {
-                TcpConnection tcpConnection = new TcpConnection(ipAddress.getText().toString(), Integer.parseInt(portAddress.getText().toString()));
-                printIt(tcpConnection);
-            }
-        }).start();
+        try {
+            new Thread(new Runnable() {
+                public void run() {
+                    TcpConnection tcpConnection = new TcpConnection(ipAddress.getText().toString(), Integer.parseInt(portAddress.getText().toString()));
+                    printIt(tcpConnection);
+                }
+            }).start();
+        } catch (NumberFormatException e) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Invalid TCP port address")
+                    .setMessage("Port field must be a number.")
+                    .show();
+            e.printStackTrace();
+        }
     }
 
     /*==============================================================================================
@@ -171,8 +180,24 @@ public class MainActivity extends AppCompatActivity {
                                     "[C]<barcode type='ean13' height='10'>831254784551</barcode>\n" +
                                     "[C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>"
                     );
-        } catch(BrokenConnectionException | ParserException | EscPosEncodingException e) {
+        } catch(EscPosBrokenConnectionException e) {
             e.printStackTrace();
+            new AlertDialog.Builder(this)
+                    .setTitle("Broken connection")
+                    .setMessage("The connection to the printer is broken. Please try again.")
+                    .show();
+        } catch (EscPosParserException e) {
+            e.printStackTrace();
+            new AlertDialog.Builder(this)
+                    .setTitle("Invalid formatted text")
+                    .setMessage(e.getMessage())
+                    .show();
+        } catch (EscPosEncodingException e) {
+            e.printStackTrace();
+            new AlertDialog.Builder(this)
+                    .setTitle("Bad selected encoding")
+                    .setMessage(e.getMessage())
+                    .show();
         }
     }
 }

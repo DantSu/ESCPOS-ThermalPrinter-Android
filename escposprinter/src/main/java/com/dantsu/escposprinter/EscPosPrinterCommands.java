@@ -2,12 +2,11 @@ package com.dantsu.escposprinter;
 
 import android.graphics.Bitmap;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.EnumMap;
 
 import com.dantsu.escposprinter.connection.DeviceConnection;
-import com.dantsu.escposprinter.exceptions.BrokenConnectionException;
+import com.dantsu.escposprinter.exceptions.EscPosBrokenConnectionException;
 import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
@@ -53,7 +52,6 @@ public class EscPosPrinterCommands {
 
     private DeviceConnection printerConnection;
     private EscPosCharsetEncoding charsetEncoding;
-
 
 
     private static byte[] initImageCommand(int bytesByLine, int bitmapHeight) {
@@ -122,6 +120,7 @@ public class EscPosPrinterCommands {
             byteMatrix = code.getMatrix();
 
         } catch (WriterException e) {
+            e.printStackTrace();
             throw new EscPosEncodingException("Unable to encode QR code");
         }
 
@@ -148,10 +147,10 @@ public class EscPosPrinterCommands {
             byte[] lineBytes = new byte[bytesByLine];
             int j = 0, multipleX = coefficient;
             boolean isBlack = false;
-            for (int x = -1; x < width;) {
+            for (int x = -1; x < width; ) {
                 StringBuilder stringBinary = new StringBuilder();
                 for (int k = 0; k < 8; k++) {
-                    if(multipleX == coefficient) {
+                    if (multipleX == coefficient) {
                         isBlack = ++x < width && byteMatrix.get(x, y) == 1;
                         multipleX = 0;
                     }
@@ -171,7 +170,6 @@ public class EscPosPrinterCommands {
     }
 
 
-
     /**
      * Create new instance of EscPosPrinterCommands.
      *
@@ -185,7 +183,7 @@ public class EscPosPrinterCommands {
      * Create new instance of EscPosPrinterCommands.
      *
      * @param printerConnection an instance of a class which implement DeviceConnection
-     * @param charsetEncoding Set the charset encoding.
+     * @param charsetEncoding   Set the charset encoding.
      */
     public EscPosPrinterCommands(DeviceConnection printerConnection, EscPosCharsetEncoding charsetEncoding) {
         this.printerConnection = printerConnection;
@@ -294,6 +292,7 @@ public class EscPosPrinterCommands {
 
             this.printerConnection.write(textBytes);
         } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
             throw new EscPosEncodingException(e.getMessage());
         }
 
@@ -350,37 +349,32 @@ public class EscPosPrinterCommands {
 
         barcode = barcode.substring(0, barcodeLength);
 
-        try {
-            switch (barcodeType) {
-                case EscPosPrinterCommands.BARCODE_UPCE:
-                    String firstChar = barcode.substring(0, 1);
-                    if (!firstChar.equals("0") && !firstChar.equals("1")) {
-                        barcode = "0" + barcode.substring(0, 5);
+        switch (barcodeType) {
+            case EscPosPrinterCommands.BARCODE_UPCE:
+                String firstChar = barcode.substring(0, 1);
+                if (!firstChar.equals("0") && !firstChar.equals("1")) {
+                    barcode = "0" + barcode.substring(0, 5);
+                }
+                break;
+            case EscPosPrinterCommands.BARCODE_UPCA:
+            case EscPosPrinterCommands.BARCODE_EAN13:
+            case EscPosPrinterCommands.BARCODE_EAN8:
+                int stringBarcodeLength = barcode.length(), totalBarcodeKey = 0;
+                for (int i = 0; i < stringBarcodeLength; i++) {
+                    int pos = stringBarcodeLength - 1 - i,
+                            intCode = Integer.parseInt(barcode.substring(pos, pos + 1), 10);
+                    if (i % 2 == 0) {
+                        intCode = 3 * intCode;
                     }
-                    break;
-                case EscPosPrinterCommands.BARCODE_UPCA:
-                case EscPosPrinterCommands.BARCODE_EAN13:
-                case EscPosPrinterCommands.BARCODE_EAN8:
-                    int stringBarcodeLength = barcode.length(), totalBarcodeKey = 0;
-                    for (int i = 0; i < stringBarcodeLength; i++) {
-                        int pos = stringBarcodeLength - 1 - i,
-                                intCode = Integer.parseInt(barcode.substring(pos, pos + 1), 10);
-                        if (i % 2 == 0) {
-                            intCode = 3 * intCode;
-                        }
-                        totalBarcodeKey += intCode;
-                    }
+                    totalBarcodeKey += intCode;
+                }
 
-                    String barcodeKey = String.valueOf(10 - (totalBarcodeKey % 10));
-                    if (barcodeKey.length() == 2) {
-                        barcodeKey = "0";
-                    }
-                    barcode += barcodeKey;
-                    break;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return this;
+                String barcodeKey = String.valueOf(10 - (totalBarcodeKey % 10));
+                if (barcodeKey.length() == 2) {
+                    barcodeKey = "0";
+                }
+                barcode += barcodeKey;
+                break;
         }
 
         barcodeLength = barcode.length();
@@ -451,7 +445,7 @@ public class EscPosPrinterCommands {
      *
      * @return Fluent interface
      */
-    public EscPosPrinterCommands newLine() throws BrokenConnectionException {
+    public EscPosPrinterCommands newLine() throws EscPosBrokenConnectionException {
         return this.newLine(null);
     }
 
@@ -461,14 +455,14 @@ public class EscPosPrinterCommands {
      * @param align Set the alignment of text and barcodes. Use EscPosPrinterCommands.TEXT_ALIGN_... constants
      * @return Fluent interface
      */
-    public EscPosPrinterCommands newLine(byte[] align) throws BrokenConnectionException {
+    public EscPosPrinterCommands newLine(byte[] align) throws EscPosBrokenConnectionException {
         if (!this.printerConnection.isConnected()) {
             return this;
         }
-        
+
         this.printerConnection.write(new byte[]{EscPosPrinterCommands.LF});
         this.printerConnection.send();
-        
+
         if (align != null) {
             this.printerConnection.write(align);
         }

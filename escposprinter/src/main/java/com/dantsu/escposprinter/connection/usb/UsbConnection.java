@@ -4,7 +4,7 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 
 import com.dantsu.escposprinter.connection.DeviceConnection;
-import com.dantsu.escposprinter.exceptions.BrokenConnectionException;
+import com.dantsu.escposprinter.exceptions.EscPosBrokenConnectionException;
 
 import java.io.IOException;
 
@@ -66,8 +66,8 @@ public class UsbConnection extends DeviceConnection {
             try {
                 this.stream.close();
                 this.stream = null;
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
                 return false;
             }
         }
@@ -77,12 +77,13 @@ public class UsbConnection extends DeviceConnection {
     /**
      * Send data to the device.
      */
-    public void send() throws BrokenConnectionException {
+    public void send() throws EscPosBrokenConnectionException {
         try {
             this.stream.write(this.data);
             this.data = new byte[0];
         } catch (IOException e) {
-            throw new BrokenConnectionException(e.getMessage());
+            e.printStackTrace();
+            throw new EscPosBrokenConnectionException(e.getMessage());
         }
     }
 }

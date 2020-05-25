@@ -5,7 +5,7 @@ import java.util.Arrays;
 import com.dantsu.escposprinter.EscPosPrinter;
 import com.dantsu.escposprinter.EscPosPrinterCommands;
 import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
-import com.dantsu.escposprinter.exceptions.ParserException;
+import com.dantsu.escposprinter.exceptions.EscPosParserException;
 
 public class PrinterTextParser {
     
@@ -158,7 +158,7 @@ public class PrinterTextParser {
         return this;
     }
     
-    public PrinterTextParserLine[] parse() throws ParserException, EscPosEncodingException {
+    public PrinterTextParserLine[] parse() throws EscPosParserException, EscPosEncodingException {
         String[] stringLines = this.text.split("\n|\r\n");
         PrinterTextParserLine[] lines = new PrinterTextParserLine[stringLines.length];
         int i = 0;

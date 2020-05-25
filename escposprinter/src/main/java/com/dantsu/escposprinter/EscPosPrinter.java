@@ -3,9 +3,9 @@ package com.dantsu.escposprinter;
 import android.graphics.Bitmap;
 
 import com.dantsu.escposprinter.connection.DeviceConnection;
-import com.dantsu.escposprinter.exceptions.BrokenConnectionException;
+import com.dantsu.escposprinter.exceptions.EscPosBrokenConnectionException;
 import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
-import com.dantsu.escposprinter.exceptions.ParserException;
+import com.dantsu.escposprinter.exceptions.EscPosParserException;
 import com.dantsu.escposprinter.textparser.PrinterTextParser;
 import com.dantsu.escposprinter.textparser.PrinterTextParserColumn;
 import com.dantsu.escposprinter.textparser.IPrinterTextParserElement;
@@ -145,7 +145,7 @@ public class EscPosPrinter {
      * @param text Formatted text to be printed.
      * @return Fluent interface
      */
-    public EscPosPrinter printFormattedText(String text) throws BrokenConnectionException, ParserException, EscPosEncodingException {
+    public EscPosPrinter printFormattedText(String text) throws EscPosBrokenConnectionException, EscPosParserException, EscPosEncodingException {
         if (this.printer == null || this.nbrCharactersPerLine == 0) {
             return this;
         }
