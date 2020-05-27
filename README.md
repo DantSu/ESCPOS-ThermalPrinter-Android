@@ -5,6 +5,9 @@
 
 Useful library to help Android developers to print with (Bluetooth, TCP, USB) ESC/POS thermal printers.
 
+## ✨ Supporting
+
+⭐ Star this repository to support this project. You will contribute to increase the visibility of this library 🙂
 
 ## Table of contents
 
@@ -102,8 +105,8 @@ printer
         "[L]  + Size : 57/58\n" +
         "[L]\n" +
         "[C]--------------------------------\n" +
-        "[L][R]TOTAL PRICE :[R]34.98e\n" +
-        "[L][R]TAX :[R]4.23e\n" +
+        "[R]TOTAL PRICE :[R]34.98e\n" +
+        "[R]TAX :[R]4.23e\n" +
         "[L]\n" +
         "[C]================================\n" +
         "[L]\n" +
@@ -152,8 +155,8 @@ new Thread(new Runnable() {
                     "[L]  + Size : 57/58\n" +
                     "[L]\n" +
                     "[C]--------------------------------\n" +
-                    "[L][R]TOTAL PRICE :[R]34.98e\n" +
-                    "[L][R]TAX :[R]4.23e\n" +
+                    "[R]TOTAL PRICE :[R]34.98e\n" +
+                    "[R]TAX :[R]4.23e\n" +
                     "[L]\n" +
                     "[C]================================\n" +
                     "[L]\n" +
@@ -231,8 +234,8 @@ printer
         "[L]  + Size : 57/58\n" +
         "[L]\n" +
         "[C]--------------------------------\n" +
-        "[L][R]TOTAL PRICE :[R]34.98e\n" +
-        "[L][R]TAX :[R]4.23e\n" +
+        "[R]TOTAL PRICE :[R]34.98e\n" +
+        "[R]TAX :[R]4.23e\n" +
         "[L]\n" +
         "[C]================================\n" +
         "[L]\n" +
@@ -317,7 +320,7 @@ Use `PrinterTextParserImg.bitmapToHexadecimalString` to convert `Drawable`, `Bit
 
 - `<img>`hexadecimal string of an image`</img>`
 
-**/!\\ WARNING /!\\** : This tag has several constraints :
+**⚠ WARNING ⚠** : This tag has several constraints :
 
 - A line that contains `<img></img>` can have only one alignment tag and it must be at the beginning of the line.
 - `<img>` must be directly preceded by nothing or an alignment tag (`[L][C][R]`).
@@ -329,19 +332,17 @@ Use `PrinterTextParserImg.bitmapToHexadecimalString` to convert `Drawable`, `Bit
 `<barcode></barcode>` tag allows you to print a barcode. Inside the tag you need to write the code number to print.
 
 - `<barcode>451278452159</barcode>` : **(12 numbers)**  
-Prints a EAN13 barcode with a height of 10 millimeters.
-- `<barcode height='15'>451278452159</barcode>` : **(12 numbers)**  
-Prints a EAN13 barcode with a height of 15 millimeters.
-- `<barcode type='ean13'>451278452159</barcode>` : **(12 numbers)**  
-Prints a EAN13 barcode with a height of 10 millimeters.
+Prints a EAN13 barcode (height: 10mm, width: ~70% printer width, text: displayed below).
 - `<barcode type='ean8'>4512784</barcode>` : **(7 numbers)**  
-Prints a EAN8 barcode with a height of 10 millimeters.
+Prints a EAN8 barcode (height: 10mm, width: ~70% printer width, text: displayed below).
 - `<barcode type='upca' height='20'>4512784521</barcode>` : **(11 numbers)**  
-Prints a UPC-A barcode with a height of 20 millimeters.
-- `<barcode type='upce' height='25'>051278</barcode>` : **(6 numbers)**  
-Prints a UPC-E barcode with a height of 25 millimeters.
+Prints a UPC-A barcode (height: 20mm, width: ~70% printer width, text: displayed below).
+- `<barcode type='upce' height='25' width='50' text='none'>512789</barcode>` : **(6 numbers)**  
+Prints a UPC-E barcode (height: 25mm, width: ~50mm, text: hidden).
+- `<barcode type='128' width='40' text='above'>DantSu</barcode>` :
+Prints a barcode 128 (height: 10mm, width: ~40mm, text: displayed above).
 
-**/!\\ WARNING /!\\** : This tag has several constraints :
+**⚠ WARNING ⚠** : This tag has several constraints :
 
 - A line that contains `<barcode></barcode>` can have only one alignment tag and it must be at the beginning of the line.
 - `<barcode>` must be directly preceded by nothing or an alignment tag (`[L][C][R]`).
@@ -357,7 +358,7 @@ Prints a QR code with a width and height of 20 millimeters.
 - `<qrcode size='25'>123456789</qrcode>` :
 Prints a QR code with a width and height of 25 millimeters.
 
-**/!\\ WARNING /!\\** : This tag has several constraints :
+**⚠ WARNING ⚠** : This tag has several constraints :
 
 - A line that contains `<qrcode></qrcode>` can have only one alignment tag and it must be at the beginning of the line.
 - `<qrcode>` must be directly preceded by nothing or an alignment tag (`[L][C][R]`).
@@ -426,6 +427,11 @@ Convert the mmSize variable from millimeters to dot.
 
 #### Method : `printFormattedText(String text)`
 Print a formatted text. Read the ["Formatted Text : Syntax guide" section](#formatted-text--syntax-guide) for more information about text formatting options.
+- **param** `String text` : Formatted text to be printed.
+- **return** `Printer` : Fluent interface
+
+#### Method : `printFormattedTextAndCut(String text)`
+Print a formatted text and cut the paper. Read the ["Formatted Text : Syntax guide" section](#formatted-text--syntax-guide) for more information about text formatting options.
 - **param** `String text` : Formatted text to be printed.
 - **return** `Printer` : Fluent interface
 

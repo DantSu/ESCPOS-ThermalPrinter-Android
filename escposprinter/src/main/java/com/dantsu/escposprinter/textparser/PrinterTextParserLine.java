@@ -1,5 +1,6 @@
 package com.dantsu.escposprinter.textparser;
 
+import com.dantsu.escposprinter.exceptions.EscPosBarcodeException;
 import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
 import com.dantsu.escposprinter.exceptions.EscPosParserException;
 
@@ -15,7 +16,7 @@ public class PrinterTextParserLine {
     private int nbrCharColumnExceeded;
     private PrinterTextParserColumn[] columns;
     
-    public PrinterTextParserLine(PrinterTextParser textParser, String textLine) throws EscPosParserException, EscPosEncodingException {
+    public PrinterTextParserLine(PrinterTextParser textParser, String textLine) throws EscPosParserException, EscPosEncodingException, EscPosBarcodeException {
         this.textParser = textParser;
         int nbrCharactersPerLine = this.getTextParser().getPrinter().getNbrCharactersPerLine();
     

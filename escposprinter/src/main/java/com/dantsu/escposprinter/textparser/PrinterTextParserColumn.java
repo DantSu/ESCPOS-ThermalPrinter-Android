@@ -3,6 +3,7 @@ package com.dantsu.escposprinter.textparser;
 import java.util.Hashtable;
 
 import com.dantsu.escposprinter.EscPosPrinterCommands;
+import com.dantsu.escposprinter.exceptions.EscPosBarcodeException;
 import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
 import com.dantsu.escposprinter.exceptions.EscPosParserException;
 
@@ -26,7 +27,7 @@ public class PrinterTextParserColumn {
      * @param textParserLine Parent PrinterTextParserLine instance
      * @param textColumn Text that the column contain
      */
-    public PrinterTextParserColumn(PrinterTextParserLine textParserLine, String textColumn) throws EscPosParserException, EscPosEncodingException {
+    public PrinterTextParserColumn(PrinterTextParserLine textParserLine, String textColumn) throws EscPosParserException, EscPosEncodingException, EscPosBarcodeException {
         this.textParserLine = textParserLine;
         PrinterTextParser textParser = this.textParserLine.getTextParser();
         String textAlign = PrinterTextParser.TAGS_ALIGN_LEFT;
@@ -249,15 +250,15 @@ public class PrinterTextParserColumn {
         return this.appendElement(new PrinterTextParserImg(this, textAlign, hexString));
     }
     
-    private PrinterTextParserColumn prependBarcode(String textAlign, Hashtable<String,String> barcodeAttributes, String code) throws EscPosParserException {
+    private PrinterTextParserColumn prependBarcode(String textAlign, Hashtable<String,String> barcodeAttributes, String code) throws EscPosParserException, EscPosBarcodeException {
         return this.prependElement(new PrinterTextParserBarcode(this, textAlign, barcodeAttributes, code));
     }
 
-    private PrinterTextParserColumn appendBarcode(String textAlign, Hashtable<String,String> barcodeAttributes, String code) throws EscPosParserException {
+    private PrinterTextParserColumn appendBarcode(String textAlign, Hashtable<String,String> barcodeAttributes, String code) throws EscPosParserException, EscPosBarcodeException {
         return this.appendElement(new PrinterTextParserBarcode(this, textAlign, barcodeAttributes, code));
     }
 
-    private PrinterTextParserColumn prependQRCode(String textAlign, Hashtable<String,String> qrCodeAttributes, String data) throws EscPosParserException {
+    private PrinterTextParserColumn prependQRCode(String textAlign, Hashtable<String,String> qrCodeAttributes, String data) throws EscPosParserException, EscPosBarcodeException {
         return this.prependElement(new PrinterTextParserBarcode(this, textAlign, qrCodeAttributes, data));
     }
 

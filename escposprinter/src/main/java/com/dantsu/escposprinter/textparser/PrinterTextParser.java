@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import com.dantsu.escposprinter.EscPosPrinter;
 import com.dantsu.escposprinter.EscPosPrinterCommands;
+import com.dantsu.escposprinter.exceptions.EscPosBarcodeException;
 import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
 import com.dantsu.escposprinter.exceptions.EscPosParserException;
 
@@ -18,13 +19,19 @@ public class PrinterTextParser {
     public static final String TAGS_BARCODE = "barcode";
     public static final String TAGS_QRCODE = "qrcode";
 
+    public static final String ATTR_BARCODE_WIDTH = "width";
     public static final String ATTR_BARCODE_HEIGHT = "height";
     public static final String ATTR_BARCODE_TYPE = "type";
     public static final String ATTR_BARCODE_TYPE_EAN8 = "ean8";
     public static final String ATTR_BARCODE_TYPE_EAN13 = "ean13";
     public static final String ATTR_BARCODE_TYPE_UPCA = "upca";
     public static final String ATTR_BARCODE_TYPE_UPCE = "upce";
-    
+    public static final String ATTR_BARCODE_TYPE_128 = "128";
+    public static final String ATTR_BARCODE_TEXT_POSITION = "text";
+    public static final String ATTR_BARCODE_TEXT_POSITION_NONE = "none";
+    public static final String ATTR_BARCODE_TEXT_POSITION_ABOVE = "above";
+    public static final String ATTR_BARCODE_TEXT_POSITION_BELOW = "below";
+
     public static final String TAGS_FORMAT_TEXT_FONT = "font";
     public static final String TAGS_FORMAT_TEXT_BOLD = "b";
     public static final String TAGS_FORMAT_TEXT_UNDERLINE = "u";
@@ -158,7 +165,7 @@ public class PrinterTextParser {
         return this;
     }
     
-    public PrinterTextParserLine[] parse() throws EscPosParserException, EscPosEncodingException {
+    public PrinterTextParserLine[] parse() throws EscPosParserException, EscPosEncodingException, EscPosBarcodeException {
         String[] stringLines = this.text.split("\n|\r\n");
         PrinterTextParserLine[] lines = new PrinterTextParserLine[stringLines.length];
         int i = 0;

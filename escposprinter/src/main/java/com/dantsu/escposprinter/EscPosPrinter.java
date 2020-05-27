@@ -3,6 +3,7 @@ package com.dantsu.escposprinter;
 import android.graphics.Bitmap;
 
 import com.dantsu.escposprinter.connection.DeviceConnection;
+import com.dantsu.escposprinter.exceptions.EscPosBarcodeException;
 import com.dantsu.escposprinter.exceptions.EscPosBrokenConnectionException;
 import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
 import com.dantsu.escposprinter.exceptions.EscPosParserException;
@@ -64,10 +65,8 @@ public class EscPosPrinter {
         this.printerDpi = printerDpi;
         this.printingWidthMM = printingWidthMM;
         this.nbrCharactersPerLine = nbrCharactersPerLine;
-        
         int printingWidthPx = this.mmToPx(this.printingWidthMM);
         this.printingWidthPx = printingWidthPx + (printingWidthPx % 8);
-        
         this.charSizeWidthPx = printingWidthPx / this.nbrCharactersPerLine;
     }
     
@@ -145,7 +144,7 @@ public class EscPosPrinter {
      * @param text Formatted text to be printed.
      * @return Fluent interface
      */
-    public EscPosPrinter printFormattedText(String text) throws EscPosBrokenConnectionException, EscPosParserException, EscPosEncodingException {
+    public EscPosPrinter printFormattedText(String text) throws EscPosBrokenConnectionException, EscPosParserException, EscPosEncodingException, EscPosBarcodeException {
         if (this.printer == null || this.nbrCharactersPerLine == 0) {
             return this;
         }
@@ -182,7 +181,7 @@ public class EscPosPrinter {
      * @param text Formatted text to be printed.
      * @return Fluent interface
      */
-    public EscPosPrinter printFormattedTextAndCut(String text) throws EscPosBrokenConnectionException, EscPosParserException, EscPosEncodingException {
+    public EscPosPrinter printFormattedTextAndCut(String text) throws EscPosBrokenConnectionException, EscPosParserException, EscPosEncodingException, EscPosBarcodeException {
         if (this.printer == null || this.nbrCharactersPerLine == 0) {
             return this;
         }

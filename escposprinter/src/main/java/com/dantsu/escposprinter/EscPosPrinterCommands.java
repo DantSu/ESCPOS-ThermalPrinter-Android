@@ -5,7 +5,9 @@ import android.graphics.Bitmap;
 import java.io.UnsupportedEncodingException;
 import java.util.EnumMap;
 
+import com.dantsu.escposprinter.barcode.Barcode;
 import com.dantsu.escposprinter.connection.DeviceConnection;
+import com.dantsu.escposprinter.exceptions.EscPosBarcodeException;
 import com.dantsu.escposprinter.exceptions.EscPosBrokenConnectionException;
 import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
 import com.google.zxing.EncodeHintType;
@@ -40,11 +42,17 @@ public class EscPosPrinterCommands {
     public static final byte[] TEXT_DOUBLE_STRIKE_ON = new byte[]{0x1B, 0x47, 0x01};
 
 
-    public static final int BARCODE_UPCA = 0;
-    public static final int BARCODE_UPCE = 1;
-    public static final int BARCODE_EAN13 = 2;
-    public static final int BARCODE_EAN8 = 3;
-    public static final int BARCODE_ITF = 5;
+
+    public static final int BARCODE_TYPE_UPCA = 65;
+    public static final int BARCODE_TYPE_UPCE = 66;
+    public static final int BARCODE_TYPE_EAN13 = 67;
+    public static final int BARCODE_TYPE_EAN8 = 68;
+    public static final int BARCODE_TYPE_ITF = 70;
+    public static final int BARCODE_TYPE_128 = 73;
+
+    public static final int BARCODE_TEXT_POSITION_NONE = 0;
+    public static final int BARCODE_TEXT_POSITION_ABOVE = 1;
+    public static final int BARCODE_TEXT_POSITION_BELOW = 2;
 
 
     public static final int QRCODE_1 = 49;
@@ -316,76 +324,26 @@ public class EscPosPrinterCommands {
     /**
      * Print a barcode with the connected printer.
      *
-     * @param barcodeType Set the barcode type. Use EscPosPrinterCommands.BARCODE_... constants
-     * @param barcode     String that contains code numbers
-     * @param heightPx    dot height of the barcode
+     * @param barcode Instance of Class that implement Barcode
      * @return Fluent interface
      */
-    public EscPosPrinterCommands printBarcode(int barcodeType, String barcode, int heightPx) {
+    public EscPosPrinterCommands printBarcode(Barcode barcode) {
         if (!this.printerConnection.isConnected()) {
             return this;
         }
 
-        int barcodeLength = 0;
-
-        switch (barcodeType) {
-            case EscPosPrinterCommands.BARCODE_UPCA:
-                barcodeLength = 11;
-                break;
-            case EscPosPrinterCommands.BARCODE_UPCE:
-                barcodeLength = 6;
-                break;
-            case EscPosPrinterCommands.BARCODE_EAN13:
-                barcodeLength = 12;
-                break;
-            case EscPosPrinterCommands.BARCODE_EAN8:
-                barcodeLength = 7;
-                break;
-        }
-
-        if (barcodeLength == 0 || barcode.length() < barcodeLength) {
-            return this;
-        }
-
-        barcode = barcode.substring(0, barcodeLength);
-
-        switch (barcodeType) {
-            case EscPosPrinterCommands.BARCODE_UPCE:
-                String firstChar = barcode.substring(0, 1);
-                if (!firstChar.equals("0") && !firstChar.equals("1")) {
-                    barcode = "0" + barcode.substring(0, 5);
-                }
-                break;
-            case EscPosPrinterCommands.BARCODE_UPCA:
-            case EscPosPrinterCommands.BARCODE_EAN13:
-            case EscPosPrinterCommands.BARCODE_EAN8:
-                int stringBarcodeLength = barcode.length(), totalBarcodeKey = 0;
-                for (int i = 0; i < stringBarcodeLength; i++) {
-                    int pos = stringBarcodeLength - 1 - i,
-                            intCode = Integer.parseInt(barcode.substring(pos, pos + 1), 10);
-                    if (i % 2 == 0) {
-                        intCode = 3 * intCode;
-                    }
-                    totalBarcodeKey += intCode;
-                }
-
-                String barcodeKey = String.valueOf(10 - (totalBarcodeKey % 10));
-                if (barcodeKey.length() == 2) {
-                    barcodeKey = "0";
-                }
-                barcode += barcodeKey;
-                break;
-        }
-
-        barcodeLength = barcode.length();
+        String code = barcode.getCode();
+        int barcodeLength = barcode.getCodeLength();
         byte[] barcodeCommand = new byte[barcodeLength + 4];
-        System.arraycopy(new byte[]{0x1D, 0x6B, (byte) barcodeType}, 0, barcodeCommand, 0, 3);
+        System.arraycopy(new byte[]{0x1D, 0x6B, (byte) barcode.getBarcodeType(), (byte) barcodeLength}, 0, barcodeCommand, 0, 4);
 
         for (int i = 0; i < barcodeLength; i++) {
-            barcodeCommand[i + 3] = (byte) (Integer.parseInt(barcode.substring(i, i + 1), 10) + 48);
+            barcodeCommand[i + 4] = (byte) code.charAt(i);
         }
 
-        this.printerConnection.write(new byte[]{0x1D, 0x68, (byte) heightPx});
+        this.printerConnection.write(new byte[]{0x1D, 0x48, (byte) barcode.getTextPosition()});
+        this.printerConnection.write(new byte[]{0x1D, 0x77, (byte) barcode.getColWidth()});
+        this.printerConnection.write(new byte[]{0x1D, 0x68, (byte) barcode.getHeight()});
         this.printerConnection.write(barcodeCommand);
         return this;
     }
