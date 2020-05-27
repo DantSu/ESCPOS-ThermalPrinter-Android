@@ -339,7 +339,7 @@ Prints a EAN8 barcode (height: 10mm, width: ~70% printer width, text: displayed 
 Prints a UPC-A barcode (height: 20mm, width: ~70% printer width, text: displayed below).
 - `<barcode type='upce' height='25' width='50' text='none'>512789</barcode>` : **(6 numbers)**  
 Prints a UPC-E barcode (height: 25mm, width: ~50mm, text: hidden).
-- `<barcode type='128' width='40' text='above'>DantSu</barcode>` :
+- `<barcode type='128' width='40' text='above'>DantSu</barcode>` : **(string)**  
 Prints a barcode 128 (height: 10mm, width: ~40mm, text: displayed above).
 
 **⚠ WARNING ⚠** : This tag has several constraints :
