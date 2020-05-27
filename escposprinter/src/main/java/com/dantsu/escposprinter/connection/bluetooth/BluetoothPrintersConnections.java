@@ -3,6 +3,8 @@ package com.dantsu.escposprinter.connection.bluetooth;
 import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 
+import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
+
 public class BluetoothPrintersConnections extends BluetoothConnections {
     
     /**
@@ -16,8 +18,10 @@ public class BluetoothPrintersConnections extends BluetoothConnections {
         
         if (bluetoothPrinters != null && bluetoothPrinters.length > 0) {
             for (BluetoothConnection printer : bluetoothPrinters) {
-                if (printer.connect()) {
-                    return printer;
+                try {
+                    return printer.connect();
+                } catch (EscPosConnectionException e) {
+                    e.printStackTrace();
                 }
             }
         }

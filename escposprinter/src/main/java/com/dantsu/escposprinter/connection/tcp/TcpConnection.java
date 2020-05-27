@@ -1,6 +1,7 @@
 package com.dantsu.escposprinter.connection.tcp;
 
 import com.dantsu.escposprinter.connection.DeviceConnection;
+import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -35,34 +36,29 @@ public class TcpConnection extends DeviceConnection {
 
     /**
      * Start socket connection with the TCP device.
-     *
-     * @return return true if success
      */
-    public boolean connect() {
+    public TcpConnection connect() throws EscPosConnectionException {
         if (this.isConnected()) {
-            return true;
+            return this;
         }
         try {
             this.socket = new Socket();
             this.socket.connect(new InetSocketAddress(InetAddress.getByName(this.address), this.port));
             this.stream = this.socket.getOutputStream();
             this.data = new byte[0];
-            return true;
         } catch (IOException e) {
             e.printStackTrace();
-            this.disconnect();
             this.socket = null;
             this.stream = null;
+            throw new EscPosConnectionException("Unable to connect to TCP device.");
         }
-        return false;
+        return this;
     }
 
     /**
      * Close the socket connection with the TCP device.
-     *
-     * @return return true if success
      */
-    public boolean disconnect() {
+    public TcpConnection disconnect() {
         this.data = new byte[0];
         if (this.stream != null) {
             try {
@@ -70,7 +66,6 @@ public class TcpConnection extends DeviceConnection {
                 this.stream = null;
             } catch (IOException e) {
                 e.printStackTrace();
-                return false;
             }
         }
         if (this.socket != null) {
@@ -79,10 +74,9 @@ public class TcpConnection extends DeviceConnection {
                 this.socket = null;
             } catch (IOException e) {
                 e.printStackTrace();
-                return false;
             }
         }
-        return true;
+        return this;
     }
 
 }

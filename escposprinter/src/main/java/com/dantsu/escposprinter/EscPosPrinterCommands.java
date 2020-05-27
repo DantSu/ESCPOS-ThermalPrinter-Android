@@ -7,8 +7,7 @@ import java.util.EnumMap;
 
 import com.dantsu.escposprinter.barcode.Barcode;
 import com.dantsu.escposprinter.connection.DeviceConnection;
-import com.dantsu.escposprinter.exceptions.EscPosBarcodeException;
-import com.dantsu.escposprinter.exceptions.EscPosBrokenConnectionException;
+import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
 import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
@@ -200,23 +199,17 @@ public class EscPosPrinterCommands {
 
     /**
      * Start socket connection and open stream with the device.
-     *
-     * @return return true if success
      */
-    public boolean connect() {
-        if (this.printerConnection.isConnected()) {
-            return true;
-        }
-        return this.printerConnection.connect();
+    public EscPosPrinterCommands connect() throws EscPosConnectionException {
+        this.printerConnection.connect();
+        return this;
     }
 
     /**
      * Close the socket connection and stream with the device.
-     *
-     * @return return true if success
      */
-    public boolean disconnect() {
-        return this.printerConnection.disconnect();
+    public void disconnect() {
+        this.printerConnection.disconnect();
     }
 
     /**
@@ -403,7 +396,7 @@ public class EscPosPrinterCommands {
      *
      * @return Fluent interface
      */
-    public EscPosPrinterCommands newLine() throws EscPosBrokenConnectionException {
+    public EscPosPrinterCommands newLine() throws EscPosConnectionException {
         return this.newLine(null);
     }
 
@@ -413,7 +406,7 @@ public class EscPosPrinterCommands {
      * @param align Set the alignment of text and barcodes. Use EscPosPrinterCommands.TEXT_ALIGN_... constants
      * @return Fluent interface
      */
-    public EscPosPrinterCommands newLine(byte[] align) throws EscPosBrokenConnectionException {
+    public EscPosPrinterCommands newLine(byte[] align) throws EscPosConnectionException {
         if (!this.printerConnection.isConnected()) {
             return this;
         }
@@ -432,7 +425,7 @@ public class EscPosPrinterCommands {
      *
      * @return Fluent interface
      */
-    public EscPosPrinterCommands cutPaper() throws EscPosBrokenConnectionException {
+    public EscPosPrinterCommands cutPaper() throws EscPosConnectionException {
         if (!this.printerConnection.isConnected()) {
             return this;
         }

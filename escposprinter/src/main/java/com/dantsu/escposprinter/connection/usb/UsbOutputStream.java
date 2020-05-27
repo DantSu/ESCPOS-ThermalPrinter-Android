@@ -36,20 +36,24 @@ public class UsbOutputStream extends OutputStream {
 
     @Override
     public void write(final @NonNull byte[] bytes, final int offset, final int length) throws IOException {
-        if (this.usbInterface != null && this.usbEndpoint != null && this.usbConnection != null) {
-            if (this.usbConnection.claimInterface(this.usbInterface, true)) {
-                ByteBuffer buffer = ByteBuffer.wrap(bytes);
-                UsbRequest usbRequest = new UsbRequest();
-                try {
-                    usbRequest.initialize(this.usbConnection, this.usbEndpoint);
-                    if (!usbRequest.queue(buffer, bytes.length)) {
-                        throw new IOException("Error queueing request.");
-                    }
-                    this.usbConnection.requestWait();
-                } finally {
-                    usbRequest.close();
-                }
+        if (this.usbInterface == null || this.usbEndpoint == null || this.usbConnection == null) {
+            throw new IOException("Unable to connect to USB device.");
+        }
+
+        if (!this.usbConnection.claimInterface(this.usbInterface, true)) {
+            throw new IOException("Error during claim USB interface.");
+        }
+
+        ByteBuffer buffer = ByteBuffer.wrap(bytes);
+        UsbRequest usbRequest = new UsbRequest();
+        try {
+            usbRequest.initialize(this.usbConnection, this.usbEndpoint);
+            if (!usbRequest.queue(buffer, bytes.length)) {
+                throw new IOException("Error queueing USB request.");
             }
+            this.usbConnection.requestWait();
+        } finally {
+            usbRequest.close();
         }
     }
 

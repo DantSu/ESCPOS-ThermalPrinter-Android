@@ -4,6 +4,8 @@ import android.content.Context;
 import android.hardware.usb.UsbConstants;
 import android.hardware.usb.UsbDevice;
 
+import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
+
 public class UsbPrintersConnections extends UsbConnections {
 
     /**
@@ -26,8 +28,10 @@ public class UsbPrintersConnections extends UsbConnections {
         
         if (bluetoothPrinters != null && bluetoothPrinters.length > 0) {
             for (UsbConnection printer : bluetoothPrinters) {
-                if (printer.connect()) {
-                    return printer;
+                try {
+                    return printer.connect();
+                } catch (EscPosConnectionException e) {
+                    e.printStackTrace();
                 }
             }
         }

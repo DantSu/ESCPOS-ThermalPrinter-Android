@@ -4,7 +4,7 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 
 import com.dantsu.escposprinter.connection.DeviceConnection;
-import com.dantsu.escposprinter.exceptions.EscPosBrokenConnectionException;
+import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
 
 import java.io.IOException;
 
@@ -36,54 +36,49 @@ public class UsbConnection extends DeviceConnection {
 
     /**
      * Start socket connection with the usbDevice.
-     *
-     * @return return true if success
      */
-    public boolean connect() {
+    public UsbConnection connect() throws EscPosConnectionException {
         if(this.isConnected()) {
-            return true;
+            return this;
         }
+
         try {
             this.stream = new UsbOutputStream(this.usbManager, this.usbDevice);
             this.data = new byte[0];
-            return true;
         } catch (IOException e) {
             e.printStackTrace();
-            this.disconnect();
             this.stream = null;
+            throw new EscPosConnectionException("Unable to connect to USB device.");
         }
-        return false;
+        return this;
     }
     
     /**
      * Close the socket connection with the usbDevice.
-     *
-     * @return return true if success
      */
-    public boolean disconnect() {
+    public UsbConnection disconnect() {
         this.data = new byte[0];
         if(this.isConnected()) {
             try {
                 this.stream.close();
-                this.stream = null;
             } catch (IOException e) {
                 e.printStackTrace();
-                return false;
             }
+            this.stream = null;
         }
-        return true;
+        return this;
     }
 
     /**
      * Send data to the device.
      */
-    public void send() throws EscPosBrokenConnectionException {
+    public void send() throws EscPosConnectionException {
         try {
             this.stream.write(this.data);
             this.data = new byte[0];
         } catch (IOException e) {
             e.printStackTrace();
-            throw new EscPosBrokenConnectionException(e.getMessage());
+            throw new EscPosConnectionException(e.getMessage());
         }
     }
 }

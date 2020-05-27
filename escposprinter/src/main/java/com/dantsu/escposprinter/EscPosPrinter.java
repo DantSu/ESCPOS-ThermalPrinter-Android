@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 
 import com.dantsu.escposprinter.connection.DeviceConnection;
 import com.dantsu.escposprinter.exceptions.EscPosBarcodeException;
-import com.dantsu.escposprinter.exceptions.EscPosBrokenConnectionException;
+import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
 import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
 import com.dantsu.escposprinter.exceptions.EscPosParserException;
 import com.dantsu.escposprinter.textparser.PrinterTextParser;
@@ -33,7 +33,7 @@ public class EscPosPrinter {
      * @param printingWidthMM Printing width in millimeters
      * @param nbrCharactersPerLine The maximum number of characters that can be printed on a line.
      */
-    public EscPosPrinter(DeviceConnection printerConnection, int printerDpi, float printingWidthMM, int nbrCharactersPerLine) {
+    public EscPosPrinter(DeviceConnection printerConnection, int printerDpi, float printingWidthMM, int nbrCharactersPerLine) throws EscPosConnectionException {
         this(printerConnection != null ? new EscPosPrinterCommands(printerConnection) : null, printerDpi, printingWidthMM, nbrCharactersPerLine);
     }
 
@@ -46,7 +46,7 @@ public class EscPosPrinter {
      * @param nbrCharactersPerLine The maximum number of characters that can be printed on a line.
      * @param charsetEncoding Set the charset encoding.
      */
-    public EscPosPrinter(DeviceConnection printerConnection, int printerDpi, float printingWidthMM, int nbrCharactersPerLine, EscPosCharsetEncoding charsetEncoding) {
+    public EscPosPrinter(DeviceConnection printerConnection, int printerDpi, float printingWidthMM, int nbrCharactersPerLine, EscPosCharsetEncoding charsetEncoding) throws EscPosConnectionException {
         this(printerConnection != null ? new EscPosPrinterCommands(printerConnection, charsetEncoding) : null, printerDpi, printingWidthMM, nbrCharactersPerLine);
     }
 
@@ -58,9 +58,9 @@ public class EscPosPrinter {
      * @param printingWidthMM Printing width in millimeters
      * @param nbrCharactersPerLine The maximum number of characters that can be printed on a line.
      */
-    public EscPosPrinter(EscPosPrinterCommands printer, int printerDpi, float printingWidthMM, int nbrCharactersPerLine) {
-        if (printer != null && printer.connect()) {
-            this.printer = printer;
+    public EscPosPrinter(EscPosPrinterCommands printer, int printerDpi, float printingWidthMM, int nbrCharactersPerLine) throws EscPosConnectionException {
+        if (printer != null) {
+            this.printer = printer.connect();
         }
         this.printerDpi = printerDpi;
         this.printingWidthMM = printingWidthMM;
@@ -144,7 +144,7 @@ public class EscPosPrinter {
      * @param text Formatted text to be printed.
      * @return Fluent interface
      */
-    public EscPosPrinter printFormattedText(String text) throws EscPosBrokenConnectionException, EscPosParserException, EscPosEncodingException, EscPosBarcodeException {
+    public EscPosPrinter printFormattedText(String text) throws EscPosConnectionException, EscPosParserException, EscPosEncodingException, EscPosBarcodeException {
         if (this.printer == null || this.nbrCharactersPerLine == 0) {
             return this;
         }
@@ -181,7 +181,7 @@ public class EscPosPrinter {
      * @param text Formatted text to be printed.
      * @return Fluent interface
      */
-    public EscPosPrinter printFormattedTextAndCut(String text) throws EscPosBrokenConnectionException, EscPosParserException, EscPosEncodingException, EscPosBarcodeException {
+    public EscPosPrinter printFormattedTextAndCut(String text) throws EscPosConnectionException, EscPosParserException, EscPosEncodingException, EscPosBarcodeException {
         if (this.printer == null || this.nbrCharactersPerLine == 0) {
             return this;
         }

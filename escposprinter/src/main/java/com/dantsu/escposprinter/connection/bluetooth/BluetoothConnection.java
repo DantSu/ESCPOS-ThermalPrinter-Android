@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothSocket;
 import android.os.ParcelUuid;
 
 import com.dantsu.escposprinter.connection.DeviceConnection;
+import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
 
 import java.io.IOException;
 
@@ -33,19 +34,31 @@ public class BluetoothConnection extends DeviceConnection {
     }
 
     /**
-     * Start socket connection with the bluetooth device.
+     * Check if OutputStream is open.
      *
-     * @return return true if success
+     * @return true if is connected
      */
-    public boolean connect() {
+    @Override
+    public boolean isConnected() {
+        return this.socket != null && this.socket.isConnected() && super.isConnected();
+    }
+
+    /**
+     * Start socket connection with the bluetooth device.
+     */
+    public BluetoothConnection connect() throws EscPosConnectionException {
         if(this.isConnected()) {
-            return true;
+            return this;
+        }
+
+        if(this.device == null) {
+            throw new EscPosConnectionException("Bluetooth device is not connected.");
         }
 
         ParcelUuid[] uuid = this.device.getUuids();
 
         if(uuid == null || uuid.length == 0) {
-            return false;
+            throw new EscPosConnectionException("Unable to find bluetooth device UUID.");
         }
 
         try {
@@ -53,42 +66,37 @@ public class BluetoothConnection extends DeviceConnection {
             this.socket.connect();
             this.stream = this.socket.getOutputStream();
             this.data = new byte[0];
-            return true;
         } catch (IOException e) {
             e.printStackTrace();
-            this.disconnect();
             this.socket = null;
             this.stream = null;
+            throw new EscPosConnectionException("Unable to connect to bluetooth device.");
         }
-        return false;
+        return this;
     }
     
     /**
      * Close the socket connection with the bluetooth device.
-     *
-     * @return return true if success
      */
-    public boolean disconnect() {
+    public BluetoothConnection disconnect() {
         this.data = new byte[0];
         if(this.stream != null) {
             try {
                 this.stream.close();
-                this.stream = null;
             } catch (IOException e) {
                 e.printStackTrace();
-                return false;
             }
+            this.stream = null;
         }
         if(this.socket != null) {
             try {
                 this.socket.close();
-                this.socket = null;
             } catch (IOException e) {
                 e.printStackTrace();
-                return false;
             }
+            this.socket = null;
         }
-        return true;
+        return this;
     }
 
 }

@@ -28,7 +28,7 @@ import com.dantsu.escposprinter.connection.tcp.TcpConnection;
 import com.dantsu.escposprinter.connection.usb.UsbConnection;
 import com.dantsu.escposprinter.connection.usb.UsbPrintersConnections;
 import com.dantsu.escposprinter.exceptions.EscPosBarcodeException;
-import com.dantsu.escposprinter.exceptions.EscPosBrokenConnectionException;
+import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
 import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
 import com.dantsu.escposprinter.exceptions.EscPosParserException;
 import com.dantsu.escposprinter.textparser.PrinterTextParserImg;
@@ -150,9 +150,9 @@ public class MainActivity extends AppCompatActivity {
     ==============================================================================================*/
 
     public void printIt(DeviceConnection printerConnection) {
-        EscPosPrinter printer = new EscPosPrinter(printerConnection, 203, 48f, 32);
         try {
-            /*printer
+            EscPosPrinter printer = new EscPosPrinter(printerConnection, 203, 48f, 32);
+            printer
                     .printFormattedText(
                             "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, this.getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo, DisplayMetrics.DENSITY_MEDIUM)) + "</img>\n" +
                                     "[L]\n" +
@@ -180,20 +180,12 @@ public class MainActivity extends AppCompatActivity {
                                     "[L]\n" +
                                     "[C]<barcode type='ean13' height='10'>831254784551</barcode>\n" +
                                     "[C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>"
-                    );*/
-            printer
-                    .printFormattedText(
-                            "[C]<barcode type='upce' height='10'>0825478455</barcode>\n" +
-                            "[C]<barcode type='upce' height='10'>1825478455</barcode>\n" +
-                            "[C]<barcode type='upce' height='10'>2825478455</barcode>\n" +
-                            "[C]<barcode type='upce' height='10'>3825478455</barcode>\n" +
-                            "[C]<barcode type='upce' height='10'>4825478455</barcode>\n"
                     );
-        } catch (EscPosBrokenConnectionException e) {
+        } catch (EscPosConnectionException e) {
             e.printStackTrace();
             new AlertDialog.Builder(this)
                     .setTitle("Broken connection")
-                    .setMessage("The connection to the printer is broken. Please try again.")
+                    .setMessage(e.getMessage())
                     .show();
         } catch (EscPosParserException e) {
             e.printStackTrace();
