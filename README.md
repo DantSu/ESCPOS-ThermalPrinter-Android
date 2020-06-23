@@ -392,8 +392,8 @@ Get a list of USB printers.
 #### Constructor : `EscPosPrinter(DeviceConnection printer, int printerDpi, float printingWidthMM, int nbrCharactersPerLine [, EscPosCharsetEncoding charsetEncoding])`
 - **param** `DeviceConnection printer` : Instance of a connected printer
 - **param** `int printerDpi` : DPI of the connected printer
-- **param** `float printingWidthMM` : Printing width in millimeters
-- **param** `int nbrCharactersPerLine` : The maximum number of medium sized characters that can be printed on a line.
+- **param** `float printerWidthMM` : Printing width in millimeters
+- **param** `int printerNbrCharactersPerLine` : The maximum number of medium sized characters that can be printed on a line.
 - **param** `EscPosCharsetEncoding charsetEncoding` *(optional)* : Set the charset encoding.
 
 #### Method : `disconnectPrinter()`
@@ -404,7 +404,7 @@ Close the connection with the printer.
 Get the maximum number of characters that can be printed on a line.
 - **return** `int`
 
-#### Method : `getPrintingWidthMM()`
+#### Method : `getPrinterWidthMM()`
 Get the printing width in millimeters
 - **return** `float`
 
@@ -412,11 +412,11 @@ Get the printing width in millimeters
 Get the printer DPI
 - **return** `int`
 
-#### Method : `getPrintingWidthPx()`
+#### Method : `getPrinterWidthPx()`
 Get the printing width in dot
 - **return** `int`
 
-#### Method : `getCharSizeWidthPx()`
+#### Method : `getPrinterCharSizeWidthPx()`
 Get the number of dot that a printed character contain
 - **return** `int`
 

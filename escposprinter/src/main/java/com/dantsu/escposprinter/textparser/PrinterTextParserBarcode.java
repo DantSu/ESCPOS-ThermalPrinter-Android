@@ -37,7 +37,7 @@ public class PrinterTextParserBarcode implements IPrinterTextParserElement {
                 break;
         }
 
-        this.length = printer.getNbrCharactersPerLine();
+        this.length = printer.getPrinterNbrCharactersPerLine();
         float height = 10f;
 
         if (barcodeAttributes.containsKey(PrinterTextParser.ATTR_BARCODE_HEIGHT)) {

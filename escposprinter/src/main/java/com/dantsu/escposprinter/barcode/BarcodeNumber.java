@@ -1,12 +1,12 @@
 package com.dantsu.escposprinter.barcode;
 
-import com.dantsu.escposprinter.EscPosPrinter;
+import com.dantsu.escposprinter.EscPosPrinterSize;
 import com.dantsu.escposprinter.exceptions.EscPosBarcodeException;
 
 public abstract class BarcodeNumber extends Barcode {
 
-    public BarcodeNumber(EscPosPrinter printer, int barcodeType, String code, float widthMM, float heightMM, int textPosition) throws EscPosBarcodeException {
-        super(printer, barcodeType, code, widthMM, heightMM, textPosition);
+    public BarcodeNumber(EscPosPrinterSize printerSize, int barcodeType, String code, float widthMM, float heightMM, int textPosition) throws EscPosBarcodeException {
+        super(printerSize, barcodeType, code, widthMM, heightMM, textPosition);
         this.checkCode();
     }
 

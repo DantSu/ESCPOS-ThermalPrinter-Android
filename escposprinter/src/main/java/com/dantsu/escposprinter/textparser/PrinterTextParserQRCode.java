@@ -2,6 +2,7 @@ package com.dantsu.escposprinter.textparser;
 
 import com.dantsu.escposprinter.EscPosPrinter;
 import com.dantsu.escposprinter.EscPosPrinterCommands;
+import com.dantsu.escposprinter.exceptions.EscPosBarcodeException;
 import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
 import com.dantsu.escposprinter.exceptions.EscPosParserException;
 
@@ -10,7 +11,7 @@ import java.util.Hashtable;
 public class PrinterTextParserQRCode extends PrinterTextParserImg {
 
     private static byte[] initConstructor(PrinterTextParserColumn printerTextParserColumn,
-                                          Hashtable<String, String> qrCodeAttributes, String data) throws EscPosParserException, EscPosEncodingException {
+                                          Hashtable<String, String> qrCodeAttributes, String data) throws EscPosParserException, EscPosBarcodeException {
         EscPosPrinter printer = printerTextParserColumn.getLine().getTextParser().getPrinter();
         data = data.trim();
 
@@ -32,7 +33,7 @@ public class PrinterTextParserQRCode extends PrinterTextParserImg {
     }
 
     public PrinterTextParserQRCode(PrinterTextParserColumn printerTextParserColumn, String textAlign,
-                                   Hashtable<String, String> qrCodeAttributes, String data) throws EscPosParserException, EscPosEncodingException {
+                                   Hashtable<String, String> qrCodeAttributes, String data) throws EscPosParserException, EscPosBarcodeException {
         super(
                 printerTextParserColumn,
                 textAlign,

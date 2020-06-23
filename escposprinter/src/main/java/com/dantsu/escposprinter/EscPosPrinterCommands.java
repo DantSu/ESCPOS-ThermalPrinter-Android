@@ -7,6 +7,7 @@ import java.util.EnumMap;
 
 import com.dantsu.escposprinter.barcode.Barcode;
 import com.dantsu.escposprinter.connection.DeviceConnection;
+import com.dantsu.escposprinter.exceptions.EscPosBarcodeException;
 import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
 import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
 import com.google.zxing.EncodeHintType;
@@ -115,7 +116,7 @@ public class EscPosPrinterCommands {
      * @param data String data to convert in QR Code
      * @return Bytes contain the image in ESC/POS command
      */
-    public static byte[] QRCodeDataToBytes(String data, int size) throws EscPosEncodingException {
+    public static byte[] QRCodeDataToBytes(String data, int size) throws EscPosBarcodeException {
 
         ByteMatrix byteMatrix = null;
 
@@ -128,7 +129,7 @@ public class EscPosPrinterCommands {
 
         } catch (WriterException e) {
             e.printStackTrace();
-            throw new EscPosEncodingException("Unable to encode QR code");
+            throw new EscPosBarcodeException("Unable to encode QR code");
         }
 
         if (byteMatrix == null) {

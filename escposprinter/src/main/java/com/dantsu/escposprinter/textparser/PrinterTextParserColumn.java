@@ -27,7 +27,7 @@ public class PrinterTextParserColumn {
      * @param textParserLine Parent PrinterTextParserLine instance
      * @param textColumn Text that the column contain
      */
-    public PrinterTextParserColumn(PrinterTextParserLine textParserLine, String textColumn) throws EscPosParserException, EscPosEncodingException, EscPosBarcodeException {
+    public PrinterTextParserColumn(PrinterTextParserLine textParserLine, String textColumn) throws EscPosParserException, EscPosBarcodeException {
         this.textParserLine = textParserLine;
         PrinterTextParser textParser = this.textParserLine.getTextParser();
         String textAlign = PrinterTextParser.TAGS_ALIGN_LEFT;
@@ -262,7 +262,7 @@ public class PrinterTextParserColumn {
         return this.prependElement(new PrinterTextParserBarcode(this, textAlign, qrCodeAttributes, data));
     }
 
-    private PrinterTextParserColumn appendQRCode(String textAlign, Hashtable<String,String> qrCodeAttributes, String data) throws EscPosParserException, EscPosEncodingException {
+    private PrinterTextParserColumn appendQRCode(String textAlign, Hashtable<String,String> qrCodeAttributes, String data) throws EscPosParserException, EscPosBarcodeException {
         return this.appendElement(new PrinterTextParserQRCode(this, textAlign, qrCodeAttributes, data));
     }
     

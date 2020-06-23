@@ -165,7 +165,7 @@ public class PrinterTextParser {
         return this;
     }
     
-    public PrinterTextParserLine[] parse() throws EscPosParserException, EscPosEncodingException, EscPosBarcodeException {
+    public PrinterTextParserLine[] parse() throws EscPosParserException, EscPosBarcodeException {
         String[] stringLines = this.text.split("\n|\r\n");
         PrinterTextParserLine[] lines = new PrinterTextParserLine[stringLines.length];
         int i = 0;

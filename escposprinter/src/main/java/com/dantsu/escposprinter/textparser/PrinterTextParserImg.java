@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 
 import com.dantsu.escposprinter.EscPosPrinter;
 import com.dantsu.escposprinter.EscPosPrinterCommands;
+import com.dantsu.escposprinter.EscPosPrinterSize;
 
 
 public class PrinterTextParserImg implements IPrinterTextParserElement {
@@ -13,13 +14,13 @@ public class PrinterTextParserImg implements IPrinterTextParserElement {
     /**
      * Convert Drawable instance to a hexadecimal string of the image data.
      *
-     * @param printer A EscPosPrinter instance that will print the image.
+     * @param printerSize A EscPosPrinterSize instance that will print the image.
      * @param drawable Drawable instance to be converted.
      * @return A hexadecimal string of the image data. Empty string if Drawable cannot be cast to BitmapDrawable.
      */
-    public static String bitmapToHexadecimalString(EscPosPrinter printer, Drawable drawable) {
+    public static String bitmapToHexadecimalString(EscPosPrinterSize printerSize, Drawable drawable) {
         if (drawable instanceof BitmapDrawable) {
-            return PrinterTextParserImg.bitmapToHexadecimalString(printer, (BitmapDrawable) drawable);
+            return PrinterTextParserImg.bitmapToHexadecimalString(printerSize, (BitmapDrawable) drawable);
         }
         return "";
     }
@@ -27,23 +28,23 @@ public class PrinterTextParserImg implements IPrinterTextParserElement {
     /**
      * Convert BitmapDrawable instance to a hexadecimal string of the image data.
      *
-     * @param printer A EscPosPrinter instance that will print the image.
+     * @param printerSize A EscPosPrinterSize instance that will print the image.
      * @param bitmapDrawable BitmapDrawable instance to be converted.
      * @return A hexadecimal string of the image data.
      */
-    public static String bitmapToHexadecimalString(EscPosPrinter printer, BitmapDrawable bitmapDrawable) {
-        return PrinterTextParserImg.bitmapToHexadecimalString(printer, bitmapDrawable.getBitmap());
+    public static String bitmapToHexadecimalString(EscPosPrinterSize printerSize, BitmapDrawable bitmapDrawable) {
+        return PrinterTextParserImg.bitmapToHexadecimalString(printerSize, bitmapDrawable.getBitmap());
     }
     
     /**
      * Convert Bitmap instance to a hexadecimal string of the image data.
      *
-     * @param printer A EscPosPrinter instance that will print the image.
+     * @param printerSize A EscPosPrinterSize instance that will print the image.
      * @param bitmap Bitmap instance to be converted.
      * @return A hexadecimal string of the image data.
      */
-    public static String bitmapToHexadecimalString(EscPosPrinter printer, Bitmap bitmap) {
-        return PrinterTextParserImg.bytesToHexadecimalString(printer.bitmapToBytes(bitmap));
+    public static String bitmapToHexadecimalString(EscPosPrinterSize printerSize, Bitmap bitmap) {
+        return PrinterTextParserImg.bytesToHexadecimalString(printerSize.bitmapToBytes(bitmap));
     }
     
     /**
@@ -108,7 +109,7 @@ public class PrinterTextParserImg implements IPrinterTextParserElement {
         int byteWidth = ((int) image[4] & 0xFF),
                 width = byteWidth * 8,
                 height = ((int) image[6] & 0xFF),
-                nbrByteDiff = (int) Math.floor(((float) (printer.getPrintingWidthPx() - width)) / 8f),
+                nbrByteDiff = (int) Math.floor(((float) (printer.getPrinterWidthPx() - width)) / 8f),
                 nbrWhiteByteToInsert = 0;
 
         switch (textAlign) {
@@ -131,7 +132,7 @@ public class PrinterTextParserImg implements IPrinterTextParserElement {
             image = newImage;
         }
 
-        this.length = (int) Math.ceil(((float) (((int) image[4] & 0xFF) * 8)) / ((float) printer.getCharSizeWidthPx()));
+        this.length = (int) Math.ceil(((float) (((int) image[4] & 0xFF) * 8)) / ((float) printer.getPrinterCharSizeWidthPx()));
         this.image = image;
     }
 

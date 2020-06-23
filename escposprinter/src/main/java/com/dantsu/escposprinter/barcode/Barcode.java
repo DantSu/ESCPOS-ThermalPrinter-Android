@@ -1,33 +1,31 @@
 package com.dantsu.escposprinter.barcode;
 
-import com.dantsu.escposprinter.EscPosPrinter;
+import com.dantsu.escposprinter.EscPosPrinterSize;
 import com.dantsu.escposprinter.exceptions.EscPosBarcodeException;
 
 public abstract class Barcode {
 
-    protected EscPosPrinter printer;
     protected int barcodeType;
     protected String code;
     protected int colWidth;
     protected int height;
     protected int textPosition;
 
-    Barcode(EscPosPrinter printer, int barcodeType, String code, float widthMM, float heightMM, int textPosition) throws EscPosBarcodeException {
-        this.printer = printer;
+    Barcode(EscPosPrinterSize printerSize, int barcodeType, String code, float widthMM, float heightMM, int textPosition) throws EscPosBarcodeException {
         this.barcodeType = barcodeType;
         this.code = code;
-        this.height = printer.mmToPx(heightMM);
+        this.height = printerSize.mmToPx(heightMM);
         this.textPosition = textPosition;
 
         if(widthMM == 0f) {
-            widthMM = printer.getPrintingWidthMM() * 0.7f;
+            widthMM = printerSize.getPrinterWidthMM() * 0.7f;
         }
 
-        int wantedPxWidth = widthMM > printer.getPrintingWidthMM() ? printer.getPrintingWidthPx() : printer.mmToPx(widthMM);
+        int
+                wantedPxWidth = widthMM > printerSize.getPrinterWidthMM() ? printerSize.getPrinterWidthPx() : printerSize.mmToPx(widthMM),
+                colWidth = (int)Math.round((double) wantedPxWidth / (double) this.getColsCount());
 
-        int colWidth = (int)Math.round((double) wantedPxWidth / (double) this.getColsCount());
-
-        if((colWidth * this.getColsCount()) > printer.getPrintingWidthPx()) {
+        if((colWidth * this.getColsCount()) > printerSize.getPrinterWidthPx()) {
             --colWidth;
         }
 

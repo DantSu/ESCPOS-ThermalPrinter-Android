@@ -1,13 +1,13 @@
 package com.dantsu.escposprinter.barcode;
 
-import com.dantsu.escposprinter.EscPosPrinter;
 import com.dantsu.escposprinter.EscPosPrinterCommands;
+import com.dantsu.escposprinter.EscPosPrinterSize;
 import com.dantsu.escposprinter.exceptions.EscPosBarcodeException;
 
 public class BarcodeUPCE extends Barcode {
 
-    public BarcodeUPCE(EscPosPrinter printer, String code, float widthMM, float heightMM, int textPosition) throws EscPosBarcodeException {
-        super(printer, EscPosPrinterCommands.BARCODE_TYPE_UPCE, code, widthMM, heightMM, textPosition);
+    public BarcodeUPCE(EscPosPrinterSize printerSize, String code, float widthMM, float heightMM, int textPosition) throws EscPosBarcodeException {
+        super(printerSize, EscPosPrinterCommands.BARCODE_TYPE_UPCE, code, widthMM, heightMM, textPosition);
         this.checkCode();
     }
 

@@ -16,9 +16,9 @@ public class PrinterTextParserLine {
     private int nbrCharColumnExceeded;
     private PrinterTextParserColumn[] columns;
     
-    public PrinterTextParserLine(PrinterTextParser textParser, String textLine) throws EscPosParserException, EscPosEncodingException, EscPosBarcodeException {
+    public PrinterTextParserLine(PrinterTextParser textParser, String textLine) throws EscPosParserException, EscPosBarcodeException {
         this.textParser = textParser;
-        int nbrCharactersPerLine = this.getTextParser().getPrinter().getNbrCharactersPerLine();
+        int nbrCharactersPerLine = this.getTextParser().getPrinter().getPrinterNbrCharactersPerLine();
     
         Pattern pattern = Pattern.compile(PrinterTextParser.getRegexAlignTags());
         Matcher matcher = pattern.matcher(textLine);
