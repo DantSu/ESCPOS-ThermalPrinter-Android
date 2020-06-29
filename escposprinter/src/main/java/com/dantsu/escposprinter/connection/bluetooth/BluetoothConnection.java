@@ -8,12 +8,13 @@ import com.dantsu.escposprinter.connection.DeviceConnection;
 import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
 
 import java.io.IOException;
+import java.util.UUID;
 
 public class BluetoothConnection extends DeviceConnection {
-    
+
     private BluetoothDevice device;
     private BluetoothSocket socket = null;
-    
+
     /**
      * Create un instance of BluetoothConnection.
      *
@@ -23,7 +24,7 @@ public class BluetoothConnection extends DeviceConnection {
         super();
         this.device = device;
     }
-    
+
     /**
      * Get the instance BluetoothDevice connected.
      *
@@ -47,6 +48,14 @@ public class BluetoothConnection extends DeviceConnection {
      * Start socket connection with the bluetooth device.
      */
     public BluetoothConnection connect() throws EscPosConnectionException {
+        return connect(false);
+    }
+
+    /**
+     * Start socket connection with the bluetooth device.
+     * If forceConnect == true then ignore the absence of UUIDs
+     */
+    public BluetoothConnection connect(boolean forceConnect) throws EscPosConnectionException {
         if(this.isConnected()) {
             return this;
         }
@@ -55,14 +64,15 @@ public class BluetoothConnection extends DeviceConnection {
             throw new EscPosConnectionException("Bluetooth device is not connected.");
         }
 
-        ParcelUuid[] uuid = this.device.getUuids();
+        ParcelUuid[] uuids = this.device.getUuids();
+        UUID uuid = (uuids == null || uuids.length == 0) ? UUID.randomUUID() : uuids[0].getUuid();
 
-        if(uuid == null || uuid.length == 0) {
+        if(uuid == null && !forceConnect) {
             throw new EscPosConnectionException("Unable to find bluetooth device UUID.");
         }
 
         try {
-            this.socket = this.device.createRfcommSocketToServiceRecord(uuid[0].getUuid());
+            this.socket = this.device.createRfcommSocketToServiceRecord(uuid);
             this.socket.connect();
             this.stream = this.socket.getOutputStream();
             this.data = new byte[0];
@@ -74,7 +84,7 @@ public class BluetoothConnection extends DeviceConnection {
         }
         return this;
     }
-    
+
     /**
      * Close the socket connection with the bluetooth device.
      */
