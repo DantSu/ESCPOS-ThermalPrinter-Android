@@ -1,4 +1,4 @@
-[![Jitpack package repository - ESCPOS-ThermalPrinter-Android v2.0.0](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/2.0.0)
+[![Jitpack package repository - ESCPOS-ThermalPrinter-Android v2.0.2](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/2.0.2)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Android library for ESC/POS Thermal Printer
@@ -44,12 +44,11 @@ Developed for SDK version 16 (Android 4.1 Jelly Bean) and above.
 1. [HOIN HOP H58 Thermal Printer ESC/POS](https://www.gearbest.com/printers/pp_662658.html).
 2. [XPRINTER XP-P300](https://xprinter.vn/xprinter-xp-p300-may-in-hoa-don-di-dong-bluetooth/).
 3. [MUNBYN IMP001](https://www.munbyn.com/collections/portable-receipt-printer/products/58mm-bluetooth-thermal-printer-imp001).
-4. [JP-Q2 POS Terminal PDA](https://www.aliexpress.com/item/32971775060.html) (Embedded printer is configured as Bluetooth device)
 
 
 ## Installation
 
-**Step 1.** Add the [JitPack](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/2.0.0) repository to your build file. Add it in your root `/build.gradle` at the end of repositories:
+**Step 1.** Add the [JitPack](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/2.0.2) repository to your build file. Add it in your root `/build.gradle` at the end of repositories:
 
 ```
 allprojects {
@@ -65,7 +64,7 @@ allprojects {
 ```
 dependencies {
     ...
-    implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:2.0.0'
+    implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:2.0.2'
 }
 ```
 
@@ -122,18 +121,9 @@ printer
     );
 ```
 
-
 Below a picture of the receipt printed with the code above :
 
 ![Example of a printed receipt](http://www.developpeur-web.dantsu.com/files/librairie/receipt-thermal-printer.png?1)
-
-NOTE:
-
-Use `forceConnect = true` if this is an embedded printer configured as Bluetooth printer:
-
-```java
-BluetoothPrintersConnections.selectFirstPaired(true)
-```
 
 ## TCP
 
@@ -189,6 +179,8 @@ new Thread(new Runnable() {
 ## USB
 
 ### USB permission
+
+Be sure to have `<uses-feature android:name="android.hardware.usb.host" />` in your `AndroidMenifest.xml`.
 
 You have to check the USB permission in your app like this :
 
@@ -341,15 +333,15 @@ Use `PrinterTextParserImg.bitmapToHexadecimalString` to convert `Drawable`, `Bit
 
 `<barcode></barcode>` tag allows you to print a barcode. Inside the tag you need to write the code number to print.
 
-- `<barcode>451278452159</barcode>` : **(12 numbers)**
+- `<barcode>451278452159</barcode>` : **(12 numbers)**  
 Prints a EAN13 barcode (height: 10mm, width: ~70% printer width, text: displayed below).
-- `<barcode type='ean8'>4512784</barcode>` : **(7 numbers)**
+- `<barcode type='ean8'>4512784</barcode>` : **(7 numbers)**  
 Prints a EAN8 barcode (height: 10mm, width: ~70% printer width, text: displayed below).
-- `<barcode type='upca' height='20'>4512784521</barcode>` : **(11 numbers)**
+- `<barcode type='upca' height='20'>4512784521</barcode>` : **(11 numbers)**  
 Prints a UPC-A barcode (height: 20mm, width: ~70% printer width, text: displayed below).
-- `<barcode type='upce' height='25' width='50' text='none'>512789</barcode>` : **(6 numbers)**
+- `<barcode type='upce' height='25' width='50' text='none'>512789</barcode>` : **(6 numbers)**  
 Prints a UPC-E barcode (height: 25mm, width: ~50mm, text: hidden).
-- `<barcode type='128' width='40' text='above'>DantSu</barcode>` : **(string)**
+- `<barcode type='128' width='40' text='above'>DantSu</barcode>` : **(string)**  
 Prints a barcode 128 (height: 10mm, width: ~40mm, text: displayed above).
 
 **⚠ WARNING ⚠** : This tag has several constraints :
@@ -402,8 +394,8 @@ Get a list of USB printers.
 #### Constructor : `EscPosPrinter(DeviceConnection printer, int printerDpi, float printingWidthMM, int nbrCharactersPerLine [, EscPosCharsetEncoding charsetEncoding])`
 - **param** `DeviceConnection printer` : Instance of a connected printer
 - **param** `int printerDpi` : DPI of the connected printer
-- **param** `float printingWidthMM` : Printing width in millimeters
-- **param** `int nbrCharactersPerLine` : The maximum number of medium sized characters that can be printed on a line.
+- **param** `float printerWidthMM` : Printing width in millimeters
+- **param** `int printerNbrCharactersPerLine` : The maximum number of medium sized characters that can be printed on a line.
 - **param** `EscPosCharsetEncoding charsetEncoding` *(optional)* : Set the charset encoding.
 
 #### Method : `disconnectPrinter()`
@@ -414,7 +406,7 @@ Close the connection with the printer.
 Get the maximum number of characters that can be printed on a line.
 - **return** `int`
 
-#### Method : `getPrintingWidthMM()`
+#### Method : `getPrinterWidthMM()`
 Get the printing width in millimeters
 - **return** `float`
 
@@ -422,11 +414,11 @@ Get the printing width in millimeters
 Get the printer DPI
 - **return** `int`
 
-#### Method : `getPrintingWidthPx()`
+#### Method : `getPrinterWidthPx()`
 Get the printing width in dot
 - **return** `int`
 
-#### Method : `getCharSizeWidthPx()`
+#### Method : `getPrinterCharSizeWidthPx()`
 Get the number of dot that a printed character contain
 - **return** `int`
 
