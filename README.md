@@ -44,7 +44,7 @@ Developed for SDK version 16 (Android 4.1 Jelly Bean) and above.
 1. [HOIN HOP H58 Thermal Printer ESC/POS](https://www.gearbest.com/printers/pp_662658.html).
 2. [XPRINTER XP-P300](https://xprinter.vn/xprinter-xp-p300-may-in-hoa-don-di-dong-bluetooth/).
 3. [MUNBYN IMP001](https://www.munbyn.com/collections/portable-receipt-printer/products/58mm-bluetooth-thermal-printer-imp001).
-
+4. [JP-Q2 POS Terminal PDA](https://www.aliexpress.com/item/32971775060.html) (Embedded printer is configured as Bluetooth device)
 
 ## Installation
 
@@ -124,6 +124,14 @@ printer
 Below a picture of the receipt printed with the code above :
 
 ![Example of a printed receipt](http://www.developpeur-web.dantsu.com/files/librairie/receipt-thermal-printer.png?1)
+
+NOTE:
+
+Use `forceConnect = true` if this is an embedded/integrated printer configured as Bluetooth printer:
+
+```java
+BluetoothPrintersConnections.selectFirstPaired(true)
+```
 
 ## TCP
 
@@ -373,6 +381,12 @@ Prints a QR code with a width and height of 25 millimeters.
 
 #### **Static** Method : `selectFirstPaired()`
 Easy way to get the first bluetooth printer paired / connected.
+- **return** `BluetoothConnection`
+
+#### **Static** Method : `selectFirstPaired(forceConnect)`
+Easy way to get the first bluetooth printer paired / connected.
+If `forceConnect = true` then printers with some "missing" attributes will be also selectable.
+Using `forceConnect = false` it's the same as using `selectFirstPaired()`.
 - **return** `BluetoothConnection`
 
 #### Method : `getList()`
