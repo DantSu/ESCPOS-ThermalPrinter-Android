@@ -31,7 +31,7 @@ public class TcpConnection extends DeviceConnection {
      * @return true if is connected
      */
     public boolean isConnected() {
-        return this.socket != null;
+        return this.socket != null && this.socket.isConnected() && super.isConnected();
     }
 
     /**

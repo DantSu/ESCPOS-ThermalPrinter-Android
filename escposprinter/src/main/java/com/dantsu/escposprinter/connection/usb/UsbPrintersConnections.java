@@ -18,9 +18,9 @@ public class UsbPrintersConnections extends UsbConnections {
     }
 
     /**
-     * Easy way to get the first bluetooth printer paired / connected.
+     * Easy way to get the first USB printer paired / connected.
      *
-     * @return a EscPosPrinterCommands instance
+     * @return a UsbConnection instance
      */
     public static UsbConnection selectFirstConnected(Context context) {
         UsbPrintersConnections printers = new UsbPrintersConnections(context);
@@ -40,9 +40,9 @@ public class UsbPrintersConnections extends UsbConnections {
     
     
     /**
-     * Get a list of bluetooth printers.
+     * Get a list of USB printers.
      *
-     * @return an array of EscPosPrinterCommands
+     * @return an array of UsbConnection
      */
     public UsbConnection[] getList() {
         UsbConnection[] usbConnections = super.getList();
