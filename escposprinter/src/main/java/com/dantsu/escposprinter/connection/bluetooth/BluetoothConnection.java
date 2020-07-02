@@ -59,13 +59,7 @@ public class BluetoothConnection extends DeviceConnection {
         }
 
         ParcelUuid[] uuids = this.device.getUuids();
-        UUID uuid;
-
-        if (uuids != null && uuids.length > 0) {
-            uuid = uuids[0].getUuid();
-        } else {
-            uuid = UUID.randomUUID();
-        }
+        UUID uuid = (uuids != null && uuids.length > 0) ? uuids[0].getUuid() : UUID.randomUUID();
 
         try {
             this.socket = this.device.createRfcommSocketToServiceRecord(uuid);
