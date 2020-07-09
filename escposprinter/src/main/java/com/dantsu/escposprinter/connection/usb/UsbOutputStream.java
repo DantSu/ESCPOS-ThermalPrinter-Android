@@ -1,5 +1,6 @@
 package com.dantsu.escposprinter.connection.usb;
 
+import android.hardware.usb.UsbConstants;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbEndpoint;
@@ -20,7 +21,22 @@ public class UsbOutputStream extends OutputStream {
 
     public UsbOutputStream(UsbManager usbManager, UsbDevice usbDevice) throws IOException {
         this.usbInterface = usbDevice.getInterface(0);
-        this.usbEndpoint = this.usbInterface.getEndpoint(1);
+        for(int i=0; i<usbDevice.getInterfaceCount();i++){
+            UsbInterface usbInt = usbDevice.getInterface(i);
+            if(usbInt.getInterfaceClass()== UsbConstants.USB_CLASS_PRINTER){
+                this.usbInterface = usbInt;
+                break;
+            }
+        }
+
+        this.usbEndpoint = this.usbInterface.getEndpoint(0);
+        int endpointCount = this.usbInterface.getEndpointCount();
+        for(int i=0; i<endpointCount;i++){
+            UsbEndpoint endpoint = this.usbInterface.getEndpoint(i);
+            if(endpoint.getType()==UsbConstants.USB_DIR_IN){
+                this.usbEndpoint = endpoint;
+            }
+        }
         this.usbConnection = usbManager.openDevice(usbDevice);
     }
 

@@ -3,6 +3,7 @@ package com.dantsu.escposprinter.connection.usb;
 import android.content.Context;
 import android.hardware.usb.UsbConstants;
 import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbInterface;
 
 import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
 
@@ -58,7 +59,13 @@ public class UsbPrintersConnections extends UsbConnections {
             int usbClass = device.getDeviceClass();
 
             if(usbClass == UsbConstants.USB_CLASS_PER_INTERFACE) {
-                usbClass = device.getInterface(0).getInterfaceClass();
+                for(int x=0; x<device.getInterfaceCount();x++){
+                    UsbInterface usbInt = device.getInterface(x);
+                    if(usbInt.getInterfaceClass()== UsbConstants.USB_CLASS_PRINTER){
+                        usbClass = UsbConstants.USB_CLASS_PRINTER;
+                        break;
+                    }
+                }
             }
 
             if (usbClass == UsbConstants.USB_CLASS_PRINTER) {
