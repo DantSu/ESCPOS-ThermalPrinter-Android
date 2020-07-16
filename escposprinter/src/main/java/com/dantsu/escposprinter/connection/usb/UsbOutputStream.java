@@ -1,6 +1,5 @@
 package com.dantsu.escposprinter.connection.usb;
 
-import android.hardware.usb.UsbConstants;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbEndpoint;
@@ -21,18 +20,17 @@ public class UsbOutputStream extends OutputStream {
 
     public UsbOutputStream(UsbManager usbManager, UsbDevice usbDevice) throws IOException {
 
-        this.usbInterface = UsbConnection.findPrinterInterface(usbDevice);
+        this.usbInterface = UsbDeviceHelper.findPrinterInterface(usbDevice);
         if(this.usbInterface == null) {
             throw new IOException("Unable to find USB interface.");
         }
 
-        this.usbEndpoint = UsbConnection.findEndpointIn(this.usbInterface);
+        this.usbEndpoint = UsbDeviceHelper.findEndpointIn(this.usbInterface);
         if(this.usbEndpoint == null) {
             throw new IOException("Unable to find USB endpoint.");
         }
 
         this.usbConnection = usbManager.openDevice(usbDevice);
-
         if(this.usbConnection == null) {
             throw new IOException("Unable to open USB connection.");
         }

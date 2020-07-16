@@ -3,7 +3,6 @@ package com.dantsu.escposprinter.connection.usb;
 import android.content.Context;
 import android.hardware.usb.UsbConstants;
 import android.hardware.usb.UsbDevice;
-import android.hardware.usb.UsbInterface;
 
 import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
 
@@ -27,16 +26,11 @@ public class UsbPrintersConnections extends UsbConnections {
         UsbPrintersConnections printers = new UsbPrintersConnections(context);
         UsbConnection[] bluetoothPrinters = printers.getList();
         
-        if (bluetoothPrinters != null && bluetoothPrinters.length > 0) {
-            for (UsbConnection printer : bluetoothPrinters) {
-                try {
-                    return printer.connect();
-                } catch (EscPosConnectionException e) {
-                    e.printStackTrace();
-                }
-            }
+        if (bluetoothPrinters == null || bluetoothPrinters.length == 0) {
+            return null;
         }
-        return null;
+
+        return bluetoothPrinters[0];
     }
     
     
@@ -57,11 +51,9 @@ public class UsbPrintersConnections extends UsbConnections {
         for (UsbConnection usbConnection : usbConnections) {
             UsbDevice device = usbConnection.getDevice();
             int usbClass = device.getDeviceClass();
-
-            if(usbClass == UsbConstants.USB_CLASS_PER_INTERFACE && UsbConnection.findPrinterInterface(device) != null) {
+            if(usbClass == UsbConstants.USB_CLASS_PER_INTERFACE && UsbDeviceHelper.findPrinterInterface(device) != null) {
                 usbClass = UsbConstants.USB_CLASS_PRINTER;
             }
-
             if (usbClass == UsbConstants.USB_CLASS_PRINTER) {
                 printersTmp[i++] = new UsbConnection(this.usbManager, device);
             }
