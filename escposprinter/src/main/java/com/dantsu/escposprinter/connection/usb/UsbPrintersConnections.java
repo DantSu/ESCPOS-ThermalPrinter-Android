@@ -47,7 +47,7 @@ public class UsbPrintersConnections extends UsbConnections {
      */
     public UsbConnection[] getList() {
         UsbConnection[] usbConnections = super.getList();
-    
+
         if(usbConnections == null) {
             return null;
         }
@@ -58,14 +58,8 @@ public class UsbPrintersConnections extends UsbConnections {
             UsbDevice device = usbConnection.getDevice();
             int usbClass = device.getDeviceClass();
 
-            if(usbClass == UsbConstants.USB_CLASS_PER_INTERFACE) {
-                for(int x=0; x<device.getInterfaceCount();x++){
-                    UsbInterface usbInt = device.getInterface(x);
-                    if(usbInt.getInterfaceClass()== UsbConstants.USB_CLASS_PRINTER){
-                        usbClass = UsbConstants.USB_CLASS_PRINTER;
-                        break;
-                    }
-                }
+            if(usbClass == UsbConstants.USB_CLASS_PER_INTERFACE && UsbConnection.findPrinterInterface(device) != null) {
+                usbClass = UsbConstants.USB_CLASS_PRINTER;
             }
 
             if (usbClass == UsbConstants.USB_CLASS_PRINTER) {

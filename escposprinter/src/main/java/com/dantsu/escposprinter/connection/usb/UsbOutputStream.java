@@ -20,24 +20,22 @@ public class UsbOutputStream extends OutputStream {
     private UsbEndpoint usbEndpoint;
 
     public UsbOutputStream(UsbManager usbManager, UsbDevice usbDevice) throws IOException {
-        this.usbInterface = usbDevice.getInterface(0);
-        for(int i=0; i<usbDevice.getInterfaceCount();i++){
-            UsbInterface usbInt = usbDevice.getInterface(i);
-            if(usbInt.getInterfaceClass()== UsbConstants.USB_CLASS_PRINTER){
-                this.usbInterface = usbInt;
-                break;
-            }
+
+        this.usbInterface = UsbConnection.findPrinterInterface(usbDevice);
+        if(this.usbInterface == null) {
+            throw new IOException("Unable to find USB interface.");
         }
 
-        this.usbEndpoint = this.usbInterface.getEndpoint(0);
-        int endpointCount = this.usbInterface.getEndpointCount();
-        for(int i=0; i<endpointCount;i++){
-            UsbEndpoint endpoint = this.usbInterface.getEndpoint(i);
-            if(endpoint.getType()==UsbConstants.USB_DIR_IN){
-                this.usbEndpoint = endpoint;
-            }
+        this.usbEndpoint = UsbConnection.findEndpointIn(this.usbInterface);
+        if(this.usbEndpoint == null) {
+            throw new IOException("Unable to find USB endpoint.");
         }
+
         this.usbConnection = usbManager.openDevice(usbDevice);
+
+        if(this.usbConnection == null) {
+            throw new IOException("Unable to open USB connection.");
+        }
     }
 
     @Override
