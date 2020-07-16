@@ -100,6 +100,7 @@ public class UsbConnection extends DeviceConnection {
                     return usbInterface;
                 }
             }
+            return usbDevice.getInterface(0);
         }
         return null;
     }
