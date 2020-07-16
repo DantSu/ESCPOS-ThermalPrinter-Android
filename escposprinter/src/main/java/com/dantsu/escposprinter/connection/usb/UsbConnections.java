@@ -39,4 +39,5 @@ public class UsbConnections {
         
         return usbDevices;
     }
+
 }
