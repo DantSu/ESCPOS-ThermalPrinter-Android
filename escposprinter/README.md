@@ -1,4 +1,4 @@
-[![Jitpack package repository - ESCPOS-ThermalPrinter-Android v2.0.3](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/2.0.3)
+[![Jitpack package repository - ESCPOS-ThermalPrinter-Android v2.0.4](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/2.0.4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Android library for ESC/POS Thermal Printer
@@ -49,7 +49,7 @@ Developed for SDK version 16 (Android 4.1 Jelly Bean) and above.
 
 ## Installation
 
-**Step 1.** Add the [JitPack](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/2.0.3) repository to your build file. Add it in your root `/build.gradle` at the end of repositories:
+**Step 1.** Add the [JitPack](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/2.0.4) repository to your build file. Add it in your root `/build.gradle` at the end of repositories:
 
 ```
 allprojects {
@@ -65,7 +65,7 @@ allprojects {
 ```
 dependencies {
     ...
-    implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:2.0.3'
+    implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:2.0.4'
 }
 ```
 
