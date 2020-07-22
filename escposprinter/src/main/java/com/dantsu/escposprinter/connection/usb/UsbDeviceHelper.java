@@ -4,7 +4,6 @@ import android.hardware.usb.UsbConstants;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbEndpoint;
 import android.hardware.usb.UsbInterface;
-import android.util.Log;
 
 public class UsbDeviceHelper {
     /**

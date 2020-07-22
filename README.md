@@ -13,6 +13,7 @@ Useful library to help Android developers to print with (Bluetooth, TCP, USB) ES
 
 - [Android version](#android-version)
 - [Tested printers](#tested-printers)
+- [Test It !](#test-it-)
 - [Installation](#installation)
 - [Bluetooth](#bluetooth)
   - [Bluetooth permission](#bluetooth-permission)
@@ -45,7 +46,16 @@ Developed for SDK version 16 (Android 4.1 Jelly Bean) and above.
 2. [XPRINTER XP-P300](https://xprinter.vn/xprinter-xp-p300-may-in-hoa-don-di-dong-bluetooth/).
 3. [MUNBYN IMP001](https://www.munbyn.com/collections/portable-receipt-printer/products/58mm-bluetooth-thermal-printer-imp001).
 4. [JP-Q2 POS Terminal PDA](https://www.aliexpress.com/item/32971775060.html) (Embedded printer is configured as Bluetooth device)
+5. [MUNBYN ITPP047](https://www.munbyn.com/products/munbyn-itpp047-wifi-thermal-printer) (tested over USB)
 
+## Test it !
+
+To test this library, it's pretty simple !
+
+- Create a directory and open a terminal inside
+- Run `git clone https://github.com/DantSu/ESCPOS-ThermalPrinter-Android.git .`
+- Open the directory with Android Studio
+- Test it !
 
 ## Installation
 
@@ -429,13 +439,25 @@ Convert the mmSize variable from millimeters to dot.
 - **return** `int` : Dot size of mmSize.
 
 #### Method : `printFormattedText(String text)`
-Print a formatted text. Read the ["Formatted Text : Syntax guide" section](#formatted-text--syntax-guide) for more information about text formatting options.
+Print a formatted text and feed paper (150 dots). Read the ["Formatted Text : Syntax guide" section](#formatted-text--syntax-guide) for more information about text formatting options.
 - **param** `String text` : Formatted text to be printed.
 - **return** `Printer` : Fluent interface
 
 #### Method : `printFormattedTextAndCut(String text)`
-Print a formatted text and cut the paper. Read the ["Formatted Text : Syntax guide" section](#formatted-text--syntax-guide) for more information about text formatting options.
+Print a formatted text, feed paper (150 dots) and cut the paper. Read the ["Formatted Text : Syntax guide" section](#formatted-text--syntax-guide) for more information about text formatting options.
 - **param** `String text` : Formatted text to be printed.
+- **return** `Printer` : Fluent interface
+
+#### Method : `printFormattedText(String text, int dotsFeedPaper)`
+Print a formatted text and feed paper (`dotsFeedPaper` dots). Read the ["Formatted Text : Syntax guide" section](#formatted-text--syntax-guide) for more information about text formatting options.
+- **param** `String text` : Formatted text to be printed.
+- **param** `int dotsFeedPaper` : Distance feed paper at the end.
+- **return** `Printer` : Fluent interface
+
+#### Method : `printFormattedTextAndCut(String text, int dotsFeedPaper)`
+Print a formatted text, feed paper (`dotsFeedPaper` dots) and cut the paper. Read the ["Formatted Text : Syntax guide" section](#formatted-text--syntax-guide) for more information about text formatting options.
+- **param** `String text` : Formatted text to be printed.
+- **param** `int dotsFeedPaper` : Distance feed paper at the end.
 - **return** `Printer` : Fluent interface
 
 #### Method : `bitmapToBytes(Bitmap bitmap)`

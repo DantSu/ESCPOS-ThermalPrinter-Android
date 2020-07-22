@@ -60,7 +60,7 @@ public abstract class AsyncEscPosPrint extends AsyncTask<AsyncEscPosPrinter, Int
 
             this.publishProgress(AsyncEscPosPrint.PROGRESS_PRINTING);
 
-            printer.printFormattedText(printerData.getTextToPrint());
+            printer.printFormattedTextAndCut(printerData.getTextToPrint());
 
             this.publishProgress(AsyncEscPosPrint.PROGRESS_PRINTED);
 

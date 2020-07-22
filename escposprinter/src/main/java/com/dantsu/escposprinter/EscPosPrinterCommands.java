@@ -42,7 +42,6 @@ public class EscPosPrinterCommands {
     public static final byte[] TEXT_DOUBLE_STRIKE_ON = new byte[]{0x1B, 0x47, 0x01};
 
 
-
     public static final int BARCODE_TYPE_UPCA = 65;
     public static final int BARCODE_TYPE_UPCE = 66;
     public static final int BARCODE_TYPE_EAN13 = 67;
@@ -423,6 +422,22 @@ public class EscPosPrinterCommands {
     }
 
     /**
+     * Feed the paper
+     *
+     * @param dots Number of dots to feed (0 <= dots <= 255)
+     * @return Fluent interface
+     */
+    public EscPosPrinterCommands feedPaper(int dots) throws EscPosConnectionException {
+        if (!this.printerConnection.isConnected()) {
+            return this;
+        }
+
+        this.printerConnection.write(new byte[]{0x1B, 0x4A, (byte) dots});
+        this.printerConnection.send();
+        return this;
+    }
+
+    /**
      * Cut the paper
      *
      * @return Fluent interface
@@ -432,7 +447,7 @@ public class EscPosPrinterCommands {
             return this;
         }
 
-        this.printerConnection.write(new byte[]{ 0x1D, 0x56, 0x31});
+        this.printerConnection.write(new byte[]{0x1D, 0x56, 0x01});
         this.printerConnection.send();
         return this;
     }
