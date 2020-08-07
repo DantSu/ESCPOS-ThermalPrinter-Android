@@ -154,12 +154,13 @@ public class EscPosPrinterCommands {
             byte[] lineBytes = new byte[bytesByLine];
             int j = 0, multipleX = coefficient;
             boolean isBlack = false;
-            for (int x = -1; x < width; ) {
+            for (int x = 0; x < width; ) {
                 StringBuilder stringBinary = new StringBuilder();
                 for (int k = 0; k < 8; k++) {
                     if (multipleX == coefficient) {
-                        isBlack = ++x < width && byteMatrix.get(x, y) == 1;
+                        isBlack = byteMatrix.get(x, y) == 1;
                         multipleX = 0;
+                        ++x;
                     }
                     stringBinary.append(isBlack ? "1" : "0");
                     ++multipleX;
