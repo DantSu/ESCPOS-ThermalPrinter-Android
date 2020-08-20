@@ -113,6 +113,7 @@ public class EscPosPrinterCommands {
      * Convert a string to QR Code byte array compatible with ESC/POS printer.
      *
      * @param data String data to convert in QR Code
+     * @param size QR code dots size
      * @return Bytes contain the image in ESC/POS command
      */
     public static byte[] QRCodeDataToBytes(String data, int size) throws EscPosBarcodeException {
@@ -152,9 +153,9 @@ public class EscPosPrinterCommands {
 
         for (int y = 0; y < height; y++) {
             byte[] lineBytes = new byte[bytesByLine];
-            int j = 0, multipleX = coefficient;
+            int x = -1, multipleX = coefficient;
             boolean isBlack = false;
-            for (int x = -1; x < width; ) {
+            for (int j = 0; j < bytesByLine; j++) {
                 StringBuilder stringBinary = new StringBuilder();
                 for (int k = 0; k < 8; k++) {
                     if (multipleX == coefficient) {
@@ -164,7 +165,7 @@ public class EscPosPrinterCommands {
                     stringBinary.append(isBlack ? "1" : "0");
                     ++multipleX;
                 }
-                lineBytes[j++] = (byte) Integer.parseInt(stringBinary.toString(), 2);
+                lineBytes[j] = (byte) Integer.parseInt(stringBinary.toString(), 2);
             }
 
             for (int multipleY = 0; multipleY < coefficient; ++multipleY) {
