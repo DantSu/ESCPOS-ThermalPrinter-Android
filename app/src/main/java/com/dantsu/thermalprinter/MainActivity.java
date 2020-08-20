@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -35,6 +36,9 @@ import com.dantsu.thermalprinter.async.AsyncBluetoothEscPosPrint;
 import com.dantsu.thermalprinter.async.AsyncEscPosPrinter;
 import com.dantsu.thermalprinter.async.AsyncTcpEscPosPrint;
 import com.dantsu.thermalprinter.async.AsyncUsbEscPosPrint;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -165,14 +169,17 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Synchronous printing
      */
+    @SuppressLint("SimpleDateFormat")
     public void printIt(DeviceConnection printerConnection) {
         try {
+            SimpleDateFormat format = new SimpleDateFormat("'on' yyyy-MM-dd 'at' HH:mm:ss");
             EscPosPrinter printer = new EscPosPrinter(printerConnection, 203, 48f, 32);
             printer
                     .printFormattedText(
                             "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, this.getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo, DisplayMetrics.DENSITY_MEDIUM)) + "</img>\n" +
                                     "[L]\n" +
                                     "[C]<u><font size='big'>ORDER N°045</font></u>\n" +
+                                    "[C]<font size='small'>" + format.format(new Date()) + "</font>\n" +
                                     "[L]\n" +
                                     "[C]================================\n" +
                                     "[L]\n" +
@@ -227,12 +234,16 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Asynchronous printing
      */
+    @SuppressLint("SimpleDateFormat")
     public AsyncEscPosPrinter getAsyncEscPosPrinter(DeviceConnection printerConnection) {
+        SimpleDateFormat format = new SimpleDateFormat("'on' yyyy-MM-dd 'at' HH:mm:ss");
         AsyncEscPosPrinter printer = new AsyncEscPosPrinter(printerConnection, 203, 48f, 32);
+
         return printer.setTextToPrint(
                 "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, this.getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo, DisplayMetrics.DENSITY_MEDIUM)) + "</img>\n" +
                         "[L]\n" +
                         "[C]<u><font size='big'>ORDER N°045</font></u>\n" +
+                        "[C]<font size='small'>" + format.format(new Date()) + "</font>\n" +
                         "[L]\n" +
                         "[C]================================\n" +
                         "[L]\n" +

@@ -74,7 +74,18 @@ public class EscPosPrinter extends EscPosPrinterSize {
      * @return Fluent interface
      */
     public EscPosPrinter printFormattedText(String text) throws EscPosConnectionException, EscPosParserException, EscPosEncodingException, EscPosBarcodeException {
-        return this.printFormattedText(text, 150);
+        return this.printFormattedText(text, 20f);
+    }
+
+    /**
+     * Print a formatted text. Read the README.md for more information about text formatting options.
+     *
+     * @param text Formatted text to be printed.
+     * @param mmFeedPaper millimeter distance feed paper at the end.
+     * @return Fluent interface
+     */
+    public EscPosPrinter printFormattedText(String text, float mmFeedPaper) throws EscPosConnectionException, EscPosParserException, EscPosEncodingException, EscPosBarcodeException {
+        return this.printFormattedText(text, this.mmToPx(mmFeedPaper));
     }
 
     /**
@@ -117,7 +128,18 @@ public class EscPosPrinter extends EscPosPrinterSize {
      * @return Fluent interface
      */
     public EscPosPrinter printFormattedTextAndCut(String text) throws EscPosConnectionException, EscPosParserException, EscPosEncodingException, EscPosBarcodeException {
-        return this.printFormattedTextAndCut(text, 150);
+        return this.printFormattedTextAndCut(text, 20f);
+    }
+
+    /**
+     * Print a formatted text and cut the paper. Read the README.md for more information about text formatting options.
+     *
+     * @param text Formatted text to be printed.
+     * @param mmFeedPaper millimeter distance feed paper at the end.
+     * @return Fluent interface
+     */
+    public EscPosPrinter printFormattedTextAndCut(String text, float mmFeedPaper) throws EscPosConnectionException, EscPosParserException, EscPosEncodingException, EscPosBarcodeException {
+        return this.printFormattedTextAndCut(text, this.mmToPx(mmFeedPaper));
     }
 
     /**

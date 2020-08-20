@@ -73,6 +73,12 @@ public class UsbConnection extends DeviceConnection {
      * Send data to the device.
      */
     public void send() throws EscPosConnectionException {
+        this.send(0);
+    }
+    /**
+     * Send data to the device.
+     */
+    public void send(int addWaitingTime) throws EscPosConnectionException {
         try {
             this.stream.write(this.data);
             this.data = new byte[0];
@@ -81,6 +87,4 @@ public class UsbConnection extends DeviceConnection {
             throw new EscPosConnectionException(e.getMessage());
         }
     }
-
-
 }

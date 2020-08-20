@@ -432,8 +432,11 @@ public class EscPosPrinterCommands {
             return this;
         }
 
-        this.printerConnection.write(new byte[]{0x1B, 0x4A, (byte) dots});
-        this.printerConnection.send();
+        if (dots > 0) {
+            this.printerConnection.write(new byte[]{0x1B, 0x4A, (byte) dots});
+            this.printerConnection.send(dots);
+        }
+
         return this;
     }
 
@@ -448,7 +451,7 @@ public class EscPosPrinterCommands {
         }
 
         this.printerConnection.write(new byte[]{0x1D, 0x56, 0x01});
-        this.printerConnection.send();
+        this.printerConnection.send(100);
         return this;
     }
 

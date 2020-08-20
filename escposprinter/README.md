@@ -439,13 +439,25 @@ Convert the mmSize variable from millimeters to dot.
 - **return** `int` : Dot size of mmSize.
 
 #### Method : `printFormattedText(String text)`
-Print a formatted text and feed paper (150 dots). Read the ["Formatted Text : Syntax guide" section](#formatted-text--syntax-guide) for more information about text formatting options.
+Print a formatted text and feed paper (20 millimeters). Read the ["Formatted Text : Syntax guide" section](#formatted-text--syntax-guide) for more information about text formatting options.
 - **param** `String text` : Formatted text to be printed.
 - **return** `Printer` : Fluent interface
 
 #### Method : `printFormattedTextAndCut(String text)`
-Print a formatted text, feed paper (150 dots) and cut the paper. Read the ["Formatted Text : Syntax guide" section](#formatted-text--syntax-guide) for more information about text formatting options.
+Print a formatted text, feed paper (20 millimeters) and cut the paper. Read the ["Formatted Text : Syntax guide" section](#formatted-text--syntax-guide) for more information about text formatting options.
 - **param** `String text` : Formatted text to be printed.
+- **return** `Printer` : Fluent interface
+
+#### Method : `printFormattedText(String text, float mmFeedPaper)`
+Print a formatted text and feed paper (`mmFeedPaper` millimeters). Read the ["Formatted Text : Syntax guide" section](#formatted-text--syntax-guide) for more information about text formatting options.
+- **param** `String text` : Formatted text to be printed.
+- **param** `float mmFeedPaper` : Millimeter distance feed paper at the end.
+- **return** `Printer` : Fluent interface
+
+#### Method : `printFormattedTextAndCut(String text, float mmFeedPaper)`
+Print a formatted text, feed paper (`mmFeedPaper` millimeters) and cut the paper. Read the ["Formatted Text : Syntax guide" section](#formatted-text--syntax-guide) for more information about text formatting options.
+- **param** `String text` : Formatted text to be printed.
+- **param** `float mmFeedPaper` : Millimeter distance feed paper at the end.
 - **return** `Printer` : Fluent interface
 
 #### Method : `printFormattedText(String text, int dotsFeedPaper)`
