@@ -106,9 +106,10 @@ public class PrinterTextParserImg implements IPrinterTextParserElement {
     public PrinterTextParserImg(PrinterTextParserColumn printerTextParserColumn, String textAlign, byte[] image) {
         EscPosPrinter printer = printerTextParserColumn.getLine().getTextParser().getPrinter();
 
-        int byteWidth = ((int) image[4] & 0xFF),
+        int
+                byteWidth = ((int) image[4] & 0xFF) + ((int) image[5] & 0xFF) * 256,
                 width = byteWidth * 8,
-                height = ((int) image[6] & 0xFF),
+                height = ((int) image[6] & 0xFF) + ((int) image[7] & 0xFF) * 256,
                 nbrByteDiff = (int) Math.floor(((float) (printer.getPrinterWidthPx() - width)) / 8f),
                 nbrWhiteByteToInsert = 0;
 
@@ -123,16 +124,14 @@ public class PrinterTextParserImg implements IPrinterTextParserElement {
 
         if (nbrWhiteByteToInsert > 0) {
             int newByteWidth = byteWidth + nbrWhiteByteToInsert;
-            byte[] newImage = new byte[newByteWidth * height + 8];
-            System.arraycopy(image, 0, newImage, 0, 8);
-            newImage[4] = (byte) newByteWidth;
+            byte[] newImage = EscPosPrinterCommands.initImageCommand(newByteWidth, height);
             for (int i = 0; i < height; i++) {
                 System.arraycopy(image, (byteWidth * i + 8), newImage, (newByteWidth * i + nbrWhiteByteToInsert + 8), byteWidth);
             }
             image = newImage;
         }
 
-        this.length = (int) Math.ceil(((float) (((int) image[4] & 0xFF) * 8)) / ((float) printer.getPrinterCharSizeWidthPx()));
+        this.length = (int) Math.ceil(((float) byteWidth * 8) / ((float) printer.getPrinterCharSizeWidthPx()));
         this.image = image;
     }
 

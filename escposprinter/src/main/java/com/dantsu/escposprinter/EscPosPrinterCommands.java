@@ -61,9 +61,15 @@ public class EscPosPrinterCommands {
     private EscPosCharsetEncoding charsetEncoding;
 
 
-    private static byte[] initImageCommand(int bytesByLine, int bitmapHeight) {
+    public static byte[] initImageCommand(int bytesByLine, int bitmapHeight) {
+        int
+                xH = bytesByLine / 256,
+                xL = bytesByLine - (xH * 256),
+                yH = bitmapHeight / 256,
+                yL = bitmapHeight - (yH * 256);
+
         byte[] imageBytes = new byte[8 + bytesByLine * bitmapHeight];
-        System.arraycopy(new byte[]{0x1D, 0x76, 0x30, 0x00, (byte) bytesByLine, 0x00, (byte) bitmapHeight, 0x00}, 0, imageBytes, 0, 8);
+        System.arraycopy(new byte[]{0x1D, 0x76, 0x30, 0x00, (byte) xL, (byte) xH, (byte) yL, (byte) yH}, 0, imageBytes, 0, 8);
         return imageBytes;
     }
 
