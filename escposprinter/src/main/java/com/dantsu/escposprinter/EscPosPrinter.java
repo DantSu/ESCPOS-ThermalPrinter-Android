@@ -9,6 +9,7 @@ import com.dantsu.escposprinter.textparser.PrinterTextParser;
 import com.dantsu.escposprinter.textparser.PrinterTextParserColumn;
 import com.dantsu.escposprinter.textparser.IPrinterTextParserElement;
 import com.dantsu.escposprinter.textparser.PrinterTextParserLine;
+import com.dantsu.escposprinter.textparser.PrinterTextParserString;
 
 public class EscPosPrinter extends EscPosPrinterSize {
 
@@ -108,13 +109,18 @@ public class EscPosPrinter extends EscPosPrinterSize {
         for (PrinterTextParserLine line : linesParsed) {
             PrinterTextParserColumn[] columns = line.getColumns();
 
+            IPrinterTextParserElement lastElement = null;
             for (PrinterTextParserColumn column : columns) {
                 IPrinterTextParserElement[] elements = column.getElements();
                 for (IPrinterTextParserElement element : elements) {
                     element.print(this.printer);
+                    lastElement = element;
                 }
             }
-            this.printer.newLine();
+
+            if(lastElement instanceof PrinterTextParserString) {
+                this.printer.newLine();
+            }
         }
 
         this.printer.feedPaper(dotsFeedPaper);
