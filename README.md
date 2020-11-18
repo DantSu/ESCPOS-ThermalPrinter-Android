@@ -305,9 +305,9 @@ Example :
 
 #### Size
 
-`<font></font>` tag allows you to change the font size. Default size is `medium`.
+`<font></font>` tag allows you to change the font size and color. Default size is `normal` / `black`.
 
-- `<font size='medium'>Some text</font>` : Medium size
+- `<font size='normal'>Some text</font>` : Normal size
 - `<font size='wide'>Some text</font>` : Double width of medium size
 - `<font size='tall'>Some text</font>` : Double height of medium size
 - `<font size='big'>Some text</font>` : Double width and height of medium size

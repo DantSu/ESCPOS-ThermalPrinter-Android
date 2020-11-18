@@ -45,7 +45,6 @@ public class PrinterTextParser {
     public static final String ATTR_FORMAT_TEXT_FONT_SIZE_BIG = "big";
     public static final String ATTR_FORMAT_TEXT_FONT_SIZE_TALL = "tall";
     public static final String ATTR_FORMAT_TEXT_FONT_SIZE_WIDE = "wide";
-    public static final String ATTR_FORMAT_TEXT_FONT_SIZE_SMALL = "small";
     public static final String ATTR_FORMAT_TEXT_FONT_SIZE_NORMAL = "normal";
 
     public static final String ATTR_FORMAT_TEXT_FONT_COLOR = "color";

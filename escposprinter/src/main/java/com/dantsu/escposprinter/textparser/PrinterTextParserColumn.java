@@ -154,7 +154,6 @@ public class PrinterTextParserColumn {
                             case PrinterTextParser.TAGS_FORMAT_TEXT_FONT:
                                 if (textParserTag.hasAttribute(PrinterTextParser.ATTR_FORMAT_TEXT_FONT_SIZE)) {
                                     switch (textParserTag.getAttribute(PrinterTextParser.ATTR_FORMAT_TEXT_FONT_SIZE)) {
-                                        case PrinterTextParser.ATTR_FORMAT_TEXT_FONT_SIZE_SMALL:
                                         case PrinterTextParser.ATTR_FORMAT_TEXT_FONT_SIZE_NORMAL:
                                         default:
                                             textParser.addTextSize(EscPosPrinterCommands.TEXT_SIZE_NORMAL);
