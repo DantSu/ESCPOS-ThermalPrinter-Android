@@ -11,6 +11,7 @@ import com.dantsu.escposprinter.barcode.BarcodeEAN8;
 import com.dantsu.escposprinter.barcode.BarcodeUPCA;
 import com.dantsu.escposprinter.barcode.BarcodeUPCE;
 import com.dantsu.escposprinter.exceptions.EscPosBarcodeException;
+import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
 import com.dantsu.escposprinter.exceptions.EscPosParserException;
 
 public class PrinterTextParserBarcode implements IPrinterTextParserElement {
@@ -124,7 +125,7 @@ public class PrinterTextParserBarcode implements IPrinterTextParserElement {
      * @return int
      */
     @Override
-    public int length() {
+    public int length() throws EscPosEncodingException {
         return this.length;
     }
 

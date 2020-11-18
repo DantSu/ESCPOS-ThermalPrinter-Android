@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.dantsu.escposprinter.EscPosCharsetEncoding;
 import com.dantsu.escposprinter.EscPosPrinter;
 import com.dantsu.escposprinter.connection.DeviceConnection;
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnections;
@@ -56,7 +57,13 @@ public abstract class AsyncEscPosPrint extends AsyncTask<AsyncEscPosPrinter, Int
                 return AsyncEscPosPrint.FINISH_NO_PRINTER;
             }
 
-            EscPosPrinter printer = new EscPosPrinter(deviceConnection, printerData.getPrinterDpi(), printerData.getPrinterWidthMM(), printerData.getPrinterNbrCharactersPerLine());
+            EscPosPrinter printer = new EscPosPrinter(
+                    deviceConnection,
+                    printerData.getPrinterDpi(),
+                    printerData.getPrinterWidthMM(),
+                    printerData.getPrinterNbrCharactersPerLine(),
+                    new EscPosCharsetEncoding("windows-1252", 16)
+            );
 
             this.publishProgress(AsyncEscPosPrint.PROGRESS_PRINTING);
 

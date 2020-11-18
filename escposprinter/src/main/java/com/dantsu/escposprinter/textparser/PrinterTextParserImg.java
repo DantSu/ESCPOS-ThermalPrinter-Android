@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import com.dantsu.escposprinter.EscPosPrinter;
 import com.dantsu.escposprinter.EscPosPrinterCommands;
 import com.dantsu.escposprinter.EscPosPrinterSize;
+import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
 
 
 public class PrinterTextParserImg implements IPrinterTextParserElement {
@@ -141,7 +142,7 @@ public class PrinterTextParserImg implements IPrinterTextParserElement {
      * @return int
      */
     @Override
-    public int length() {
+    public int length() throws EscPosEncodingException {
         return this.length;
     }
 

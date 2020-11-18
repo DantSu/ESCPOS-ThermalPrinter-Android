@@ -238,13 +238,13 @@ public class MainActivity extends AppCompatActivity {
     public AsyncEscPosPrinter getAsyncEscPosPrinter(DeviceConnection printerConnection) {
         SimpleDateFormat format = new SimpleDateFormat("'on' yyyy-MM-dd 'at' HH:mm:ss");
         AsyncEscPosPrinter printer = new AsyncEscPosPrinter(printerConnection, 203, 48f, 32);
-
         return printer.setTextToPrint(
                 "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, this.getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo, DisplayMetrics.DENSITY_MEDIUM)) + "</img>\n" +
                         "[L]\n" +
                         "[C]<u><font size='big'>ORDER N°045</font></u>\n" +
-                        "[C]<font size='small'>" + format.format(new Date()) + "</font>\n" +
                         "[L]\n" +
+                        "[C]<u type='double'>" + format.format(new Date()) + "</u>\n" +
+                        "[C]\n" +
                         "[C]================================\n" +
                         "[L]\n" +
                         "[L]<b>BEAUTIFUL SHIRT</b>[R]9.99e\n" +
@@ -259,13 +259,14 @@ public class MainActivity extends AppCompatActivity {
                         "[L]\n" +
                         "[C]================================\n" +
                         "[L]\n" +
-                        "[L]<font size='tall'>Customer :</font>\n" +
+                        "[L]<u><font color='bg-black' size='tall'>Customer :</font></u>\n" +
                         "[L]Raymond DUPONT\n" +
                         "[L]5 rue des girafes\n" +
                         "[L]31547 PERPETES\n" +
                         "[L]Tel : +33801201456\n" +
-                        "[L]\n" +
+                        "\n" +
                         "[C]<barcode type='ean13' height='10'>831254784551</barcode>\n" +
+                        "[L]\n" +
                         "[C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>\n"
         );
     }

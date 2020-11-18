@@ -16,7 +16,7 @@ public class PrinterTextParserLine {
     private int nbrCharColumnExceeded;
     private PrinterTextParserColumn[] columns;
     
-    public PrinterTextParserLine(PrinterTextParser textParser, String textLine) throws EscPosParserException, EscPosBarcodeException {
+    public PrinterTextParserLine(PrinterTextParser textParser, String textLine) throws EscPosParserException, EscPosBarcodeException, EscPosEncodingException {
         this.textParser = textParser;
         int nbrCharactersPerLine = this.getTextParser().getPrinter().getPrinterNbrCharactersPerLine();
     

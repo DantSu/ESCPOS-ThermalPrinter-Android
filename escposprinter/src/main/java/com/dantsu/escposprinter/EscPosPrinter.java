@@ -18,9 +18,9 @@ public class EscPosPrinter extends EscPosPrinterSize {
     /**
      * Create new instance of EscPosPrinter.
      *
-     * @param printerConnection Instance of class which implement DeviceConnection
-     * @param printerDpi DPI of the connected printer
-     * @param printerWidthMM Printing width in millimeters
+     * @param printerConnection           Instance of class which implement DeviceConnection
+     * @param printerDpi                  DPI of the connected printer
+     * @param printerWidthMM              Printing width in millimeters
      * @param printerNbrCharactersPerLine The maximum number of characters that can be printed on a line.
      */
     public EscPosPrinter(DeviceConnection printerConnection, int printerDpi, float printerWidthMM, int printerNbrCharactersPerLine) throws EscPosConnectionException {
@@ -30,11 +30,11 @@ public class EscPosPrinter extends EscPosPrinterSize {
     /**
      * Create new instance of EscPosPrinter.
      *
-     * @param printerConnection Instance of class which implement DeviceConnection
-     * @param printerDpi DPI of the connected printer
-     * @param printerWidthMM Printing width in millimeters
+     * @param printerConnection           Instance of class which implement DeviceConnection
+     * @param printerDpi                  DPI of the connected printer
+     * @param printerWidthMM              Printing width in millimeters
      * @param printerNbrCharactersPerLine The maximum number of characters that can be printed on a line.
-     * @param charsetEncoding Set the charset encoding.
+     * @param charsetEncoding             Set the charset encoding.
      */
     public EscPosPrinter(DeviceConnection printerConnection, int printerDpi, float printerWidthMM, int printerNbrCharactersPerLine, EscPosCharsetEncoding charsetEncoding) throws EscPosConnectionException {
         this(printerConnection != null ? new EscPosPrinterCommands(printerConnection, charsetEncoding) : null, printerDpi, printerWidthMM, printerNbrCharactersPerLine);
@@ -43,9 +43,9 @@ public class EscPosPrinter extends EscPosPrinterSize {
     /**
      * Create new instance of EscPosPrinter.
      *
-     * @param printer Instance of EscPosPrinterCommands
-     * @param printerDpi DPI of the connected printer
-     * @param printerWidthMM Printing width in millimeters
+     * @param printer                     Instance of EscPosPrinterCommands
+     * @param printerDpi                  DPI of the connected printer
+     * @param printerWidthMM              Printing width in millimeters
      * @param printerNbrCharactersPerLine The maximum number of characters that can be printed on a line.
      */
     public EscPosPrinter(EscPosPrinterCommands printer, int printerDpi, float printerWidthMM, int printerNbrCharactersPerLine) throws EscPosConnectionException {
@@ -54,7 +54,7 @@ public class EscPosPrinter extends EscPosPrinterSize {
             this.printer = printer.connect();
         }
     }
-    
+
     /**
      * Close the connection with the printer.
      *
@@ -81,7 +81,7 @@ public class EscPosPrinter extends EscPosPrinterSize {
     /**
      * Print a formatted text. Read the README.md for more information about text formatting options.
      *
-     * @param text Formatted text to be printed.
+     * @param text        Formatted text to be printed.
      * @param mmFeedPaper millimeter distance feed paper at the end.
      * @return Fluent interface
      */
@@ -92,7 +92,7 @@ public class EscPosPrinter extends EscPosPrinterSize {
     /**
      * Print a formatted text. Read the README.md for more information about text formatting options.
      *
-     * @param text Formatted text to be printed.
+     * @param text          Formatted text to be printed.
      * @param dotsFeedPaper distance feed paper at the end.
      * @return Fluent interface
      */
@@ -106,6 +106,8 @@ public class EscPosPrinter extends EscPosPrinterSize {
                 .setFormattedText(text)
                 .parse();
 
+        this.printer.reset();
+
         for (PrinterTextParserLine line : linesParsed) {
             PrinterTextParserColumn[] columns = line.getColumns();
 
@@ -118,7 +120,7 @@ public class EscPosPrinter extends EscPosPrinterSize {
                 }
             }
 
-            if(lastElement instanceof PrinterTextParserString) {
+            if (lastElement instanceof PrinterTextParserString) {
                 this.printer.newLine();
             }
         }
@@ -140,7 +142,7 @@ public class EscPosPrinter extends EscPosPrinterSize {
     /**
      * Print a formatted text and cut the paper. Read the README.md for more information about text formatting options.
      *
-     * @param text Formatted text to be printed.
+     * @param text        Formatted text to be printed.
      * @param mmFeedPaper millimeter distance feed paper at the end.
      * @return Fluent interface
      */
@@ -151,7 +153,7 @@ public class EscPosPrinter extends EscPosPrinterSize {
     /**
      * Print a formatted text and cut the paper. Read the README.md for more information about text formatting options.
      *
-     * @param text Formatted text to be printed.
+     * @param text          Formatted text to be printed.
      * @param dotsFeedPaper distance feed paper at the end.
      * @return Fluent interface
      */
@@ -166,4 +168,10 @@ public class EscPosPrinter extends EscPosPrinterSize {
         return this;
     }
 
+    /**
+     * @return Charset encoding
+     */
+    public EscPosCharsetEncoding getEncoding() {
+        return this.printer.getCharsetEncoding();
+    }
 }

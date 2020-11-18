@@ -4,6 +4,6 @@ import com.dantsu.escposprinter.EscPosPrinterCommands;
 import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
 
 public interface IPrinterTextParserElement {
-    int length();
+    int length() throws EscPosEncodingException;
     IPrinterTextParserElement print(EscPosPrinterCommands printerSocket) throws EscPosEncodingException;
 }

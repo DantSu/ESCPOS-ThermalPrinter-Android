@@ -307,11 +307,15 @@ Example :
 
 `<font></font>` tag allows you to change the font size. Default size is `medium`.
 
-- `<font size='small'>Some text</font>` : Small size
 - `<font size='medium'>Some text</font>` : Medium size
 - `<font size='wide'>Some text</font>` : Double width of medium size
 - `<font size='tall'>Some text</font>` : Double height of medium size
 - `<font size='big'>Some text</font>` : Double width and height of medium size
+
+- `<font color='black'>Some text</font>` : black text - white background
+- `<font color='bg-black'>Some text</font>` : white text - black background
+- `<font color='red'>Some text</font>` : red text - white background (Not working on all printer)
+- `<font color='bg-red'>Some text</font>` : white text - red background (Not working on all printer)
 
 #### Bold
 
@@ -323,7 +327,8 @@ Example :
 
 `<u></u>` tag allows you to underline the text.
 
-- `<u>Some text</u>`
+- `<u>Some text</u>` text underlined
+- `<u type='double'>Some text</u>` text double-strike (Not working on all printer)
 
 ### Image
 
