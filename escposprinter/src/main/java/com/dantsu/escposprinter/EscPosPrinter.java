@@ -156,6 +156,7 @@ public class EscPosPrinter extends EscPosPrinterSize {
 
         this.printFormattedText(text, dotsFeedPaper);
         this.printer.cutPaper();
+        this.printer.openCashBox();
 
         return this;
     }
