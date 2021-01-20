@@ -446,6 +446,22 @@ public class EscPosPrinterCommands {
 
         return this;
     }
+    
+        /**
+     * open the cash box
+     *
+     * @return Fluent interface
+     * @throws EscPosConnectionException
+     */
+    public EscPosPrinterCommands openCashBox() throws EscPosConnectionException {
+        if (!this.printerConnection.isConnected()) {
+            return this;
+        }
+
+        this.printerConnection.write(new byte[]{0x1B, 0x70, 0x00, 0x3C, (byte) 0xFF});
+        this.printerConnection.send(100);
+        return this;
+    }
 
     /**
      * Cut the paper
