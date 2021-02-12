@@ -3,6 +3,7 @@ package com.dantsu.escposprinter;
 import android.graphics.Bitmap;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.EnumMap;
 
 import com.dantsu.escposprinter.barcode.Barcode;
@@ -277,9 +278,9 @@ public class EscPosPrinterCommands {
     /**
      * Print text with the connected printer.
      *
-     * @param text     Text to be printed
-     * @param textSize Set the text size. Use EscPosPrinterCommands.TEXT_SIZE_... constants
-     * @param textColor        Set the text color. Use EscPosPrinterCommands.TEXT_COLOR_... constants
+     * @param text      Text to be printed
+     * @param textSize  Set the text size. Use EscPosPrinterCommands.TEXT_SIZE_... constants
+     * @param textColor Set the text color. Use EscPosPrinterCommands.TEXT_COLOR_... constants
      * @return Fluent interface
      */
     public EscPosPrinterCommands printText(String text, byte[] textSize, byte[] textColor) throws EscPosEncodingException {
@@ -289,8 +290,8 @@ public class EscPosPrinterCommands {
     /**
      * Print text with the connected printer.
      *
-     * @param text     Text to be printed
-     * @param textSize Set the text size. Use EscPosPrinterCommands.TEXT_SIZE_... constants
+     * @param text             Text to be printed
+     * @param textSize         Set the text size. Use EscPosPrinterCommands.TEXT_SIZE_... constants
      * @param textColor        Set the text color. Use EscPosPrinterCommands.TEXT_COLOR_... constants
      * @param textReverseColor Set the background and text color. Use EscPosPrinterCommands.TEXT_COLOR_REVERSE_... constants
      * @return Fluent interface
@@ -302,11 +303,11 @@ public class EscPosPrinterCommands {
     /**
      * Print text with the connected printer.
      *
-     * @param text     Text to be printed
-     * @param textSize Set the text size. Use EscPosPrinterCommands.TEXT_SIZE_... constants
+     * @param text             Text to be printed
+     * @param textSize         Set the text size. Use EscPosPrinterCommands.TEXT_SIZE_... constants
      * @param textColor        Set the text color. Use EscPosPrinterCommands.TEXT_COLOR_... constants
      * @param textReverseColor Set the background and text color. Use EscPosPrinterCommands.TEXT_COLOR_REVERSE_... constants
-     * @param textBold Set the text weight. Use EscPosPrinterCommands.TEXT_WEIGHT_... constants
+     * @param textBold         Set the text weight. Use EscPosPrinterCommands.TEXT_WEIGHT_... constants
      * @return Fluent interface
      */
     public EscPosPrinterCommands printText(String text, byte[] textSize, byte[] textColor, byte[] textReverseColor, byte[] textBold) throws EscPosEncodingException {
@@ -316,17 +317,25 @@ public class EscPosPrinterCommands {
     /**
      * Print text with the connected printer.
      *
-     * @param text          Text to be printed
-     * @param textSize      Set the text size. Use EscPosPrinterCommands.TEXT_SIZE_... constants
+     * @param text             Text to be printed
+     * @param textSize         Set the text size. Use EscPosPrinterCommands.TEXT_SIZE_... constants
      * @param textColor        Set the text color. Use EscPosPrinterCommands.TEXT_COLOR_... constants
      * @param textReverseColor Set the background and text color. Use EscPosPrinterCommands.TEXT_COLOR_REVERSE_... constants
-     * @param textBold      Set the text weight. Use EscPosPrinterCommands.TEXT_WEIGHT_... constants
-     * @param textUnderline Set the underlining of the text. Use EscPosPrinterCommands.TEXT_UNDERLINE_... constants
+     * @param textBold         Set the text weight. Use EscPosPrinterCommands.TEXT_WEIGHT_... constants
+     * @param textUnderline    Set the underlining of the text. Use EscPosPrinterCommands.TEXT_UNDERLINE_... constants
      * @return Fluent interface
      */
     public EscPosPrinterCommands printText(String text, byte[] textSize, byte[] textColor, byte[] textReverseColor, byte[] textBold, byte[] textUnderline) throws EscPosEncodingException {
         return this.printText(text, textSize, textColor, textReverseColor, textBold, textUnderline, null);
     }
+
+
+    private byte[] currentTextSize = new byte[0];
+    private byte[] currentTextColor = new byte[0];
+    private byte[] currentTextReverseColor = new byte[0];
+    private byte[] currentTextBold = new byte[0];
+    private byte[] currentTextUnderline = new byte[0];
+    private byte[] currentTextDoubleStrike = new byte[0];
 
     /**
      * Print text with the connected printer.
@@ -345,45 +354,59 @@ public class EscPosPrinterCommands {
             return this;
         }
 
+        if (textSize == null) {
+            textSize = EscPosPrinterCommands.TEXT_SIZE_NORMAL;
+        }
+        if (textColor == null) {
+            textColor = EscPosPrinterCommands.TEXT_COLOR_BLACK;
+        }
+        if (textReverseColor == null) {
+            textReverseColor = EscPosPrinterCommands.TEXT_COLOR_REVERSE_OFF;
+        }
+        if (textBold == null) {
+            textBold = EscPosPrinterCommands.TEXT_WEIGHT_NORMAL;
+        }
+        if (textUnderline == null) {
+            textUnderline = EscPosPrinterCommands.TEXT_UNDERLINE_OFF;
+        }
+        if (textDoubleStrike == null) {
+            textDoubleStrike = EscPosPrinterCommands.TEXT_DOUBLE_STRIKE_OFF;
+        }
+
         try {
             byte[] textBytes = text.getBytes(this.charsetEncoding.getName());
             this.printerConnection.write(this.charsetEncoding.getCommand());
             //this.printerConnection.write(EscPosPrinterCommands.TEXT_FONT_A);
 
-            if (textSize != null) {
+
+            if (!Arrays.equals(this.currentTextSize, textSize)) {
                 this.printerConnection.write(textSize);
-            } else {
-                this.printerConnection.write(EscPosPrinterCommands.TEXT_SIZE_NORMAL);
+                this.currentTextSize = textSize;
             }
 
-            if (textDoubleStrike != null) {
+            if (!Arrays.equals(this.currentTextDoubleStrike, textDoubleStrike)) {
                 this.printerConnection.write(textDoubleStrike);
-            } else {
-                this.printerConnection.write(EscPosPrinterCommands.TEXT_DOUBLE_STRIKE_OFF);
+                this.currentTextDoubleStrike = textDoubleStrike;
             }
 
-            if (textUnderline != null) {
+            if (!Arrays.equals(this.currentTextUnderline, textUnderline)) {
                 this.printerConnection.write(textUnderline);
-            } else {
-                this.printerConnection.write(EscPosPrinterCommands.TEXT_UNDERLINE_OFF);
+                this.currentTextUnderline = textUnderline;
             }
 
-            if (textBold != null) {
+            if (!Arrays.equals(this.currentTextBold, textBold)) {
                 this.printerConnection.write(textBold);
-            } else {
-                this.printerConnection.write(EscPosPrinterCommands.TEXT_WEIGHT_NORMAL);
+                this.currentTextBold = textBold;
             }
 
-            if (textColor != null) {
+            if (!Arrays.equals(this.currentTextColor, textColor)) {
                 this.printerConnection.write(textColor);
-            } else {
-                this.printerConnection.write(EscPosPrinterCommands.TEXT_COLOR_BLACK);
+                this.currentTextColor = textColor;
             }
 
-            if (textReverseColor != null) {
+            if (!Arrays.equals(this.currentTextReverseColor, textReverseColor)) {
                 this.printerConnection.write(textReverseColor);
-            } else {
-                this.printerConnection.write(EscPosPrinterCommands.TEXT_COLOR_REVERSE_OFF);
+                this.currentTextReverseColor = textReverseColor;
             }
 
             this.printerConnection.write(textBytes);
@@ -546,6 +569,21 @@ public class EscPosPrinterCommands {
         }
 
         this.printerConnection.write(new byte[]{0x1D, 0x56, 0x01});
+        this.printerConnection.send(100);
+        return this;
+    }
+
+    /**
+     * Open the cash box
+     *
+     * @return Fluent interface
+     */
+    public EscPosPrinterCommands openCashBox() throws EscPosConnectionException {
+        if (!this.printerConnection.isConnected()) {
+            return this;
+        }
+
+        this.printerConnection.write(new byte[]{0x1B, 0x70, 0x00, 0x3C, (byte) 0xFF});
         this.printerConnection.send(100);
         return this;
     }

@@ -1,4 +1,4 @@
-[![Jitpack package repository - ESCPOS-ThermalPrinter-Android v2.0.8](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/2.0.8)
+[![Jitpack package repository - ESCPOS-ThermalPrinter-Android v2.0.9](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/2.0.9)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Android library for ESC/POS Thermal Printer
@@ -59,7 +59,7 @@ To test this library, it's pretty simple !
 
 ## Installation
 
-**Step 1.** Add the [JitPack](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/2.0.8) repository to your build file. Add it in your root `/build.gradle` at the end of repositories:
+**Step 1.** Add the [JitPack](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/2.0.9) repository to your build file. Add it in your root `/build.gradle` at the end of repositories:
 
 ```
 allprojects {
@@ -75,7 +75,7 @@ allprojects {
 ```
 dependencies {
     ...
-    implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:2.0.8'
+    implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:2.0.9'
 }
 ```
 
@@ -465,6 +465,12 @@ Print a formatted text, feed paper (`mmFeedPaper` millimeters) and cut the paper
 - **param** `float mmFeedPaper` : Millimeter distance feed paper at the end.
 - **return** `Printer` : Fluent interface
 
+#### Method : `printFormattedTextAndOpenCashBox(String text, float mmFeedPaper)`
+Print a formatted text, feed paper (`mmFeedPaper` millimeters), cut the paper and open the cash box. Read the ["Formatted Text : Syntax guide" section](#formatted-text--syntax-guide) for more information about text formatting options.
+- **param** `String text` : Formatted text to be printed.
+- **param** `float mmFeedPaper` : Millimeter distance feed paper at the end.
+- **return** `Printer` : Fluent interface
+
 #### Method : `printFormattedText(String text, int dotsFeedPaper)`
 Print a formatted text and feed paper (`dotsFeedPaper` dots). Read the ["Formatted Text : Syntax guide" section](#formatted-text--syntax-guide) for more information about text formatting options.
 - **param** `String text` : Formatted text to be printed.
@@ -473,6 +479,12 @@ Print a formatted text and feed paper (`dotsFeedPaper` dots). Read the ["Formatt
 
 #### Method : `printFormattedTextAndCut(String text, int dotsFeedPaper)`
 Print a formatted text, feed paper (`dotsFeedPaper` dots) and cut the paper. Read the ["Formatted Text : Syntax guide" section](#formatted-text--syntax-guide) for more information about text formatting options.
+- **param** `String text` : Formatted text to be printed.
+- **param** `int dotsFeedPaper` : Distance feed paper at the end.
+- **return** `Printer` : Fluent interface
+
+#### Method : `printFormattedTextAndOpenCashBox(String text, int dotsFeedPaper)`
+Print a formatted text, feed paper (`dotsFeedPaper` dots), cut the paper and open the cash box. Read the ["Formatted Text : Syntax guide" section](#formatted-text--syntax-guide) for more information about text formatting options.
 - **param** `String text` : Formatted text to be printed.
 - **param** `int dotsFeedPaper` : Distance feed paper at the end.
 - **return** `Printer` : Fluent interface
