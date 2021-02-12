@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 
+import androidx.annotation.Nullable;
+
 import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
 
 public class BluetoothPrintersConnections extends BluetoothConnections {
@@ -13,6 +15,7 @@ public class BluetoothPrintersConnections extends BluetoothConnections {
      *
      * @return a EscPosPrinterCommands instance
      */
+    @Nullable
     public static BluetoothConnection selectFirstPaired() {
         BluetoothPrintersConnections printers = new BluetoothPrintersConnections();
         BluetoothConnection[] bluetoothPrinters = printers.getList();
@@ -36,6 +39,7 @@ public class BluetoothPrintersConnections extends BluetoothConnections {
      * @return an array of EscPosPrinterCommands
      */
     @SuppressLint("MissingPermission")
+    @Nullable
     public BluetoothConnection[] getList() {
         BluetoothConnection[] bluetoothDevicesList = super.getList();
 

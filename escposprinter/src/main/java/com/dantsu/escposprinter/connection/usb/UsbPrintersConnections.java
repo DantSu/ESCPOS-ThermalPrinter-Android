@@ -4,6 +4,8 @@ import android.content.Context;
 import android.hardware.usb.UsbConstants;
 import android.hardware.usb.UsbDevice;
 
+import androidx.annotation.Nullable;
+
 import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
 
 public class UsbPrintersConnections extends UsbConnections {
@@ -22,6 +24,7 @@ public class UsbPrintersConnections extends UsbConnections {
      *
      * @return a UsbConnection instance
      */
+    @Nullable
     public static UsbConnection selectFirstConnected(Context context) {
         UsbPrintersConnections printers = new UsbPrintersConnections(context);
         UsbConnection[] bluetoothPrinters = printers.getList();
@@ -39,6 +42,7 @@ public class UsbPrintersConnections extends UsbConnections {
      *
      * @return an array of UsbConnection
      */
+    @Nullable
     public UsbConnection[] getList() {
         UsbConnection[] usbConnections = super.getList();
 

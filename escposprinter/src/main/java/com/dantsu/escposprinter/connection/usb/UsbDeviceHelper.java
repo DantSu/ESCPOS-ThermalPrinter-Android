@@ -5,6 +5,8 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbEndpoint;
 import android.hardware.usb.UsbInterface;
 
+import androidx.annotation.Nullable;
+
 public class UsbDeviceHelper {
     /**
      * Find the correct USB interface for printing
@@ -12,6 +14,7 @@ public class UsbDeviceHelper {
      * @param usbDevice USB device
      * @return correct USB interface for printing, null if not found
      */
+    @Nullable
     static public UsbInterface findPrinterInterface(UsbDevice usbDevice) {
         if (usbDevice == null) {
             return null;
@@ -32,6 +35,7 @@ public class UsbDeviceHelper {
      * @param usbInterface USB interface
      * @return Input endpoint or null if not found
      */
+    @Nullable
     static public UsbEndpoint findEndpointIn(UsbInterface usbInterface) {
         if (usbInterface != null) {
             int endpointsCount = usbInterface.getEndpointCount();

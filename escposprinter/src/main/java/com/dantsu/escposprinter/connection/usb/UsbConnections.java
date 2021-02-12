@@ -4,6 +4,8 @@ import android.content.Context;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 
+import androidx.annotation.Nullable;
+
 import java.util.Collection;
 
 public class UsbConnections {
@@ -22,6 +24,7 @@ public class UsbConnections {
      * Get a list of USB devices available.
      * @return Return an array of UsbConnection instance
      */
+    @Nullable
     public UsbConnection[] getList() {
         if (this.usbManager == null) {
             return null;

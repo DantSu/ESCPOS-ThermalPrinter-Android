@@ -1,7 +1,10 @@
 package com.dantsu.escposprinter.connection.bluetooth;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+
+import androidx.annotation.Nullable;
 
 import java.util.Set;
 
@@ -19,6 +22,8 @@ public class BluetoothConnections {
      * Get a list of bluetooth devices available.
      * @return Return an array of BluetoothConnection instance
      */
+    @SuppressLint("MissingPermission")
+    @Nullable
     public BluetoothConnection[] getList() {
         if (this.bluetoothAdapter == null) {
             return null;
