@@ -157,22 +157,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
-    public void printBluetooth2() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH}, MainActivity.PERMISSION_BLUETOOTH);
-        } else {
-
-
-
-
-        }
-    }
-
-
-
-
-
+    
 
     /*==============================================================================================
     ===========================================USB PART=============================================
