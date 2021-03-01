@@ -68,7 +68,24 @@
             android:id="@+id/button_tcp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Print by TCP !" />
+            android:text="Print by TCP !"
+            android:layout_marginBottom="20dp"/>
+
+
+        <Button
+            android:id="@+id/button_browse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Browse Bluetooth Device"
+            android:layout_marginBottom="20dp"/>
+
+        <Button
+            android:id="@+id/button_bluetooth2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Print By : "/>
+
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
