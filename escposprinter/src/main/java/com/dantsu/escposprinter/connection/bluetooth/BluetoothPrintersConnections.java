@@ -32,34 +32,6 @@ public class BluetoothPrintersConnections extends BluetoothConnections {
         return null;
     }
 
-
-    /**
-     * Manual way to print by selected bluetooth printer
-     *
-     * @return a EscPosPrinterCommands instance
-     */
-    @Nullable
-    public static BluetoothConnection selectDevice(BluetoothConnection device) {
-        BluetoothPrintersConnections printers = new BluetoothPrintersConnections();
-        BluetoothConnection[] bluetoothPrinters = printers.getList();
-
-        if (bluetoothPrinters != null && bluetoothPrinters.length > 0) {
-            for (BluetoothConnection printer : bluetoothPrinters) {
-                try {
-                    if (device.getDevice().getAddress().equals(printer.getDevice().getAddress())){
-                        return printer.connect();
-                    }
-                } catch (EscPosConnectionException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return null;
-    }
-
-
-
-
     /**
      * Get a list of bluetooth printers.
      *
