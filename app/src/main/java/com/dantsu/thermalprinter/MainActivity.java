@@ -109,7 +109,8 @@ public class MainActivity extends AppCompatActivity {
 //            new AsyncBluetoothEscPosPrint(this).execute(this.getAsyncEscPosPrinter(null));
             //select device for print
             if(selectedDevice != null){
-                this.printIt(BluetoothPrintersConnections.selectDevice(selectedDevice));
+//                this.printIt(selectedDevice); //synchronized print
+                new AsyncBluetoothEscPosPrint(this).execute(this.getAsyncEscPosPrinter(selectedDevice)); //asynchronized print
             }else{
                 Toast.makeText(this,"Please Select A Device",Toast.LENGTH_SHORT).show();
             }
@@ -131,10 +132,11 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothConnection selectedDevice;
     public void browseBluetoothDevice(){
         final BluetoothConnection[] bluetoothDevicesList = (new BluetoothConnections()).getList();
-        String[] items = new String[bluetoothDevicesList.length];
 
-        int i = 0;
-        if(bluetoothDevicesList.length > 0){
+        if(bluetoothDevicesList != null){
+            int i = 0;
+            String[] items = new String[bluetoothDevicesList.length];
+
             for(BluetoothConnection device : bluetoothDevicesList){
                 items[i++] = device.getDevice().getName();
             }
@@ -157,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    
+
 
     /*==============================================================================================
     ===========================================USB PART=============================================
