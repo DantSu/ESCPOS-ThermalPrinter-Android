@@ -28,6 +28,7 @@ import com.dantsu.escposprinter.EscPosPrinter;
 import com.dantsu.escposprinter.connection.DeviceConnection;
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothConnection;
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothConnections;
+import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnections;
 import com.dantsu.escposprinter.connection.tcp.TcpConnection;
 import com.dantsu.escposprinter.connection.usb.UsbConnection;
 import com.dantsu.escposprinter.connection.usb.UsbPrintersConnections;
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                printBluetooth();
+                printBySelectedBluetoothDevice();
             }
         });
 
@@ -100,11 +101,19 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH}, MainActivity.PERMISSION_BLUETOOTH);
         } else {
+            //first pair bluetooth device print
+            //synchronized print
+            //this.printIt(BluetoothPrintersConnections.selectFirstPaired());
+            //asynchronized print
+            new AsyncBluetoothEscPosPrint(this).execute(this.getAsyncEscPosPrinter(null));
 
-            //select first paired print
-//             this.printIt(BluetoothPrintersConnections.selectFirstPaired());
-            //select first paired print with async
-//            new AsyncBluetoothEscPosPrint(this).execute(this.getAsyncEscPosPrinter(null));
+        }
+    }
+
+    public void printBySelectedBluetoothDevice(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH}, MainActivity.PERMISSION_BLUETOOTH);
+        } else {
             //select device for print
             if(selectedDevice != null){
 //                this.printIt(selectedDevice); //synchronized print
@@ -112,8 +121,8 @@ public class MainActivity extends AppCompatActivity {
             }else{
                 Toast.makeText(this,"Please Select A Device",Toast.LENGTH_SHORT).show();
             }
-
         }
+
     }
 
     @Override
