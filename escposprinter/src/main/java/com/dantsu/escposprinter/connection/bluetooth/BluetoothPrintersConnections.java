@@ -32,7 +32,6 @@ public class BluetoothPrintersConnections extends BluetoothConnections {
         return null;
     }
 
-
     /**
      * Get a list of bluetooth printers.
      *
