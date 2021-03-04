@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.dantsu.escposprinter.connection.DeviceConnection;
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnections;
+import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
 
 public class AsyncBluetoothEscPosPrint extends AsyncEscPosPrint {
     public AsyncBluetoothEscPosPrint(Context context) {
@@ -16,12 +17,11 @@ public class AsyncBluetoothEscPosPrint extends AsyncEscPosPrint {
         }
 
         AsyncEscPosPrinter printerData = printersData[0];
-
         DeviceConnection deviceConnection = printerData.getPrinterConnection();
 
-        if(deviceConnection == null) {
-            this.publishProgress(AsyncEscPosPrint.PROGRESS_CONNECTING);
+        this.publishProgress(AsyncEscPosPrint.PROGRESS_CONNECTING);
 
+        if (deviceConnection == null) {
             printersData[0] = new AsyncEscPosPrinter(
                     BluetoothPrintersConnections.selectFirstPaired(),
                     printerData.getPrinterDpi(),
@@ -29,6 +29,12 @@ public class AsyncBluetoothEscPosPrint extends AsyncEscPosPrint {
                     printerData.getPrinterNbrCharactersPerLine()
             );
             printersData[0].setTextToPrint(printerData.getTextToPrint());
+        } else {
+            try {
+                deviceConnection.connect();
+            } catch (EscPosConnectionException e) {
+                e.printStackTrace();
+            }
         }
 
         return super.doInBackground(printersData);
