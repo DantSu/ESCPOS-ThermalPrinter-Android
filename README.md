@@ -145,37 +145,37 @@ printer
 
 Kotlin:
 ```kotlin
-        val printer = EscPosPrinter(BluetoothPrintersConnections.selectFirstPaired(), 203, 48f, 32)
-        printer.printFormattedText(
-                        """
-            [C]<img>${PrinterTextParserImg.bitmapToHexadecimalString(printer, BitmapFactory.decodeResource(resources, R.drawable.logo))}</img>
-            [L]
-            [C]<u><font size='big'>ORDER N°045</font></u>
-            [L]
-            [C]================================
-            [L]
-            [L]<b>BEAUTIFUL SHIRT</b>[R]9.99e
-            [L]  + Size : S
-            [L]
-            [L]<b>AWESOME HAT</b>[R]24.99e
-            [L]  + Size : 57/58
-            [L]
-            [C]--------------------------------
-            [R]TOTAL PRICE :[R]34.98e
-            [R]TAX :[R]4.23e
-            [L]
-            [C]================================
-            [L]
-            [L]<font size='tall'>Customer :</font>
-            [L]Raymond DUPONT
-            [L]5 rue des girafes
-            [L]31547 PERPETES
-            [L]Tel : +33801201456
-            [L]
-            [C]<barcode type='ean13' height='10'>831254784551</barcode>
-            [C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>
-            """.trimIndent()
-                )
+val printer = EscPosPrinter(BluetoothPrintersConnections.selectFirstPaired(), 203, 48f, 32)
+printer.printFormattedText(
+            """
+                [C]<img>${PrinterTextParserImg.bitmapToHexadecimalString(printer, BitmapFactory.decodeResource(resources, R.drawable.logo))}</img>
+                [L]
+                [C]<u><font size='big'>ORDER N°045</font></u>
+                [L]
+                [C]================================
+                [L]
+                [L]<b>BEAUTIFUL SHIRT</b>[R]9.99e
+                [L]  + Size : S
+                [L]
+                [L]<b>AWESOME HAT</b>[R]24.99e
+                [L]  + Size : 57/58
+                [L]
+                [C]--------------------------------
+                [R]TOTAL PRICE :[R]34.98e
+                [R]TAX :[R]4.23e
+                [L]
+                [C]================================
+                [L]
+                [L]<font size='tall'>Customer :</font>
+                [L]Raymond DUPONT
+                [L]5 rue des girafes
+                [L]31547 PERPETES
+                [L]Tel : +33801201456
+                [L]
+                [C]<barcode type='ean13' height='10'>831254784551</barcode>
+                [C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>
+                """.trimIndent()
+        )
 ```
 
 Below a picture of the receipt printed with the code above :
@@ -237,43 +237,43 @@ new Thread(new Runnable() {
 Kotlin:
 ```kotlin
 Thread {
-            try {
-                val printer = EscPosPrinter(TcpConnection("192.168.1.3", 9300), 203, 48f, 32)
-                printer
-                        .printFormattedText(
-                                """
-                            [C]<img>${PrinterTextParserImg.bitmapToHexadecimalString(printer,BitmapFactory.decodeResource(resources, R.drawable.logo))}</img>
-                            [L]
-                            [C]<u><font size='big'>ORDER N°045</font></u>
-                            [L]
-                            [C]================================
-                            [L]
-                            [L]<b>BEAUTIFUL SHIRT</b>[R]9.99e
-                            [L]  + Size : S
-                            [L]
-                            [L]<b>AWESOME HAT</b>[R]24.99e
-                            [L]  + Size : 57/58
-                            [L]
-                            [C]--------------------------------
-                            [R]TOTAL PRICE :[R]34.98e
-                            [R]TAX :[R]4.23e
-                            [L]
-                            [C]================================
-                            [L]
-                            [L]<font size='tall'>Customer :</font>
-                            [L]Raymond DUPONT
-                            [L]5 rue des girafes
-                            [L]31547 PERPETES
-                            [L]Tel : +33801201456
-                            [L]
-                            [C]<barcode type='ean13' height='10'>831254784551</barcode>
-                            [C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>
-                            """.trimIndent()
-                        )
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }.start()
+    try {
+        val printer = EscPosPrinter(TcpConnection("192.168.1.3", 9300), 203, 48f, 32)
+        printer
+                .printFormattedText(
+                        """
+                    [C]<img>${PrinterTextParserImg.bitmapToHexadecimalString(printer,BitmapFactory.decodeResource(resources, R.drawable.logo))}</img>
+                    [L]
+                    [C]<u><font size='big'>ORDER N°045</font></u>
+                    [L]
+                    [C]================================
+                    [L]
+                    [L]<b>BEAUTIFUL SHIRT</b>[R]9.99e
+                    [L]  + Size : S
+                    [L]
+                    [L]<b>AWESOME HAT</b>[R]24.99e
+                    [L]  + Size : 57/58
+                    [L]
+                    [C]--------------------------------
+                    [R]TOTAL PRICE :[R]34.98e
+                    [R]TAX :[R]4.23e
+                    [L]
+                    [C]================================
+                    [L]
+                    [L]<font size='tall'>Customer :</font>
+                    [L]Raymond DUPONT
+                    [L]5 rue des girafes
+                    [L]31547 PERPETES
+                    [L]Tel : +33801201456
+                    [L]
+                    [C]<barcode type='ean13' height='10'>831254784551</barcode>
+                    [C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>
+                    """.trimIndent()
+                )
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+}.start()
 ```
 
 ## USB
@@ -318,34 +318,34 @@ public void printUsb() {
 
 Kotlin:
 ```kotlin
-    private val ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION"
-    private val usbReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            val action = intent.action
-            if (ACTION_USB_PERMISSION.equals(action)) {
-                synchronized(this) {
-                    val usbManager = context.getSystemService(Context.USB_SERVICE) as UsbManager?
-                    val usbDevice = intent.getParcelableExtra<Parcelable>(UsbManager.EXTRA_DEVICE) as UsbDevice?
-                    if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
-                        if (usbManager != null && usbDevice != null) {
-                            // YOUR PRINT CODE HERE
-                        }
+private val ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION"
+private val usbReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+        val action = intent.action
+        if (ACTION_USB_PERMISSION.equals(action)) {
+            synchronized(this) {
+                val usbManager = context.getSystemService(Context.USB_SERVICE) as UsbManager?
+                val usbDevice = intent.getParcelableExtra<Parcelable>(UsbManager.EXTRA_DEVICE) as UsbDevice?
+                if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
+                    if (usbManager != null && usbDevice != null) {
+                        // YOUR PRINT CODE HERE
                     }
                 }
             }
         }
     }
+}
 
-    fun printUsb() {
-        val usbConnection = UsbPrintersConnections.selectFirstConnected(this)
-        val usbManager = getSystemService(Context.USB_SERVICE) as UsbManager?
-        if (usbConnection != null && usbManager != null) {
-            val permissionIntent = PendingIntent.getBroadcast(this, 0, Intent(ACTION_USB_PERMISSION), 0)
-            val filter = IntentFilter(ACTION_USB_PERMISSION)
-            LocalBroadcastManager.getInstance(this).registerReceiver(usbReceiver, filter)
-            usbManager.requestPermission(usbConnection.device, permissionIntent)
-        }
+fun printUsb() {
+    val usbConnection = UsbPrintersConnections.selectFirstConnected(this)
+    val usbManager = getSystemService(Context.USB_SERVICE) as UsbManager?
+    if (usbConnection != null && usbManager != null) {
+        val permissionIntent = PendingIntent.getBroadcast(this, 0, Intent(ACTION_USB_PERMISSION), 0)
+        val filter = IntentFilter(ACTION_USB_PERMISSION)
+        LocalBroadcastManager.getInstance(this).registerReceiver(usbReceiver, filter)
+        usbManager.requestPermission(usbConnection.device, permissionIntent)
     }
+}
 
 ```
 
@@ -393,35 +393,35 @@ Kotlin:
 ```kotlin
  val printer = EscPosPrinter(UsbConnection(usbManager, usbDevice), 203, 48f, 32)
         printer.printFormattedText(
-                        """
-            [C]<img>${PrinterTextParserImg.bitmapToHexadecimalString(printer, BitmapFactory.decodeResource(resources, R.drawable.logo))}</img>
-            [L]
-            [C]<u><font size='big'>ORDER N°045</font></u>
-            [L]
-            [C]================================
-            [L]
-            [L]<b>BEAUTIFUL SHIRT</b>[R]9.99e
-            [L]  + Size : S
-            [L]
-            [L]<b>AWESOME HAT</b>[R]24.99e
-            [L]  + Size : 57/58
-            [L]
-            [C]--------------------------------
-            [R]TOTAL PRICE :[R]34.98e
-            [R]TAX :[R]4.23e
-            [L]
-            [C]================================
-            [L]
-            [L]<font size='tall'>Customer :</font>
-            [L]Raymond DUPONT
-            [L]5 rue des girafes
-            [L]31547 PERPETES
-            [L]Tel : +33801201456
-            [L]
-            [C]<barcode type='ean13' height='10'>831254784551</barcode>
-            [C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>
+            """
+                [C]<img>${PrinterTextParserImg.bitmapToHexadecimalString(printer, BitmapFactory.decodeResource(resources, R.drawable.logo))}</img>
+                [L]
+                [C]<u><font size='big'>ORDER N°045</font></u>
+                [L]
+                [C]================================
+                [L]
+                [L]<b>BEAUTIFUL SHIRT</b>[R]9.99e
+                [L]  + Size : S
+                [L]
+                [L]<b>AWESOME HAT</b>[R]24.99e
+                [L]  + Size : 57/58
+                [L]
+                [C]--------------------------------
+                [R]TOTAL PRICE :[R]34.98e
+                [R]TAX :[R]4.23e
+                [L]
+                [C]================================
+                [L]
+                [L]<font size='tall'>Customer :</font>
+                [L]Raymond DUPONT
+                [L]5 rue des girafes
+                [L]31547 PERPETES
+                [L]Tel : +33801201456
+                [L]
+                [C]<barcode type='ean13' height='10'>831254784551</barcode>
+                [C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>
             """.trimIndent()
-                )
+        )
 ```
 
 ## Charset encoding
