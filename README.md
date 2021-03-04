@@ -87,9 +87,19 @@ Be sure to have `<uses-permission android:name="android.permission.BLUETOOTH" />
 
 Also, you have to check the bluetooth permission in your app like this :
 
+JAVA:
 ```java
 if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH}, MainActivity.PERMISSION_BLUETOOTH);
+} else {
+    // Your code HERE
+}
+```
+
+Kotlin:
+```kotlin
+if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
+    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.BLUETOOTH), PERMISSION_BLUETOOTH)
 } else {
     // Your code HERE
 }
@@ -99,6 +109,7 @@ if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != Pa
 
 The code below is an example to write in your activity :
 
+JAVA:
 ```java
 EscPosPrinter printer = new EscPosPrinter(BluetoothPrintersConnections.selectFirstPaired(), 203, 48f, 32);
 printer
@@ -132,6 +143,7 @@ printer
     );
 ```
 
+Kotlin:
 ```kotlin
         val printer = EscPosPrinter(BluetoothPrintersConnections.selectFirstPaired(), 203, 48f, 32)
         printer.printFormattedText(
@@ -180,6 +192,7 @@ Be sure to have `<uses-permission android:name="android.permission.INTERNET"/>` 
 
 The code below is an example to write in your activity :
 
+JAVA:
 ```java
 new Thread(new Runnable() {
     public void run() {
@@ -221,6 +234,7 @@ new Thread(new Runnable() {
 }).start();
 ```
 
+Kotlin:
 ```kotlin
 Thread {
             try {
@@ -270,6 +284,7 @@ Be sure to have `<uses-feature android:name="android.hardware.usb.host" />` in y
 
 You have to check the USB permission in your app like this :
 
+JAVA:
 ```java
 private static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
 private final BroadcastReceiver usbReceiver = new BroadcastReceiver() {
@@ -301,6 +316,7 @@ public void printUsb() {
 }
 ```
 
+Kotlin:
 ```kotlin
     private val ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION"
     private val usbReceiver: BroadcastReceiver = object : BroadcastReceiver() {
@@ -339,6 +355,7 @@ public void printUsb() {
 
 The code below is an example to write in your activity :
 
+JAVA:
 ```java
 EscPosPrinter printer = new EscPosPrinter(new UsbConnection(usbManager, usbDevice), 203, 48f, 32);
 printer
@@ -372,6 +389,7 @@ printer
     );
 ```
 
+Kotlin:
 ```kotlin
  val printer = EscPosPrinter(UsbConnection(usbManager, usbDevice), 203, 48f, 32)
         printer.printFormattedText(
@@ -410,10 +428,12 @@ printer
 
 To change charset encoding of the printer, use `EscPosCharsetEncoding` class :
 
+JAVA:
 ```java
 EscPosPrinter printer = new EscPosPrinter(deviceConnection, 203, 48f, 32, new EscPosCharsetEncoding("windows-1252", 16));
 ```
 
+Kotlin:
 ```kotlin
 val printer = EscPosPrinter(deviceConnection, 203, 48f, 32, EscPosCharsetEncoding("windows-1252", 16))
 ```
