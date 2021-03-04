@@ -47,6 +47,7 @@ Developed for SDK version 16 (Android 4.1 Jelly Bean) and above.
 3. [MUNBYN IMP001](https://www.munbyn.com/collections/portable-receipt-printer/products/58mm-bluetooth-thermal-printer-imp001).
 4. [JP-Q2 POS Terminal PDA](https://www.aliexpress.com/item/32971775060.html) (Embedded printer is configured as Bluetooth device)
 5. [MUNBYN ITPP047](https://www.munbyn.com/products/munbyn-itpp047-wifi-thermal-printer) (tested over USB)
+6. [GOOJPRT Thermal Printer ](https://www.aliexpress.com/item/4000338825002.html)
 
 ## Test it !
 
