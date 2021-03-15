@@ -53,9 +53,9 @@ public abstract class DeviceConnection {
         try {
             this.stream.write(this.data);
             this.stream.flush();
-            this.data = new byte[0];
 
-            int waitingTime = addWaitingTime + (int) Math.floor(this.data.length / 16f);
+            int waitingTime = addWaitingTime + this.data.length / 16;
+            this.data = new byte[0];
             if(waitingTime > 0) {
                 Thread.sleep(waitingTime);
             }
