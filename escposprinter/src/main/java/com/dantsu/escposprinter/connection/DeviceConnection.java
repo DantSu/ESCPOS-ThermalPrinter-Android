@@ -6,11 +6,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public abstract class DeviceConnection {
-    protected OutputStream stream;
+    protected OutputStream outputStream;
     protected byte[] data;
 
     public DeviceConnection() {
-        this.stream = null;
+        this.outputStream = null;
         this.data = new byte[0];
     }
 
@@ -23,7 +23,7 @@ public abstract class DeviceConnection {
      * @return true if is connected
      */
     public boolean isConnected() {
-        return this.stream != null;
+        return this.outputStream != null;
     }
 
     /**
@@ -51,9 +51,8 @@ public abstract class DeviceConnection {
             throw new EscPosConnectionException("Unable to send data to device.");
         }
         try {
-            this.stream.write(this.data);
-            this.stream.flush();
-
+            this.outputStream.write(this.data);
+            this.outputStream.flush();
             int waitingTime = addWaitingTime + this.data.length / 16;
             this.data = new byte[0];
             if(waitingTime > 0) {

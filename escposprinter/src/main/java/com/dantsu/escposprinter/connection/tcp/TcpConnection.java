@@ -44,12 +44,12 @@ public class TcpConnection extends DeviceConnection {
         try {
             this.socket = new Socket();
             this.socket.connect(new InetSocketAddress(InetAddress.getByName(this.address), this.port));
-            this.stream = this.socket.getOutputStream();
+            this.outputStream = this.socket.getOutputStream();
             this.data = new byte[0];
         } catch (IOException e) {
             e.printStackTrace();
             this.socket = null;
-            this.stream = null;
+            this.outputStream = null;
             throw new EscPosConnectionException("Unable to connect to TCP device.");
         }
         return this;
@@ -60,10 +60,10 @@ public class TcpConnection extends DeviceConnection {
      */
     public TcpConnection disconnect() {
         this.data = new byte[0];
-        if (this.stream != null) {
+        if (this.outputStream != null) {
             try {
-                this.stream.close();
-                this.stream = null;
+                this.outputStream.close();
+                this.outputStream = null;
             } catch (IOException e) {
                 e.printStackTrace();
             }

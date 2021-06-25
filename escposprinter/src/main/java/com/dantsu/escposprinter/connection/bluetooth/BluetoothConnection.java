@@ -64,12 +64,12 @@ public class BluetoothConnection extends DeviceConnection {
         try {
             this.socket = this.device.createRfcommSocketToServiceRecord(uuid);
             this.socket.connect();
-            this.stream = this.socket.getOutputStream();
+            this.outputStream = this.socket.getOutputStream();
             this.data = new byte[0];
         } catch (IOException e) {
             e.printStackTrace();
             this.socket = null;
-            this.stream = null;
+            this.outputStream = null;
             throw new EscPosConnectionException("Unable to connect to bluetooth device.");
         }
         return this;
@@ -80,13 +80,13 @@ public class BluetoothConnection extends DeviceConnection {
      */
     public BluetoothConnection disconnect() {
         this.data = new byte[0];
-        if (this.stream != null) {
+        if (this.outputStream != null) {
             try {
-                this.stream.close();
+                this.outputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            this.stream = null;
+            this.outputStream = null;
         }
         if (this.socket != null) {
             try {

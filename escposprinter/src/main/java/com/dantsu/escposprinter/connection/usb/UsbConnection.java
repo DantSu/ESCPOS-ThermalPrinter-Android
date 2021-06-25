@@ -43,11 +43,11 @@ public class UsbConnection extends DeviceConnection {
         }
 
         try {
-            this.stream = new UsbOutputStream(this.usbManager, this.usbDevice);
+            this.outputStream = new UsbOutputStream(this.usbManager, this.usbDevice);
             this.data = new byte[0];
         } catch (IOException e) {
             e.printStackTrace();
-            this.stream = null;
+            this.outputStream = null;
             throw new EscPosConnectionException("Unable to connect to USB device.");
         }
         return this;
@@ -60,11 +60,11 @@ public class UsbConnection extends DeviceConnection {
         this.data = new byte[0];
         if (this.isConnected()) {
             try {
-                this.stream.close();
+                this.outputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            this.stream = null;
+            this.outputStream = null;
         }
         return this;
     }
@@ -80,7 +80,7 @@ public class UsbConnection extends DeviceConnection {
      */
     public void send(int addWaitingTime) throws EscPosConnectionException {
         try {
-            this.stream.write(this.data);
+            this.outputStream.write(this.data);
             this.data = new byte[0];
         } catch (IOException e) {
             e.printStackTrace();
