@@ -83,7 +83,7 @@ dependencies {
 
 ### Bluetooth permission
 
-Be sure to have `<uses-permission android:name="android.permission.BLUETOOTH" />` in your `AndroidMenifest.xml`.
+Be sure to have `<uses-permission android:name="android.permission.BLUETOOTH" />` and `<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />` in your `AndroidMenifest.xml`.
 
 Also, you have to check the bluetooth permission in your app like this :
 
