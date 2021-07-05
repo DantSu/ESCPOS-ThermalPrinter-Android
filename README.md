@@ -345,6 +345,7 @@ Use `PrinterTextParserImg.bitmapToHexadecimalString` to convert `Drawable`, `Bit
 - `<img>` must be directly preceded by nothing or an alignment tag (`[L][C][R]`).
 - `</img>` must be directly followed by a new line `\n`.
 - You can't write text on a line that contains `<img></img>`.
+- Maximum height of printed image is 256px, If you want to print larger bitmap. Please refer to this solution: [#70](https://github.com/DantSu/ESCPOS-ThermalPrinter-Android/issues/70#issuecomment-714390014)
 
 ### Barcode
 
