@@ -1,4 +1,4 @@
-[![Jitpack package repository - ESCPOS-ThermalPrinter-Android v2.0.11](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/2.0.11)
+[![Jitpack package repository - ESCPOS-ThermalPrinter-Android v3.0.0](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/3.0.0)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Android library for ESC/POS Thermal Printer
@@ -32,6 +32,7 @@ Useful library to help Android developers to print with (Bluetooth, TCP, USB) ES
   - [EscPosPrinter](#user-content-class--comdantsuescposprinterescposprinter)
   - [PrinterTextParserImg](#user-content-class--comdantsuescposprintertextparserprintertextparserimg)
   - [EscPosCharsetEncoding](#user-content-class--comdantsuescposprinterescposcharsetencoding)
+- [Projects using this library](#projects-using-this-library)
 - [Contributing](#contributing)
 
 
@@ -59,7 +60,7 @@ To test this library, it's pretty simple !
 
 ## Installation
 
-**Step 1.** Add the [JitPack](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/2.0.11) repository to your build file. Add it in your root `/build.gradle` at the end of repositories:
+**Step 1.** Add the [JitPack](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/3.0.0) repository to your build file. Add it in your root `/build.gradle` at the end of repositories:
 
 ```
 allprojects {
@@ -75,7 +76,7 @@ allprojects {
 ```
 dependencies {
     ...
-    implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:2.0.11'
+    implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:3.0.0'
 }
 ```
 
@@ -529,6 +530,12 @@ Convert hexadecimal string of the image data to bytes ESC/POS command.
 #### Constructor : `EscPosCharsetEncoding(String charsetName, int escPosCharsetId)`
 - **param** `charsetName` Name of charset encoding (Ex: ISO-8859-1)
 - **param** `escPosCharsetId` Id of charset encoding for your printer (Ex: 6)
+
+## Projects using this library
+
+- [AllInOneYT/react-native-thermal-printer : A React Native bridge](https://github.com/AllInOneYT/react-native-thermal-printer)
+- [paystory-de/thermal-printer-cordova-plugin : A Cordova / Ionic bridge](https://github.com/paystory-de/thermal-printer-cordova-plugin)
+- [asukiaaa/react-native-escpos-android : A React Native bridge](https://github.com/asukiaaa/react-native-escpos-android)
 
 ## Contributing
 
