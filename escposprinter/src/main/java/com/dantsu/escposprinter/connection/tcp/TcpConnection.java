@@ -60,7 +60,7 @@ public class TcpConnection extends DeviceConnection {
         }
         try {
             this.socket = new Socket();
-            this.socket.connect(new InetSocketAddress(InetAddress.getByName(this.address), this.port), this.timeout); //https://docs.oracle.com/javase/8/docs/api/java/net/Socket.html#connect-java.net.SocketAddress-int- - A timeout of zero is interpreted as an infinite timeout 
+            this.socket.connect(new InetSocketAddress(InetAddress.getByName(this.address), this.port), this.timeout);
             this.outputStream = this.socket.getOutputStream();
             this.data = new byte[0];
         } catch (IOException e) {
