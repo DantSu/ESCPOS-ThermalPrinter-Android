@@ -7,11 +7,13 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 public class TcpConnection extends DeviceConnection {
     private Socket socket = null;
     private String address;
     private int port;
+    private int timeout = 0;
 
     /**
      * Create un instance of TcpConnection.
@@ -23,6 +25,23 @@ public class TcpConnection extends DeviceConnection {
         super();
         this.address = address;
         this.port = port;
+    }
+
+    /**
+     * Create un instance of TcpConnection.
+     * 
+     * Overload of the above function TcpConnection()
+     * Include timeout parameter in milliseconds.
+     *
+     * @param address IP address of the device
+     * @param port    Port of the device
+     * @param timeout Timeout in milliseconds to establish a connection
+     */
+    public TcpConnection(String address, int port, int timeout) {
+        super();
+        this.address = address;
+        this.port = port;
+        this.timeout = timeout;
     }
 
     /**
@@ -43,13 +62,17 @@ public class TcpConnection extends DeviceConnection {
         }
         try {
             this.socket = new Socket();
-            this.socket.connect(new InetSocketAddress(InetAddress.getByName(this.address), this.port));
+            this.socket.connect(new InetSocketAddress(InetAddress.getByName(this.address), this.port), this.timeout); //https://docs.oracle.com/javase/8/docs/api/java/net/Socket.html#connect-java.net.SocketAddress-int- - A timeout of zero is interpreted as an infinite timeout 
             this.outputStream = this.socket.getOutputStream();
             this.data = new byte[0];
         } catch (IOException e) {
             e.printStackTrace();
             this.disconnect();
             throw new EscPosConnectionException("Unable to connect to TCP device.");
+        } catch (SocketTimeoutException e) {
+            e.printStackTrace();
+            this.disconnect();
+            throw new EscPosConnectionException("Unable to connect to TCP device; exceeded timeout limit.");
         }
         return this;
     }
