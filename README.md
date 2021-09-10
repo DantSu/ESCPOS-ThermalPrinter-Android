@@ -151,7 +151,7 @@ The code below is an example to write in your activity :
 new Thread(new Runnable() {
     public void run() {
         try {
-            EscPosPrinter printer = new EscPosPrinter(new TcpConnection("192.168.1.3", 9300), 203, 48f, 32);
+            EscPosPrinter printer = new EscPosPrinter(new TcpConnection("192.168.1.3", 9300, 15), 203, 48f, 32);
             printer
                 .printFormattedText(
                     "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo, DisplayMetrics.DENSITY_MEDIUM)) + "</img>\n" +
@@ -396,6 +396,13 @@ Easy way to get the first bluetooth printer paired / connected.
 #### Method : `getList()`
 Get a list of bluetooth printers.
 - **return** `BluetoothConnection[]`
+
+### Class : `com.dantsu.escposprinter.connection.tcp.TcpConnection`
+
+#### Constructor : `TcpConnection(String address, int port[, int timeout])`
+- **param** `String address` : Targeted ip address
+- **param** `int port` : Targeted tcp port
+- **param** `int timeout` *(optional)* : Connection timeout.
 
 ### Class : `com.dantsu.escposprinter.connection.usb.UsbPrintersConnections`
 

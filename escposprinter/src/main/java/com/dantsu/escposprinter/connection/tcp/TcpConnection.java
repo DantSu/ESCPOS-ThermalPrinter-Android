@@ -13,7 +13,7 @@ public class TcpConnection extends DeviceConnection {
     private Socket socket = null;
     private String address;
     private int port;
-    private int timeout = 0;
+    private int timeout;
 
     /**
      * Create un instance of TcpConnection.
@@ -22,9 +22,7 @@ public class TcpConnection extends DeviceConnection {
      * @param port    Port of the device
      */
     public TcpConnection(String address, int port) {
-        super();
-        this.address = address;
-        this.port = port;
+        this(address, port, 30);
     }
 
     /**
@@ -69,10 +67,6 @@ public class TcpConnection extends DeviceConnection {
             e.printStackTrace();
             this.disconnect();
             throw new EscPosConnectionException("Unable to connect to TCP device.");
-        } catch (SocketTimeoutException e) {
-            e.printStackTrace();
-            this.disconnect();
-            throw new EscPosConnectionException("Unable to connect to TCP device; exceeded timeout limit.");
         }
         return this;
     }
