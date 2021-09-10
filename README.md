@@ -402,7 +402,7 @@ Get a list of bluetooth printers.
 #### Constructor : `TcpConnection(String address, int port[, int timeout])`
 - **param** `String address` : Targeted ip address
 - **param** `int port` : Targeted tcp port
-- **param** `int timeout` *(optional)* : Connection timeout.
+- **param** `int timeout` *(optional)* : Connection timeout (default : 30)
 
 ### Class : `com.dantsu.escposprinter.connection.usb.UsbPrintersConnections`
 
