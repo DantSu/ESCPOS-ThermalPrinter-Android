@@ -397,6 +397,8 @@ Easy way to get the first bluetooth printer paired / connected.
 Get a list of bluetooth printers.
 - **return** `BluetoothConnection[]`
 
+⚠️ If the arrray returned by `getList()` does not contain you printer or if `selectFirstPaired()` does not return your printer. Read this issue : https://github.com/DantSu/ESCPOS-ThermalPrinter-Android/issues/80#issuecomment-729759832
+
 ### Class : `com.dantsu.escposprinter.connection.tcp.TcpConnection`
 
 #### Constructor : `TcpConnection(String address, int port[, int timeout])`
