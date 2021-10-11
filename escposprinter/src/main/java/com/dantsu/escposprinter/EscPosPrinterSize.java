@@ -103,7 +103,7 @@ public abstract class EscPosPrinterSize {
         }
 
         if (isSizeEdit) {
-            bitmap = Bitmap.createScaledBitmap(bitmap, bitmapWidth, bitmapHeight, false);
+            bitmap = Bitmap.createScaledBitmap(bitmap, bitmapWidth, bitmapHeight, true);
         }
 
         return EscPosPrinterCommands.bitmapToBytes(bitmap);
