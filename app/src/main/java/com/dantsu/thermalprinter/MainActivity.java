@@ -19,6 +19,7 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,6 +37,7 @@ import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
 import com.dantsu.escposprinter.exceptions.EscPosParserException;
 import com.dantsu.escposprinter.textparser.PrinterTextParserImg;
 import com.dantsu.thermalprinter.async.AsyncBluetoothEscPosPrint;
+import com.dantsu.thermalprinter.async.AsyncEscPosPrint;
 import com.dantsu.thermalprinter.async.AsyncEscPosPrinter;
 import com.dantsu.thermalprinter.async.AsyncTcpEscPosPrint;
 import com.dantsu.thermalprinter.async.AsyncUsbEscPosPrint;
@@ -118,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     int index = i - 1;
-                    if(index == -1) {
+                    if (index == -1) {
                         selectedDevice = null;
                     } else {
                         selectedDevice = bluetoothDevicesList[index];
@@ -139,7 +141,21 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH}, MainActivity.PERMISSION_BLUETOOTH);
         } else {
-            new AsyncBluetoothEscPosPrint(this).execute(this.getAsyncEscPosPrinter(selectedDevice));
+            new AsyncBluetoothEscPosPrint(
+                this,
+                new AsyncEscPosPrint.OnPrintFinished() {
+                    @Override
+                    public void onError(AsyncEscPosPrinter asyncEscPosPrinter, int codeException) {
+                        Log.i("Async.OnPrintFinished", "AsyncEscPosPrint.OnPrintFinished : An error occurred !");
+                    }
+
+                    @Override
+                    public void onSuccess(AsyncEscPosPrinter asyncEscPosPrinter) {
+                        Log.i("Async.OnPrintFinished", "AsyncEscPosPrint.OnPrintFinished : Print is finished !");
+                    }
+                }
+            )
+                .execute(this.getAsyncEscPosPrinter(selectedDevice));
         }
     }
 
@@ -158,8 +174,21 @@ public class MainActivity extends AppCompatActivity {
                     if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
                         if (usbManager != null && usbDevice != null) {
                             // printIt(new UsbConnection(usbManager, usbDevice));
-                            new AsyncUsbEscPosPrint(context)
-                                    .execute(getAsyncEscPosPrinter(new UsbConnection(usbManager, usbDevice)));
+                            new AsyncUsbEscPosPrint(
+                                context,
+                                new AsyncEscPosPrint.OnPrintFinished() {
+                                    @Override
+                                    public void onError(AsyncEscPosPrinter asyncEscPosPrinter, int codeException) {
+                                        Log.i("Async.OnPrintFinished", "AsyncEscPosPrint.OnPrintFinished : An error occurred !");
+                                    }
+
+                                    @Override
+                                    public void onSuccess(AsyncEscPosPrinter asyncEscPosPrinter) {
+                                        Log.i("Async.OnPrintFinished", "AsyncEscPosPrint.OnPrintFinished : Print is finished !");
+                                    }
+                                }
+                            )
+                                .execute(getAsyncEscPosPrinter(new UsbConnection(usbManager, usbDevice)));
                         }
                     }
                 }
@@ -173,9 +202,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (usbConnection == null || usbManager == null) {
             new AlertDialog.Builder(this)
-                    .setTitle("USB Connection")
-                    .setMessage("No USB printer found.")
-                    .show();
+                .setTitle("USB Connection")
+                .setMessage("No USB printer found.")
+                .show();
             return;
         }
 
@@ -195,13 +224,33 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             // this.printIt(new TcpConnection(ipAddress.getText().toString(), Integer.parseInt(portAddress.getText().toString())));
-            new AsyncTcpEscPosPrint(this)
-                    .execute(this.getAsyncEscPosPrinter(new TcpConnection(ipAddress.getText().toString(), Integer.parseInt(portAddress.getText().toString()))));
+            new AsyncTcpEscPosPrint(
+                this,
+                new AsyncEscPosPrint.OnPrintFinished() {
+                    @Override
+                    public void onError(AsyncEscPosPrinter asyncEscPosPrinter, int codeException) {
+                        Log.i("Async.OnPrintFinished", "AsyncEscPosPrint.OnPrintFinished : An error occurred !");
+                    }
+
+                    @Override
+                    public void onSuccess(AsyncEscPosPrinter asyncEscPosPrinter) {
+                        Log.i("Async.OnPrintFinished", "AsyncEscPosPrint.OnPrintFinished : Print is finished !");
+                    }
+                }
+            )
+                .execute(
+                    this.getAsyncEscPosPrinter(
+                        new TcpConnection(
+                            ipAddress.getText().toString(),
+                            Integer.parseInt(portAddress.getText().toString())
+                        )
+                    )
+                );
         } catch (NumberFormatException e) {
             new AlertDialog.Builder(this)
-                    .setTitle("Invalid TCP port address")
-                    .setMessage("Port field must be a number.")
-                    .show();
+                .setTitle("Invalid TCP port address")
+                .setMessage("Port field must be an integer.")
+                .show();
             e.printStackTrace();
         }
     }
@@ -220,73 +269,8 @@ public class MainActivity extends AppCompatActivity {
             SimpleDateFormat format = new SimpleDateFormat("'on' yyyy-MM-dd 'at' HH:mm:ss");
             EscPosPrinter printer = new EscPosPrinter(printerConnection, 203, 48f, 32);
             printer
-                    .printFormattedText(
-                            "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, this.getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo, DisplayMetrics.DENSITY_MEDIUM)) + "</img>\n" +
-                                    "[L]\n" +
-                                    "[C]<u><font size='big'>ORDER N°045</font></u>\n" +
-                                    "[L]\n" +
-                                    "[C]<u type='double'>" + format.format(new Date()) + "</u>\n" +
-                                    "[C]\n" +
-                                    "[C]================================\n" +
-                                    "[L]\n" +
-                                    "[L]<b>BEAUTIFUL SHIRT</b>[R]9.99€\n" +
-                                    "[L]  + Size : S\n" +
-                                    "[L]\n" +
-                                    "[L]<b>AWESOME HAT</b>[R]24.99€\n" +
-                                    "[L]  + Size : 57/58\n" +
-                                    "[L]\n" +
-                                    "[C]--------------------------------\n" +
-                                    "[R]TOTAL PRICE :[R]34.98€\n" +
-                                    "[R]TAX :[R]4.23€\n" +
-                                    "[L]\n" +
-                                    "[C]================================\n" +
-                                    "[L]\n" +
-                                    "[L]<u><font color='bg-black' size='tall'>Customer :</font></u>\n" +
-                                    "[L]Raymond DUPONT\n" +
-                                    "[L]5 rue des girafes\n" +
-                                    "[L]31547 PERPETES\n" +
-                                    "[L]Tel : +33801201456\n" +
-                                    "\n" +
-                                    "[C]<barcode type='ean13' height='10'>831254784551</barcode>\n" +
-                                    "[L]\n" +
-                                    "[C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>\n"
-                    );
-        } catch (EscPosConnectionException e) {
-            e.printStackTrace();
-            new AlertDialog.Builder(this)
-                    .setTitle("Broken connection")
-                    .setMessage(e.getMessage())
-                    .show();
-        } catch (EscPosParserException e) {
-            e.printStackTrace();
-            new AlertDialog.Builder(this)
-                    .setTitle("Invalid formatted text")
-                    .setMessage(e.getMessage())
-                    .show();
-        } catch (EscPosEncodingException e) {
-            e.printStackTrace();
-            new AlertDialog.Builder(this)
-                    .setTitle("Bad selected encoding")
-                    .setMessage(e.getMessage())
-                    .show();
-        } catch (EscPosBarcodeException e) {
-            e.printStackTrace();
-            new AlertDialog.Builder(this)
-                    .setTitle("Invalid barcode")
-                    .setMessage(e.getMessage())
-                    .show();
-        }
-    }
-
-    /**
-     * Asynchronous printing
-     */
-    @SuppressLint("SimpleDateFormat")
-    public AsyncEscPosPrinter getAsyncEscPosPrinter(DeviceConnection printerConnection) {
-        SimpleDateFormat format = new SimpleDateFormat("'on' yyyy-MM-dd 'at' HH:mm:ss");
-        AsyncEscPosPrinter printer = new AsyncEscPosPrinter(printerConnection, 203, 48f, 32);
-        return printer.setTextToPrint(
-                "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, this.getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo, DisplayMetrics.DENSITY_MEDIUM)) + "</img>\n" +
+                .printFormattedText(
+                    "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, this.getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo, DisplayMetrics.DENSITY_MEDIUM)) + "</img>\n" +
                         "[L]\n" +
                         "[C]<u><font size='big'>ORDER N°045</font></u>\n" +
                         "[L]\n" +
@@ -315,6 +299,71 @@ public class MainActivity extends AppCompatActivity {
                         "[C]<barcode type='ean13' height='10'>831254784551</barcode>\n" +
                         "[L]\n" +
                         "[C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>\n"
+                );
+        } catch (EscPosConnectionException e) {
+            e.printStackTrace();
+            new AlertDialog.Builder(this)
+                .setTitle("Broken connection")
+                .setMessage(e.getMessage())
+                .show();
+        } catch (EscPosParserException e) {
+            e.printStackTrace();
+            new AlertDialog.Builder(this)
+                .setTitle("Invalid formatted text")
+                .setMessage(e.getMessage())
+                .show();
+        } catch (EscPosEncodingException e) {
+            e.printStackTrace();
+            new AlertDialog.Builder(this)
+                .setTitle("Bad selected encoding")
+                .setMessage(e.getMessage())
+                .show();
+        } catch (EscPosBarcodeException e) {
+            e.printStackTrace();
+            new AlertDialog.Builder(this)
+                .setTitle("Invalid barcode")
+                .setMessage(e.getMessage())
+                .show();
+        }
+    }
+
+    /**
+     * Asynchronous printing
+     */
+    @SuppressLint("SimpleDateFormat")
+    public AsyncEscPosPrinter getAsyncEscPosPrinter(DeviceConnection printerConnection) {
+        SimpleDateFormat format = new SimpleDateFormat("'on' yyyy-MM-dd 'at' HH:mm:ss");
+        AsyncEscPosPrinter printer = new AsyncEscPosPrinter(printerConnection, 203, 48f, 32);
+        return printer.setTextToPrint(
+            "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, this.getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo, DisplayMetrics.DENSITY_MEDIUM)) + "</img>\n" +
+                "[L]\n" +
+                "[C]<u><font size='big'>ORDER N°045</font></u>\n" +
+                "[L]\n" +
+                "[C]<u type='double'>" + format.format(new Date()) + "</u>\n" +
+                "[C]\n" +
+                "[C]================================\n" +
+                "[L]\n" +
+                "[L]<b>BEAUTIFUL SHIRT</b>[R]9.99€\n" +
+                "[L]  + Size : S\n" +
+                "[L]\n" +
+                "[L]<b>AWESOME HAT</b>[R]24.99€\n" +
+                "[L]  + Size : 57/58\n" +
+                "[L]\n" +
+                "[C]--------------------------------\n" +
+                "[R]TOTAL PRICE :[R]34.98€\n" +
+                "[R]TAX :[R]4.23€\n" +
+                "[L]\n" +
+                "[C]================================\n" +
+                "[L]\n" +
+                "[L]<u><font color='bg-black' size='tall'>Customer :</font></u>\n" +
+                "[L]Raymond DUPONT\n" +
+                "[L]5 rue des girafes\n" +
+                "[L]31547 PERPETES\n" +
+                "[L]Tel : +33801201456\n" +
+                "\n" +
+                "[C]<barcode type='ean13' height='10'>831254784551</barcode>\n" +
+                "[L]\n" +
+                "[C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>\n"
         );
     }
 }

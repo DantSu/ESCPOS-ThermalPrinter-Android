@@ -11,9 +11,13 @@ public class AsyncBluetoothEscPosPrint extends AsyncEscPosPrint {
         super(context);
     }
 
-    protected Integer doInBackground(AsyncEscPosPrinter... printersData) {
+    public AsyncBluetoothEscPosPrint(Context context, OnPrintFinished onPrintFinished) {
+        super(context, onPrintFinished);
+    }
+
+    protected PrinterStatus doInBackground(AsyncEscPosPrinter... printersData) {
         if (printersData.length == 0) {
-            return AsyncEscPosPrint.FINISH_NO_PRINTER;
+            return new PrinterStatus(null, AsyncEscPosPrint.FINISH_NO_PRINTER);
         }
 
         AsyncEscPosPrinter printerData = printersData[0];

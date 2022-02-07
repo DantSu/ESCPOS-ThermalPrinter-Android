@@ -7,5 +7,7 @@ public class AsyncUsbEscPosPrint extends AsyncEscPosPrint {
         super(context);
     }
 
-
+    public AsyncUsbEscPosPrint(Context context, OnPrintFinished onPrintFinished) {
+        super(context, onPrintFinished);
+    }
 }
