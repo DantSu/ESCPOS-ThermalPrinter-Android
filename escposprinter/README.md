@@ -1,4 +1,4 @@
-[![Jitpack package repository - ESCPOS-ThermalPrinter-Android v3.0.1](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/3.0.1)
+[![Jitpack package repository - ESCPOS-ThermalPrinter-Android v3.1.0](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/3.1.0)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Android library for ESC/POS Thermal Printer
@@ -60,7 +60,7 @@ To test this library, it's pretty simple !
 
 ## Installation
 
-**Step 1.** Add the [JitPack](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/3.0.1) repository to your build file. Add it in your root `/build.gradle` at the end of repositories:
+**Step 1.** Add the [JitPack](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/3.1.0) repository to your build file. Add it in your root `/build.gradle` at the end of repositories:
 
 ```
 allprojects {
@@ -76,7 +76,7 @@ allprojects {
 ```
 dependencies {
     ...
-    implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:3.0.1'
+    implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:3.1.0'
 }
 ```
 
@@ -352,15 +352,15 @@ Use `PrinterTextParserImg.bitmapToHexadecimalString` to convert `Drawable`, `Bit
 `<barcode></barcode>` tag allows you to print a barcode. Inside the tag you need to write the code number to print.
 
 - `<barcode>451278452159</barcode>` : **(12 numbers)**  
-Prints a EAN13 barcode (height: 10mm, width: ~70% printer width, text: displayed below).
+  Prints a EAN13 barcode (height: 10mm, width: ~70% printer width, text: displayed below).
 - `<barcode type='ean8'>4512784</barcode>` : **(7 numbers)**  
-Prints a EAN8 barcode (height: 10mm, width: ~70% printer width, text: displayed below).
+  Prints a EAN8 barcode (height: 10mm, width: ~70% printer width, text: displayed below).
 - `<barcode type='upca' height='20'>4512784521</barcode>` : **(11 numbers)**  
-Prints a UPC-A barcode (height: 20mm, width: ~70% printer width, text: displayed below).
+  Prints a UPC-A barcode (height: 20mm, width: ~70% printer width, text: displayed below).
 - `<barcode type='upce' height='25' width='50' text='none'>512789</barcode>` : **(6 numbers)**  
-Prints a UPC-E barcode (height: 25mm, width: ~50mm, text: hidden).
+  Prints a UPC-E barcode (height: 25mm, width: ~50mm, text: hidden).
 - `<barcode type='128' width='40' text='above'>DantSu</barcode>` : **(string)**  
-Prints a barcode 128 (height: 10mm, width: ~40mm, text: displayed above).
+  Prints a barcode 128 (height: 10mm, width: ~40mm, text: displayed above).
 
 **⚠ WARNING ⚠** : This tag has several constraints :
 
@@ -374,9 +374,9 @@ Prints a barcode 128 (height: 10mm, width: ~40mm, text: displayed above).
 `<qrcode></qrcode>` tag allows you to print a QR code. Inside the tag you need to write the QR code data.
 
 - `<qrcode>http://www.developpeur-web.dantsu.com/</qrcode>` :
-Prints a QR code with a width and height of 20 millimeters.
+  Prints a QR code with a width and height of 20 millimeters.
 - `<qrcode size='25'>123456789</qrcode>` :
-Prints a QR code with a width and height of 25 millimeters.
+  Prints a QR code with a width and height of 25 millimeters.
 
 **⚠ WARNING ⚠** : This tag has several constraints :
 
@@ -396,6 +396,8 @@ Easy way to get the first bluetooth printer paired / connected.
 #### Method : `getList()`
 Get a list of bluetooth printers.
 - **return** `BluetoothConnection[]`
+
+⚠️ If the arrray returned by `getList()` does not contain you printer or if `selectFirstPaired()` does not return your printer. Read this issue : https://github.com/DantSu/ESCPOS-ThermalPrinter-Android/issues/80#issuecomment-729759832
 
 ### Class : `com.dantsu.escposprinter.connection.tcp.TcpConnection`
 
