@@ -1,4 +1,7 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
+
+group = 'com.github.DantSu'
 
 android {
     compileSdkVersion 31
