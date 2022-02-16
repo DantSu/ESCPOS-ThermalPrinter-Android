@@ -225,7 +225,12 @@ public void printUsb() {
     UsbConnection usbConnection = UsbPrintersConnections.selectFirstConnected(this);
     UsbManager usbManager = (UsbManager) this.getSystemService(Context.USB_SERVICE);
     if (usbConnection != null && usbManager != null) {
-        PendingIntent permissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(MainActivity.ACTION_USB_PERMISSION), 0);
+        PendingIntent permissionIntent = PendingIntent.getBroadcast(
+            this,
+            0,
+            new Intent(MainActivity.ACTION_USB_PERMISSION),
+            android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0
+        );
         IntentFilter filter = new IntentFilter(MainActivity.ACTION_USB_PERMISSION);
         registerReceiver(this.usbReceiver, filter);
         usbManager.requestPermission(usbConnection.getDevice(), permissionIntent);

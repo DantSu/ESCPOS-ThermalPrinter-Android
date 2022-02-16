@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 new AsyncEscPosPrint.OnPrintFinished() {
                     @Override
                     public void onError(AsyncEscPosPrinter asyncEscPosPrinter, int codeException) {
-                        Log.i("Async.OnPrintFinished", "AsyncEscPosPrint.OnPrintFinished : An error occurred !");
+                        Log.e("Async.OnPrintFinished", "AsyncEscPosPrint.OnPrintFinished : An error occurred !");
                     }
 
                     @Override
@@ -188,13 +188,12 @@ public class MainActivity extends AppCompatActivity {
                     UsbDevice usbDevice = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
                     if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
                         if (usbManager != null && usbDevice != null) {
-                            // printIt(new UsbConnection(usbManager, usbDevice));
                             new AsyncUsbEscPosPrint(
                                 context,
                                 new AsyncEscPosPrint.OnPrintFinished() {
                                     @Override
                                     public void onError(AsyncEscPosPrinter asyncEscPosPrinter, int codeException) {
-                                        Log.i("Async.OnPrintFinished", "AsyncEscPosPrint.OnPrintFinished : An error occurred !");
+                                        Log.e("Async.OnPrintFinished", "AsyncEscPosPrint.OnPrintFinished : An error occurred !");
                                     }
 
                                     @Override
@@ -223,7 +222,12 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        PendingIntent permissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(MainActivity.ACTION_USB_PERMISSION), 0);
+        PendingIntent permissionIntent = PendingIntent.getBroadcast(
+            this,
+            0,
+            new Intent(MainActivity.ACTION_USB_PERMISSION),
+            android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0
+        );
         IntentFilter filter = new IntentFilter(MainActivity.ACTION_USB_PERMISSION);
         registerReceiver(this.usbReceiver, filter);
         usbManager.requestPermission(usbConnection.getDevice(), permissionIntent);
@@ -238,13 +242,12 @@ public class MainActivity extends AppCompatActivity {
         final EditText portAddress = (EditText) this.findViewById(R.id.edittext_tcp_port);
 
         try {
-            // this.printIt(new TcpConnection(ipAddress.getText().toString(), Integer.parseInt(portAddress.getText().toString())));
             new AsyncTcpEscPosPrint(
                 this,
                 new AsyncEscPosPrint.OnPrintFinished() {
                     @Override
                     public void onError(AsyncEscPosPrinter asyncEscPosPrinter, int codeException) {
-                        Log.i("Async.OnPrintFinished", "AsyncEscPosPrint.OnPrintFinished : An error occurred !");
+                        Log.e("Async.OnPrintFinished", "AsyncEscPosPrint.OnPrintFinished : An error occurred !");
                     }
 
                     @Override
