@@ -100,9 +100,16 @@ public class EscPosPrinterCommands {
 
         byte[] imageBytes = EscPosPrinterCommands.initImageCommand(bytesByLine, bitmapHeight);
 
-        int i = 8, greyscaleCoefficientInit = 0;
+        int i = 8,
+            greyscaleCoefficientInit = 0,
+            gradientStep = 6;
+
+        double
+            colorLevelStep = 765.0 / (15 * gradientStep + gradientStep - 1);
+
         for (int posY = 0; posY < bitmapHeight; posY++) {
-            int greyscaleCoefficient = greyscaleCoefficientInit;
+            int greyscaleCoefficient = greyscaleCoefficientInit,
+                greyscaleLine = posY % gradientStep;
             for (int j = 0; j < bitmapWidth; j += 8) {
                 int b = 0;
                 for (int k = 0; k < 8; k++) {
@@ -113,7 +120,7 @@ public class EscPosPrinterCommands {
                             green = (color >> 8) & 255,
                             blue = color & 255;
 
-                        if ((red + green + blue) < (greyscaleCoefficient * 51)) {
+                        if ((red + green + blue) < ((greyscaleCoefficient * gradientStep + greyscaleLine) * colorLevelStep)) {
                             b |= 1 << (7 - k);
                         }
 
@@ -188,7 +195,7 @@ public class EscPosPrinterCommands {
                         isBlack = ++x < width && byteMatrix.get(x, y) == 1;
                         multipleX = 0;
                     }
-                    if(isBlack) {
+                    if (isBlack) {
                         b |= 1 << (7 - k);
                     }
                     ++multipleX;
