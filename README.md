@@ -557,6 +557,7 @@ Convert hexadecimal string of the image data to bytes ESC/POS command.
 - [AllInOneYT/react-native-thermal-printer : A React Native bridge](https://github.com/AllInOneYT/react-native-thermal-printer)
 - [paystory-de/thermal-printer-cordova-plugin : A Cordova / Ionic bridge](https://github.com/paystory-de/thermal-printer-cordova-plugin)
 - [asukiaaa/react-native-escpos-android : A React Native bridge](https://github.com/asukiaaa/react-native-escpos-android)
+- [android_bluetooth_printer : A Flutter bridge](https://pub.dev/packages/android_bluetooth_printer)
 
 ## Contributing
 
