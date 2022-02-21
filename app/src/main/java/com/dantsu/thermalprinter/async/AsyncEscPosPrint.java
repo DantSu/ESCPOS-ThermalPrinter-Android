@@ -68,7 +68,12 @@ public abstract class AsyncEscPosPrint extends AsyncTask<AsyncEscPosPrinter, Int
 
             this.publishProgress(AsyncEscPosPrint.PROGRESS_PRINTING);
 
-            printer.printFormattedTextAndCut(printerData.getTextToPrint());
+            String[] textsToPrint = printerData.getTextsToPrint();
+
+            for(String textToPrint : textsToPrint) {
+                printer.printFormattedTextAndCut(textToPrint);
+                Thread.sleep(500);
+            }
 
             this.publishProgress(AsyncEscPosPrint.PROGRESS_PRINTED);
 
@@ -84,6 +89,8 @@ public abstract class AsyncEscPosPrint extends AsyncTask<AsyncEscPosPrinter, Int
         } catch (EscPosBarcodeException e) {
             e.printStackTrace();
             return new PrinterStatus(printerData, AsyncEscPosPrint.FINISH_BARCODE_ERROR);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         return new PrinterStatus(printerData, AsyncEscPosPrint.FINISH_SUCCESS);
     }
@@ -140,7 +147,7 @@ public abstract class AsyncEscPosPrint extends AsyncTask<AsyncEscPosPrinter, Int
             case AsyncEscPosPrint.FINISH_SUCCESS:
                 new AlertDialog.Builder(context)
                         .setTitle("Success")
-                        .setMessage("Congratulation ! The text is printed !")
+                        .setMessage("Congratulation ! The texts are printed !")
                         .show();
                 break;
             case AsyncEscPosPrint.FINISH_NO_PRINTER:
