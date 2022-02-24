@@ -1,13 +1,16 @@
 apply plugin: 'com.android.library'
 
+def libraryVersionCode = 3001002
+def libraryVersionName = "3.1.2"
+
 android {
     compileSdkVersion 31
 
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 31
-        versionCode 1
-        versionName "1.0"
+        versionCode libraryVersionCode
+        versionName libraryVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -30,4 +33,18 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'com.google.zxing:core:3.4.0'
+}
+
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.DantSu'
+                artifactId = 'ESCPOS-ThermalPrinter-Android'
+                version = libraryVersionName
+            }
+        }
+    }
 }

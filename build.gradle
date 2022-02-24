@@ -5,9 +5,6 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.4'
-        
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
@@ -15,49 +12,11 @@ plugins {
     id 'maven-publish'
 }
 
+
 allprojects {
     repositories {
         google()
         mavenCentral()
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-
-
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            pom {
-                groupId = 'com.github.DantSu'
-                artifactId = 'ESCPOS-ThermalPrinter-Android'
-                version = '3.1.0'
-                name = 'ESC/POS Thermal Printer Android'
-                description = 'Useful library to help Android developers to print with (Bluetooth, TCP, USB) ESC/POS thermal printers.'
-                url = 'https://github.com/DantSu/ESCPOS-ThermalPrinter-Android'
-                licenses {
-                    license {
-                        name = 'MIT License'
-                        url = 'https://github.com/DantSu/ESCPOS-ThermalPrinter-Android/blob/master/LICENSE'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'DantSu'
-                        name = 'Franck Alary'
-                        url = 'http://www.dantsu.com/'
-                    }
-                }
-                scm {
-                    connection = 'scm:git:https://github.com/DantSu/ESCPOS-ThermalPrinter-Android.git'
-                    developerConnection = 'scm:git:https://github.com/DantSu/ESCPOS-ThermalPrinter-Android.git'
-                    url = 'https://github.com/DantSu/ESCPOS-ThermalPrinter-Android'
-                }
-            }
-        }
     }
 }
 

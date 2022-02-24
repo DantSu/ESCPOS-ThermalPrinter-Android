@@ -1,4 +1,4 @@
-[![Jitpack package repository - ESCPOS-ThermalPrinter-Android v3.1.1](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/3.1.1)
+[![Jitpack package repository - ESCPOS-ThermalPrinter-Android v3.1.2](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/3.1.2)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Android library for ESC/POS Thermal Printer
@@ -60,7 +60,7 @@ To test this library, it's pretty simple !
 
 ## Installation
 
-**Step 1.** Add the [JitPack](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/3.1.1) repository to your build file. Add it in your root `/build.gradle` at the end of repositories:
+**Step 1.** Add the [JitPack](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/3.1.2) repository to your build file. Add it in your root `/build.gradle` at the end of repositories:
 
 ```
 allprojects {
@@ -76,7 +76,7 @@ allprojects {
 ```
 dependencies {
     ...
-    implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:3.1.1'
+    implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:3.1.2'
 }
 ```
 
@@ -90,16 +90,16 @@ Also, you have to check the bluetooth permission in your app like this :
 
 ```java
 if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH}, MainActivity.PERMISSION_BLUETOOTH);
-        } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_ADMIN}, MainActivity.PERMISSION_BLUETOOTH_ADMIN);
-        } else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S && ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, MainActivity.PERMISSION_BLUETOOTH_CONNECT);
-        } else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S && ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_SCAN}, MainActivity.PERMISSION_BLUETOOTH_SCAN);
-        } else {
-        // Your code HERE
-        }
+    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH}, MainActivity.PERMISSION_BLUETOOTH);
+} else if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
+    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_ADMIN}, MainActivity.PERMISSION_BLUETOOTH_ADMIN);
+} else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S && ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, MainActivity.PERMISSION_BLUETOOTH_CONNECT);
+} else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S && ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
+    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_SCAN}, MainActivity.PERMISSION_BLUETOOTH_SCAN);
+} else {
+    // Your code HERE
+}
 ```
 
 ### Bluetooth code example
@@ -108,8 +108,8 @@ The code below is an example to write in your activity :
 
 ```java
 EscPosPrinter printer = new EscPosPrinter(BluetoothPrintersConnections.selectFirstPaired(), 203, 48f, 32);
-        printer
-        .printFormattedText(
+printer
+    .printFormattedText(
         "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, this.getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo, DisplayMetrics.DENSITY_MEDIUM))+"</img>\n" +
         "[L]\n" +
         "[C]<u><font size='big'>ORDER N°045</font></u>\n" +
@@ -136,7 +136,7 @@ EscPosPrinter printer = new EscPosPrinter(BluetoothPrintersConnections.selectFir
         "[L]\n" +
         "[C]<barcode type='ean13' height='10'>831254784551</barcode>\n" +
         "[C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>"
-        );
+    );
 ```
 
 Below a picture of the receipt printed with the code above :
@@ -155,43 +155,43 @@ The code below is an example to write in your activity :
 
 ```java
 new Thread(new Runnable() {
-public void run() {
+    public void run() {
         try {
-        EscPosPrinter printer = new EscPosPrinter(new TcpConnection("192.168.1.3", 9300, 15), 203, 48f, 32);
-        printer
-        .printFormattedText(
-        "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo, DisplayMetrics.DENSITY_MEDIUM)) + "</img>\n" +
-        "[L]\n" +
-        "[C]<u><font size='big'>ORDER N°045</font></u>\n" +
-        "[L]\n" +
-        "[C]================================\n" +
-        "[L]\n" +
-        "[L]<b>BEAUTIFUL SHIRT</b>[R]9.99e\n" +
-        "[L]  + Size : S\n" +
-        "[L]\n" +
-        "[L]<b>AWESOME HAT</b>[R]24.99e\n" +
-        "[L]  + Size : 57/58\n" +
-        "[L]\n" +
-        "[C]--------------------------------\n" +
-        "[R]TOTAL PRICE :[R]34.98e\n" +
-        "[R]TAX :[R]4.23e\n" +
-        "[L]\n" +
-        "[C]================================\n" +
-        "[L]\n" +
-        "[L]<font size='tall'>Customer :</font>\n" +
-        "[L]Raymond DUPONT\n" +
-        "[L]5 rue des girafes\n" +
-        "[L]31547 PERPETES\n" +
-        "[L]Tel : +33801201456\n" +
-        "[L]\n" +
-        "[C]<barcode type='ean13' height='10'>831254784551</barcode>\n" +
-        "[C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>"
-        );
+            EscPosPrinter printer = new EscPosPrinter(new TcpConnection("192.168.1.3", 9300, 15), 203, 48f, 32);
+            printer
+                .printFormattedText(
+                    "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo, DisplayMetrics.DENSITY_MEDIUM)) + "</img>\n" +
+                    "[L]\n" +
+                    "[C]<u><font size='big'>ORDER N°045</font></u>\n" +
+                    "[L]\n" +
+                    "[C]================================\n" +
+                    "[L]\n" +
+                    "[L]<b>BEAUTIFUL SHIRT</b>[R]9.99e\n" +
+                    "[L]  + Size : S\n" +
+                    "[L]\n" +
+                    "[L]<b>AWESOME HAT</b>[R]24.99e\n" +
+                    "[L]  + Size : 57/58\n" +
+                    "[L]\n" +
+                    "[C]--------------------------------\n" +
+                    "[R]TOTAL PRICE :[R]34.98e\n" +
+                    "[R]TAX :[R]4.23e\n" +
+                    "[L]\n" +
+                    "[C]================================\n" +
+                    "[L]\n" +
+                    "[L]<font size='tall'>Customer :</font>\n" +
+                    "[L]Raymond DUPONT\n" +
+                    "[L]5 rue des girafes\n" +
+                    "[L]31547 PERPETES\n" +
+                    "[L]Tel : +33801201456\n" +
+                    "[L]\n" +
+                    "[C]<barcode type='ean13' height='10'>831254784551</barcode>\n" +
+                    "[C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>"
+                );
         } catch (Exception e) {
-        e.printStackTrace();
+            e.printStackTrace();
         }
-        }
-        }).start();
+    }
+}).start();
 ```
 
 ## USB
@@ -205,37 +205,37 @@ You have to check the USB permission in your app like this :
 ```java
 private static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
 private final BroadcastReceiver usbReceiver = new BroadcastReceiver() {
-public void onReceive(Context context, Intent intent) {
+    public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if (MainActivity.ACTION_USB_PERMISSION.equals(action)) {
-synchronized (this) {
-        UsbManager usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
-        UsbDevice usbDevice = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
-        if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
-        if (usbManager != null && usbDevice != null) {
-        // YOUR PRINT CODE HERE
+            synchronized (this) {
+                UsbManager usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
+                UsbDevice usbDevice = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+                if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
+                    if (usbManager != null && usbDevice != null) {
+                        // YOUR PRINT CODE HERE
+                    }
+                }
+            }
         }
-        }
-        }
-        }
-        }
-        };
+    }
+};
 
 public void printUsb() {
-        UsbConnection usbConnection = UsbPrintersConnections.selectFirstConnected(this);
-        UsbManager usbManager = (UsbManager) this.getSystemService(Context.USB_SERVICE);
-        if (usbConnection != null && usbManager != null) {
+    UsbConnection usbConnection = UsbPrintersConnections.selectFirstConnected(this);
+    UsbManager usbManager = (UsbManager) this.getSystemService(Context.USB_SERVICE);
+    if (usbConnection != null && usbManager != null) {
         PendingIntent permissionIntent = PendingIntent.getBroadcast(
-        this,
-        0,
-        new Intent(MainActivity.ACTION_USB_PERMISSION),
-        android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0
+            this,
+            0,
+            new Intent(MainActivity.ACTION_USB_PERMISSION),
+            android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0
         );
         IntentFilter filter = new IntentFilter(MainActivity.ACTION_USB_PERMISSION);
         registerReceiver(this.usbReceiver, filter);
         usbManager.requestPermission(usbConnection.getDevice(), permissionIntent);
-        }
-        }
+    }
+}
 ```
 
 ### USB code example
@@ -244,8 +244,8 @@ The code below is an example to write in your activity :
 
 ```java
 EscPosPrinter printer = new EscPosPrinter(new UsbConnection(usbManager, usbDevice), 203, 48f, 32);
-        printer
-        .printFormattedText(
+printer
+    .printFormattedText(
         "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, this.getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo, DisplayMetrics.DENSITY_MEDIUM))+"</img>\n" +
         "[L]\n" +
         "[C]<u><font size='big'>ORDER N°045</font></u>\n" +
@@ -272,7 +272,7 @@ EscPosPrinter printer = new EscPosPrinter(new UsbConnection(usbManager, usbDevic
         "[L]\n" +
         "[C]<barcode type='ean13' height='10'>831254784551</barcode>\n" +
         "[C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>"
-        );
+    );
 ```
 
 
