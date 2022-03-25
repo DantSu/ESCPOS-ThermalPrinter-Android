@@ -69,6 +69,17 @@ public class EscPosPrinter extends EscPosPrinterSize {
     }
 
     /**
+     * Active "ESC *" command for image print.
+     *
+     * @param enable true to use "ESC *", false to use "GS v 0"
+     * @return Fluent interface
+     */
+    public EscPosPrinter useEscAsteriskCommand(boolean enable) {
+        this.printer.useEscAsteriskCommand(enable);
+        return this;
+    }
+
+    /**
      * Print a formatted text. Read the README.md for more information about text formatting options.
      *
      * @param text Formatted text to be printed.

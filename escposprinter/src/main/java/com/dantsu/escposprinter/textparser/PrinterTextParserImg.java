@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import com.dantsu.escposprinter.EscPosPrinter;
 import com.dantsu.escposprinter.EscPosPrinterCommands;
 import com.dantsu.escposprinter.EscPosPrinterSize;
+import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
 import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
 
 
@@ -78,7 +79,6 @@ public class PrinterTextParserImg implements IPrinterTextParserElement {
             int pos = i * 2;
             bytes[i] = (byte) Integer.parseInt(hexString.substring(pos, pos + 2), 16);
         }
-
         return bytes;
     }
     
@@ -153,7 +153,7 @@ public class PrinterTextParserImg implements IPrinterTextParserElement {
      * @return this Fluent method
      */
     @Override
-    public PrinterTextParserImg print(EscPosPrinterCommands printerSocket) {
+    public PrinterTextParserImg print(EscPosPrinterCommands printerSocket) throws EscPosConnectionException {
         printerSocket.printImage(this.image);
         return this;
     }

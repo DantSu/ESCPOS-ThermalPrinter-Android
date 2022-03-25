@@ -1,6 +1,7 @@
 package com.dantsu.escposprinter;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
@@ -30,6 +31,9 @@ public class EscPosPrinterCommands {
 
     public static final byte[] TEXT_WEIGHT_NORMAL = new byte[]{0x1B, 0x45, 0x00};
     public static final byte[] TEXT_WEIGHT_BOLD = new byte[]{0x1B, 0x45, 0x01};
+
+    public static final byte[] LINE_SPACING_24 = {0x1b, 0x33, 0x18};
+    public static final byte[] LINE_SPACING_30 = {0x1b, 0x33, 0x1e};
 
     public static final byte[] TEXT_FONT_A = new byte[]{0x1B, 0x4D, 0x00};
     public static final byte[] TEXT_FONT_B = new byte[]{0x1B, 0x4D, 0x01};
@@ -72,6 +76,7 @@ public class EscPosPrinterCommands {
 
     private DeviceConnection printerConnection;
     private EscPosCharsetEncoding charsetEncoding;
+    private boolean useEscAsteriskCommand;
 
 
     public static byte[] initImageCommand(int bytesByLine, int bitmapHeight) {
@@ -80,6 +85,8 @@ public class EscPosPrinterCommands {
             xL = bytesByLine - (xH * 256),
             yH = bitmapHeight / 256,
             yL = bitmapHeight - (yH * 256);
+
+        Log.i("initImageCommand", "xH:" + xH + " - xL:" + xL + " - yH:" + yH + " - yL:" + yL);
 
         byte[] imageBytes = new byte[8 + bytesByLine * bitmapHeight];
         System.arraycopy(new byte[]{0x1D, 0x76, 0x30, 0x00, (byte) xL, (byte) xH, (byte) yL, (byte) yH}, 0, imageBytes, 0, 8);
@@ -211,7 +218,6 @@ public class EscPosPrinterCommands {
 
         return imageBytes;
     }
-
 
     /**
      * Create new instance of EscPosPrinterCommands.
@@ -493,17 +499,58 @@ public class EscPosPrinterCommands {
         return this;
     }
 
+
+    /**
+     * Active "ESC *" command for image print.
+     *
+     * @param enable true to use "ESC *", false to use "GS v 0"
+     * @return Fluent interface
+     */
+    public EscPosPrinterCommands useEscAsteriskCommand(boolean enable) {
+        this.useEscAsteriskCommand = enable;
+        return this;
+    }
+
+    private EscPosPrinterCommands printImageWithEscAsterisk(byte[] bytes) throws EscPosConnectionException {
+        int
+            xL = bytes[4] & 0xFF,
+            xH = bytes[5] & 0xFF,
+            yL = bytes[6] & 0xFF,
+            yH = bytes[7] & 0xFF,
+            bytesByLine = xH * 256 + xL,
+            imageHeight = yH * 256 + yL,
+            maxKey = bytes.length - bytesByLine;
+
+        for (int i = 0; i < imageHeight; i += 24) {
+            this.printerConnection.write(EscPosPrinterCommands.LINE_SPACING_24);
+            byte[] imageBytes = new byte[5 + bytesByLine * 24];
+            System.arraycopy(new byte[]{0x1B, 0x2A, 0x21, bytes[4], bytes[5]}, 0, imageBytes, 0, 5);
+            for (int j = 0; j < 24 && (8 + bytesByLine * (i + j)) <= maxKey; ++j) {
+                System.arraycopy(bytes, 8 + bytesByLine * (i + j), imageBytes, 5 + bytesByLine * j, bytesByLine);
+            }
+            this.printerConnection.write(imageBytes);
+            this.printerConnection.write(new byte[]{EscPosPrinterCommands.LF});
+            this.printerConnection.send(50);
+            this.printerConnection.write(EscPosPrinterCommands.LINE_SPACING_30);
+        }
+        return this;
+    }
+
     /**
      * Print image with the connected printer.
      *
      * @param image Bytes contain the image in ESC/POS command
      * @return Fluent interface
      */
-    public EscPosPrinterCommands printImage(byte[] image) {
+    public EscPosPrinterCommands printImage(byte[] image) throws EscPosConnectionException {
         if (!this.printerConnection.isConnected()) {
             return this;
         }
-        this.printerConnection.write(image);
+        if (this.useEscAsteriskCommand) {
+            this.printImageWithEscAsterisk(image);
+        } else {
+            this.printerConnection.write(image);
+        }
         return this;
     }
 
