@@ -521,21 +521,35 @@ public class EscPosPrinterCommands {
             dotsByLine = bytesByLine * 8,
             nH = dotsByLine / 256,
             nL = dotsByLine - nH,
-            imageHeight = yH * 256 + yL,
-            maxKey = bytes.length - bytesByLine;
+            imageHeight = yH * 256 + yL;
 
+        this.printerConnection.write(EscPosPrinterCommands.LINE_SPACING_24);
         for (int i = 0; i < imageHeight; i += 24) {
-            this.printerConnection.write(EscPosPrinterCommands.LINE_SPACING_24);
             byte[] imageBytes = new byte[5 + bytesByLine * 24];
             System.arraycopy(new byte[]{0x1B, 0x2A, 0x21, (byte) nL, (byte) nH}, 0, imageBytes, 0, 5);
-            for (int j = 0; j < 24 && (8 + bytesByLine * (i + j)) <= maxKey; ++j) {
-                System.arraycopy(bytes, 8 + bytesByLine * (i + j), imageBytes, 5 + bytesByLine * j, bytesByLine);
+            for (int j = 5; j < imageBytes.length; ++j) {
+                int
+                    imgByte = j - 5,
+                    byteRow = imgByte % 3,
+                    pxColumn = imgByte / 3,
+                    bytesColumn = 1 << (7 - pxColumn % 8);
+                for (int k = 0; k < 8; ++k) {
+                    int
+                        pxRow = i + byteRow * 8 + k,
+                        indexBytes = bytesByLine * pxRow + pxColumn / 8 + 8;
+                    if(indexBytes < bytes.length) {
+                        boolean isBlack = (bytes[indexBytes] & bytesColumn) == bytesColumn;
+                        if(isBlack) {
+                            imageBytes[j] |= 1 << 7 - k;
+                        }
+                    }
+                }
             }
             this.printerConnection.write(imageBytes);
             this.printerConnection.write(new byte[]{EscPosPrinterCommands.LF});
             this.printerConnection.send(50);
-            this.printerConnection.write(EscPosPrinterCommands.LINE_SPACING_30);
         }
+        this.printerConnection.write(EscPosPrinterCommands.LINE_SPACING_30);
         return this;
     }
 
