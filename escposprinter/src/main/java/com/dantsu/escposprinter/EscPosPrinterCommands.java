@@ -518,13 +518,16 @@ public class EscPosPrinterCommands {
             yL = bytes[6] & 0xFF,
             yH = bytes[7] & 0xFF,
             bytesByLine = xH * 256 + xL,
+            dotsByLine = bytesByLine * 8,
+            nH = dotsByLine / 256,
+            nL = dotsByLine - nH,
             imageHeight = yH * 256 + yL,
             maxKey = bytes.length - bytesByLine;
 
         for (int i = 0; i < imageHeight; i += 24) {
             this.printerConnection.write(EscPosPrinterCommands.LINE_SPACING_24);
             byte[] imageBytes = new byte[5 + bytesByLine * 24];
-            System.arraycopy(new byte[]{0x1B, 0x2A, 0x21, bytes[4], bytes[5]}, 0, imageBytes, 0, 5);
+            System.arraycopy(new byte[]{0x1B, 0x2A, 0x21, (byte) nL, (byte) nH}, 0, imageBytes, 0, 5);
             for (int j = 0; j < 24 && (8 + bytesByLine * (i + j)) <= maxKey; ++j) {
                 System.arraycopy(bytes, 8 + bytesByLine * (i + j), imageBytes, 5 + bytesByLine * j, bytesByLine);
             }
