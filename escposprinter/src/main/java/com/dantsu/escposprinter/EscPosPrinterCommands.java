@@ -520,7 +520,7 @@ public class EscPosPrinterCommands {
             bytesByLine = xH * 256 + xL,
             dotsByLine = bytesByLine * 8,
             nH = dotsByLine / 256,
-            nL = dotsByLine - nH,
+            nL = dotsByLine % 256,
             imageHeight = yH * 256 + yL;
 
         this.printerConnection.write(EscPosPrinterCommands.LINE_SPACING_24);
@@ -532,16 +532,18 @@ public class EscPosPrinterCommands {
                     imgByte = j - 5,
                     byteRow = imgByte % 3,
                     pxColumn = imgByte / 3,
-                    bytesColumn = 1 << (7 - pxColumn % 8);
+                    bytesColumn = 1 << (7 - pxColumn % 8),
+                    pxRow = i + byteRow * 8;
                 for (int k = 0; k < 8; ++k) {
-                    int
-                        pxRow = i + byteRow * 8 + k,
-                        indexBytes = bytesByLine * pxRow + pxColumn / 8 + 8;
-                    if(indexBytes < bytes.length) {
-                        boolean isBlack = (bytes[indexBytes] & bytesColumn) == bytesColumn;
-                        if(isBlack) {
-                            imageBytes[j] |= 1 << 7 - k;
-                        }
+                    int indexBytes = bytesByLine * (pxRow + k) + pxColumn / 8 + 8;
+
+                    if(indexBytes >= bytes.length) {
+                        break;
+                    }
+
+                    boolean isBlack = (bytes[indexBytes] & bytesColumn) == bytesColumn;
+                    if(isBlack) {
+                        imageBytes[j] |= 1 << 7 - k;
                     }
                 }
             }
