@@ -286,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
         AsyncEscPosPrinter printer = new AsyncEscPosPrinter(printerConnection, 203, 48f, 32);
         return printer.addTextToPrint(
             "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, this.getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo, DisplayMetrics.DENSITY_MEDIUM)) + "</img>\n" +
-                "[L]\n" +
+                /*"[L]\n" +
                 "[C]<u><font size='big'>ORDER N°045</font></u>\n" +
                 "[L]\n" +
                 "[C]<u type='double'>" + format.format(new Date()) + "</u>\n" +
@@ -312,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
                 "[L]Tel : +33801201456\n" +
                 "\n" +
                 "[C]<barcode type='ean13' height='10'>831254784551</barcode>\n" +
-                "[L]\n" +
+                "[L]\n" +*/
                 "[C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>\n"
         );
     }

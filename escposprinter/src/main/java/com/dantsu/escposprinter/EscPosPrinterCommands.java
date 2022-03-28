@@ -1,7 +1,6 @@
 package com.dantsu.escposprinter;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
@@ -79,17 +78,22 @@ public class EscPosPrinterCommands {
     private boolean useEscAsteriskCommand;
 
 
-    public static byte[] initImageCommand(int bytesByLine, int bitmapHeight) {
+    public static byte[] initGSv0Command(int bytesByLine, int bitmapHeight) {
         int
             xH = bytesByLine / 256,
             xL = bytesByLine - (xH * 256),
             yH = bitmapHeight / 256,
             yL = bitmapHeight - (yH * 256);
 
-        Log.i("initImageCommand", "xH:" + xH + " - xL:" + xL + " - yH:" + yH + " - yL:" + yL);
-
         byte[] imageBytes = new byte[8 + bytesByLine * bitmapHeight];
-        System.arraycopy(new byte[]{0x1D, 0x76, 0x30, 0x00, (byte) xL, (byte) xH, (byte) yL, (byte) yH}, 0, imageBytes, 0, 8);
+        imageBytes[0] = 0x1D;
+        imageBytes[1] = 0x76;
+        imageBytes[2] = 0x30;
+        imageBytes[3] = 0x00;
+        imageBytes[4] = (byte) xL;
+        imageBytes[5] = (byte) xH;
+        imageBytes[6] = (byte) yL;
+        imageBytes[7] = (byte) yH;
         return imageBytes;
     }
 
@@ -105,7 +109,7 @@ public class EscPosPrinterCommands {
             bitmapHeight = bitmap.getHeight(),
             bytesByLine = (int) Math.ceil(((float) bitmapWidth) / 8f);
 
-        byte[] imageBytes = EscPosPrinterCommands.initImageCommand(bytesByLine, bitmapHeight);
+        byte[] imageBytes = EscPosPrinterCommands.initGSv0Command(bytesByLine, bitmapHeight);
 
         int i = 8,
             greyscaleCoefficientInit = 0,
@@ -149,6 +153,57 @@ public class EscPosPrinterCommands {
         return imageBytes;
     }
 
+    public static byte[][] convertGSv0ToEscAsterisk(byte[] bytes) {
+        int
+            xL = bytes[4] & 0xFF,
+            xH = bytes[5] & 0xFF,
+            yL = bytes[6] & 0xFF,
+            yH = bytes[7] & 0xFF,
+            bytesByLine = xH * 256 + xL,
+            dotsByLine = bytesByLine * 8,
+            nH = dotsByLine / 256,
+            nL = dotsByLine % 256,
+            imageHeight = yH * 256 + yL,
+            imageLineHeightCount = (int) Math.ceil((double) imageHeight / 24.0),
+            imageBytesSize = 6 + bytesByLine * 24;
+
+        byte[][] returnedBytes = new byte[imageLineHeightCount + 2][];
+        returnedBytes[0] = EscPosPrinterCommands.LINE_SPACING_24;
+        for (int i = 0; i < imageLineHeightCount; ++i) {
+            int pxBaseRow = i * 24;
+            byte[] imageBytes = new byte[imageBytesSize];
+            imageBytes[0] = 0x1B;
+            imageBytes[1] = 0x2A;
+            imageBytes[2] = 0x21;
+            imageBytes[3] = (byte) nL;
+            imageBytes[4] = (byte) nH;
+            for (int j = 5; j < imageBytes.length; ++j) {
+                int
+                    imgByte = j - 5,
+                    byteRow = imgByte % 3,
+                    pxColumn = imgByte / 3,
+                    bitColumn = 1 << (7 - pxColumn % 8),
+                    pxRow = pxBaseRow + byteRow * 8;
+                for (int k = 0; k < 8; ++k) {
+                    int indexBytes = bytesByLine * (pxRow + k) + pxColumn / 8 + 8;
+
+                    if (indexBytes >= bytes.length) {
+                        break;
+                    }
+
+                    boolean isBlack = (bytes[indexBytes] & bitColumn) == bitColumn;
+                    if (isBlack) {
+                        imageBytes[j] |= 1 << 7 - k;
+                    }
+                }
+            }
+            imageBytes[imageBytes.length - 1] = EscPosPrinterCommands.LF;
+            returnedBytes[i + 1] = imageBytes;
+        }
+        returnedBytes[returnedBytes.length - 1] = EscPosPrinterCommands.LINE_SPACING_30;
+        return returnedBytes;
+    }
+
     /**
      * Convert a string to QR Code byte array compatible with ESC/POS printer.
      *
@@ -173,7 +228,7 @@ public class EscPosPrinterCommands {
         }
 
         if (byteMatrix == null) {
-            return EscPosPrinterCommands.initImageCommand(0, 0);
+            return EscPosPrinterCommands.initGSv0Command(0, 0);
         }
 
         int
@@ -186,10 +241,10 @@ public class EscPosPrinterCommands {
             i = 8;
 
         if (coefficient < 1) {
-            return EscPosPrinterCommands.initImageCommand(0, 0);
+            return EscPosPrinterCommands.initGSv0Command(0, 0);
         }
 
-        byte[] imageBytes = EscPosPrinterCommands.initImageCommand(bytesByLine, imageHeight);
+        byte[] imageBytes = EscPosPrinterCommands.initGSv0Command(bytesByLine, imageHeight);
 
         for (int y = 0; y < height; y++) {
             byte[] lineBytes = new byte[bytesByLine];
@@ -511,50 +566,6 @@ public class EscPosPrinterCommands {
         return this;
     }
 
-    private EscPosPrinterCommands printImageWithEscAsterisk(byte[] bytes) throws EscPosConnectionException {
-        int
-            xL = bytes[4] & 0xFF,
-            xH = bytes[5] & 0xFF,
-            yL = bytes[6] & 0xFF,
-            yH = bytes[7] & 0xFF,
-            bytesByLine = xH * 256 + xL,
-            dotsByLine = bytesByLine * 8,
-            nH = dotsByLine / 256,
-            nL = dotsByLine % 256,
-            imageHeight = yH * 256 + yL;
-
-        this.printerConnection.write(EscPosPrinterCommands.LINE_SPACING_24);
-        for (int i = 0; i < imageHeight; i += 24) {
-            byte[] imageBytes = new byte[5 + bytesByLine * 24];
-            System.arraycopy(new byte[]{0x1B, 0x2A, 0x21, (byte) nL, (byte) nH}, 0, imageBytes, 0, 5);
-            for (int j = 5; j < imageBytes.length; ++j) {
-                int
-                    imgByte = j - 5,
-                    byteRow = imgByte % 3,
-                    pxColumn = imgByte / 3,
-                    bytesColumn = 1 << (7 - pxColumn % 8),
-                    pxRow = i + byteRow * 8;
-                for (int k = 0; k < 8; ++k) {
-                    int indexBytes = bytesByLine * (pxRow + k) + pxColumn / 8 + 8;
-
-                    if(indexBytes >= bytes.length) {
-                        break;
-                    }
-
-                    boolean isBlack = (bytes[indexBytes] & bytesColumn) == bytesColumn;
-                    if(isBlack) {
-                        imageBytes[j] |= 1 << 7 - k;
-                    }
-                }
-            }
-            this.printerConnection.write(imageBytes);
-            this.printerConnection.write(new byte[]{EscPosPrinterCommands.LF});
-            this.printerConnection.send(50);
-        }
-        this.printerConnection.write(EscPosPrinterCommands.LINE_SPACING_30);
-        return this;
-    }
-
     /**
      * Print image with the connected printer.
      *
@@ -565,11 +576,14 @@ public class EscPosPrinterCommands {
         if (!this.printerConnection.isConnected()) {
             return this;
         }
-        if (this.useEscAsteriskCommand) {
-            this.printImageWithEscAsterisk(image);
-        } else {
-            this.printerConnection.write(image);
+
+        byte[][] bytesToPrint = this.useEscAsteriskCommand ? EscPosPrinterCommands.convertGSv0ToEscAsterisk(image) : new byte[][] {image};
+
+        for(byte[] bytes : bytesToPrint) {
+            this.printerConnection.write(bytes);
+            this.printerConnection.send();
         }
+
         return this;
     }
 

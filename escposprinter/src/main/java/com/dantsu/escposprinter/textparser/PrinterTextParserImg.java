@@ -125,7 +125,7 @@ public class PrinterTextParserImg implements IPrinterTextParserElement {
 
         if (nbrWhiteByteToInsert > 0) {
             int newByteWidth = byteWidth + nbrWhiteByteToInsert;
-            byte[] newImage = EscPosPrinterCommands.initImageCommand(newByteWidth, height);
+            byte[] newImage = EscPosPrinterCommands.initGSv0Command(newByteWidth, height);
             for (int i = 0; i < height; i++) {
                 System.arraycopy(image, (byteWidth * i + 8), newImage, (newByteWidth * i + nbrWhiteByteToInsert + 8), byteWidth);
             }
