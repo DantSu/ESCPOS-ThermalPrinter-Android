@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
-def libraryVersionCode = 3001002
-def libraryVersionName = "3.1.2"
+def libraryVersionCode = 3002000
+def libraryVersionName = "3.2.0"
 
 android {
     compileSdkVersion 31

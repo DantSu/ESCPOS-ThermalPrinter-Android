@@ -69,7 +69,7 @@ public class EscPosPrinter extends EscPosPrinterSize {
     }
 
     /**
-     * Active "ESC *" command for image print.
+     * Active "ESC *" command for image printing.
      *
      * @param enable true to use "ESC *", false to use "GS v 0"
      * @return Fluent interface
