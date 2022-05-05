@@ -26,7 +26,7 @@ public class UsbDeviceHelper {
                 return usbInterface;
             }
         }
-        return usbDevice.getInterface(0);
+        return null;
     }
 
     /**
