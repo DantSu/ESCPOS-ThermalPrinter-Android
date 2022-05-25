@@ -323,6 +323,11 @@ Example :
 - `<font size='wide'>Some text</font>` : Double width of medium size
 - `<font size='tall'>Some text</font>` : Double height of medium size
 - `<font size='big'>Some text</font>` : Double width and height of medium size
+- `<font size='big-2'>Some text</font>` : 3 x width and height
+- `<font size='big-3'>Some text</font>` : 4 x width and height
+- `<font size='big-4'>Some text</font>` : 5 x width and height
+- `<font size='big-5'>Some text</font>` : 6 x width and height
+- `<font size='big-6'>Some text</font>` : 7 x width and height
 
 - `<font color='black'>Some text</font>` : black text - white background
 - `<font color='bg-black'>Some text</font>` : white text - black background
