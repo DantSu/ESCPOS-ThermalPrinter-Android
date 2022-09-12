@@ -79,6 +79,7 @@ public class EscPosPrinterCommands {
     public static final int QRCODE_2 = 50;
 
     private DeviceConnection printerConnection;
+    private EscPosIntCharset intCharset;
     private EscPosCharsetEncoding charsetEncoding;
     private boolean useEscAsteriskCommand;
 
@@ -285,17 +286,19 @@ public class EscPosPrinterCommands {
      * @param printerConnection an instance of a class which implement DeviceConnection
      */
     public EscPosPrinterCommands(DeviceConnection printerConnection) {
-        this(printerConnection, null);
+        this(printerConnection, null, null);
     }
 
     /**
      * Create new instance of EscPosPrinterCommands.
      *
      * @param printerConnection an instance of a class which implement DeviceConnection
+     * @param intCharset        Set the international charset
      * @param charsetEncoding   Set the charset encoding.
      */
-    public EscPosPrinterCommands(DeviceConnection printerConnection, EscPosCharsetEncoding charsetEncoding) {
+    public EscPosPrinterCommands(DeviceConnection printerConnection, EscPosIntCharset intCharset, EscPosCharsetEncoding charsetEncoding) {
         this.printerConnection = printerConnection;
+        this.intCharset = intCharset;
         this.charsetEncoding = charsetEncoding != null ? charsetEncoding : new EscPosCharsetEncoding("windows-1252", 6);
     }
 
@@ -461,6 +464,7 @@ public class EscPosPrinterCommands {
 
         try {
             byte[] textBytes = text.getBytes(this.charsetEncoding.getName());
+            if (this.intCharset != null) this.printerConnection.write(this.intCharset.getCommand());
             this.printerConnection.write(this.charsetEncoding.getCommand());
             //this.printerConnection.write(EscPosPrinterCommands.TEXT_FONT_A);
 

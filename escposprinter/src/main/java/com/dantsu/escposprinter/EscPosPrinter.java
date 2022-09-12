@@ -34,10 +34,37 @@ public class EscPosPrinter extends EscPosPrinterSize {
      * @param printerDpi                  DPI of the connected printer
      * @param printerWidthMM              Printing width in millimeters
      * @param printerNbrCharactersPerLine The maximum number of characters that can be printed on a line.
+     * @param intCharset                  Set the international charset
+     */
+    public EscPosPrinter(DeviceConnection printerConnection, int printerDpi, float printerWidthMM, int printerNbrCharactersPerLine, EscPosIntCharset intCharset) throws EscPosConnectionException {
+        this(printerConnection != null ? new EscPosPrinterCommands(printerConnection, intCharset, null) : null, printerDpi, printerWidthMM, printerNbrCharactersPerLine);
+    }
+
+    /**
+     * Create new instance of EscPosPrinter.
+     *
+     * @param printerConnection           Instance of class which implement DeviceConnection
+     * @param printerDpi                  DPI of the connected printer
+     * @param printerWidthMM              Printing width in millimeters
+     * @param printerNbrCharactersPerLine The maximum number of characters that can be printed on a line.
      * @param charsetEncoding             Set the charset encoding.
      */
     public EscPosPrinter(DeviceConnection printerConnection, int printerDpi, float printerWidthMM, int printerNbrCharactersPerLine, EscPosCharsetEncoding charsetEncoding) throws EscPosConnectionException {
-        this(printerConnection != null ? new EscPosPrinterCommands(printerConnection, charsetEncoding) : null, printerDpi, printerWidthMM, printerNbrCharactersPerLine);
+        this(printerConnection != null ? new EscPosPrinterCommands(printerConnection, null, charsetEncoding) : null, printerDpi, printerWidthMM, printerNbrCharactersPerLine);
+    }
+
+    /**
+     * Create new instance of EscPosPrinter.
+     *
+     * @param printerConnection           Instance of class which implement DeviceConnection
+     * @param printerDpi                  DPI of the connected printer
+     * @param printerWidthMM              Printing width in millimeters
+     * @param printerNbrCharactersPerLine The maximum number of characters that can be printed on a line.
+     * @param intCharset                  Set the international charset
+     * @param charsetEncoding             Set the charset encoding.
+     */
+    public EscPosPrinter(DeviceConnection printerConnection, int printerDpi, float printerWidthMM, int printerNbrCharactersPerLine, EscPosIntCharset intCharset, EscPosCharsetEncoding charsetEncoding) throws EscPosConnectionException {
+        this(printerConnection != null ? new EscPosPrinterCommands(printerConnection, intCharset, charsetEncoding) : null, printerDpi, printerWidthMM, printerNbrCharactersPerLine);
     }
 
     /**
