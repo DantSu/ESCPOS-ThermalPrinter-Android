@@ -7,6 +7,8 @@ import android.hardware.usb.UsbInterface;
 
 import androidx.annotation.Nullable;
 
+import java.util.Arrays;
+
 public class UsbDeviceHelper {
     /**
      * Find the correct USB interface for printing
@@ -26,7 +28,7 @@ public class UsbDeviceHelper {
                 return usbInterface;
             }
         }
-        return null;
+        return isOverridePrinter(usbDevice) ? usbDevice.getInterface(0) : null;
     }
 
     /**
@@ -47,5 +49,17 @@ public class UsbDeviceHelper {
             }
         }
         return null;
+    }
+
+    final static int VENDOR_EPSON = 1208;
+    final static int PRODUCT_EPSON_TM_20 = 514;
+
+    static boolean isOverridePrinter(UsbDevice usbDevice) {
+        switch (usbDevice.getVendorId()) {
+            case VENDOR_EPSON:
+                return Arrays.asList(PRODUCT_EPSON_TM_20).contains(usbDevice.getProductId());
+            default:
+                return false;
+        }
     }
 }
