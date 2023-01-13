@@ -82,9 +82,10 @@ public abstract class EscPosPrinterSize {
      * Convert Bitmap object to ESC/POS image.
      *
      * @param bitmap Instance of Bitmap
+     * @param gradient false : Black and white image, true : Grayscale image
      * @return Bytes contain the image in ESC/POS command
      */
-    public byte[] bitmapToBytes(Bitmap bitmap) {
+    public byte[] bitmapToBytes(Bitmap bitmap, boolean gradient) {
         boolean isSizeEdit = false;
         int bitmapWidth = bitmap.getWidth(),
                 bitmapHeight = bitmap.getHeight(),
@@ -106,6 +107,6 @@ public abstract class EscPosPrinterSize {
             bitmap = Bitmap.createScaledBitmap(bitmap, bitmapWidth, bitmapHeight, true);
         }
 
-        return EscPosPrinterCommands.bitmapToBytes(bitmap);
+        return EscPosPrinterCommands.bitmapToBytes(bitmap, gradient);
     }
 }
