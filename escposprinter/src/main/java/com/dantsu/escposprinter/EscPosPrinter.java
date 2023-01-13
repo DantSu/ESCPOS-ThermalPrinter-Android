@@ -34,6 +34,20 @@ public class EscPosPrinter extends EscPosPrinterSize {
      * @param printerDpi                  DPI of the connected printer
      * @param printerWidthMM              Printing width in millimeters
      * @param printerNbrCharactersPerLine The maximum number of characters that can be printed on a line.
+     * @param bitmapMode                  Mode for bitmap printing. Can be gradient or sharp.
+     */
+    public EscPosPrinter(DeviceConnection printerConnection, int printerDpi, float printerWidthMM, int printerNbrCharactersPerLine, int bitmapMode) throws EscPosConnectionException {
+        this(printerConnection != null ? new EscPosPrinterCommands(printerConnection) : null, printerDpi, printerWidthMM, printerNbrCharactersPerLine);
+        this.bitmapMode = bitmapMode;
+    }
+
+    /**
+     * Create new instance of EscPosPrinter.
+     *
+     * @param printerConnection           Instance of class which implement DeviceConnection
+     * @param printerDpi                  DPI of the connected printer
+     * @param printerWidthMM              Printing width in millimeters
+     * @param printerNbrCharactersPerLine The maximum number of characters that can be printed on a line.
      * @param charsetEncoding             Set the charset encoding.
      */
     public EscPosPrinter(DeviceConnection printerConnection, int printerDpi, float printerWidthMM, int printerNbrCharactersPerLine, EscPosCharsetEncoding charsetEncoding) throws EscPosConnectionException {

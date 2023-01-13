@@ -4,8 +4,13 @@ package com.dantsu.escposprinter;
 import android.graphics.Bitmap;
 
 public abstract class EscPosPrinterSize {
+    protected int bitmapMode = BITMAP_GRADIENT_MODE;
 
     public static final float INCH_TO_MM = 25.4f;
+
+    public static final int BITMAP_GRADIENT_MODE = 0;
+
+    public static final int BITMAP_SHARP_MODE = 1;
 
     protected int printerDpi;
     protected float printerWidthMM;
@@ -67,6 +72,8 @@ public abstract class EscPosPrinterSize {
         return this.printerCharSizeWidthPx;
     }
 
+    public int getBitmapMode() { return bitmapMode; }
+
     /**
      * Convert from millimeters to dot the mmSize variable.
      *
@@ -106,6 +113,10 @@ public abstract class EscPosPrinterSize {
             bitmap = Bitmap.createScaledBitmap(bitmap, bitmapWidth, bitmapHeight, true);
         }
 
-        return EscPosPrinterCommands.bitmapToBytes(bitmap);
+        if (this.bitmapMode == BITMAP_GRADIENT_MODE) {
+            return EscPosPrinterCommands.bitmapToBytesGradient(bitmap);
+        } else {
+            return EscPosPrinterCommands.bitmapToBytesSharp(bitmap);
+        }
     }
 }

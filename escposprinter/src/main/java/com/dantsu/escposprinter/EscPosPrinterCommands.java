@@ -103,12 +103,12 @@ public class EscPosPrinterCommands {
     }
 
     /**
-     * Convert Bitmap instance to a byte array compatible with ESC/POS printer.
+     * Convert Bitmap instance to a byte array compatible with ESC/POS printer using gradient mode
      *
      * @param bitmap Bitmap to be convert
      * @return Bytes contain the image in ESC/POS command
      */
-    public static byte[] bitmapToBytes(Bitmap bitmap) {
+    public static byte[] bitmapToBytesGradient(Bitmap bitmap) {
         int
             bitmapWidth = bitmap.getWidth(),
             bitmapHeight = bitmap.getHeight(),
@@ -152,6 +152,48 @@ public class EscPosPrinterCommands {
             greyscaleCoefficientInit += 2;
             if (greyscaleCoefficientInit > 15) {
                 greyscaleCoefficientInit = 0;
+            }
+        }
+
+        return imageBytes;
+    }
+
+    /**
+     * Convert Bitmap instance to a byte array compatible with ESC/POS printer using sharp mode
+     *
+     * @param bitmap Bitmap to be convert
+     * @return Bytes contain the image in ESC/POS command
+     */
+    public static byte[] bitmapToBytesSharp(Bitmap bitmap) {
+        int
+            bitmapWidth = bitmap.getWidth(),
+            bitmapHeight = bitmap.getHeight(),
+            bytesByLine = (int) Math.ceil(((float) bitmapWidth) / 8f);
+
+        byte[] imageBytes = EscPosPrinterCommands.initGSv0Command(bytesByLine, bitmapHeight);
+
+        int i = 8;
+        for (int posY = 0; posY < bitmapHeight; posY++) {
+            for (int j = 0; j < bitmapWidth; j += 8) {
+                StringBuilder stringBinary = new StringBuilder();
+                for (int k = 0; k < 8; k++) {
+                    int posX = j + k;
+                    if (posX < bitmapWidth) {
+                        int color = bitmap.getPixel(posX, posY),
+                                r = (color >> 16) & 0xff,
+                                g = (color >> 8) & 0xff,
+                                b = color & 0xff;
+
+                        if (r > 160 && g > 160 && b > 160) {
+                            stringBinary.append("0");
+                        } else {
+                            stringBinary.append("1");
+                        }
+                    } else {
+                        stringBinary.append("0");
+                    }
+                }
+                imageBytes[i++] = (byte) Integer.parseInt(stringBinary.toString(), 2);
             }
         }
 
