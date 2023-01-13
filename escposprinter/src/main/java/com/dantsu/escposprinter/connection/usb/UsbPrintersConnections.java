@@ -55,7 +55,7 @@ public class UsbPrintersConnections extends UsbConnections {
         for (UsbConnection usbConnection : usbConnections) {
             UsbDevice device = usbConnection.getDevice();
             int usbClass = device.getDeviceClass();
-            if(usbClass == UsbConstants.USB_CLASS_PER_INTERFACE && UsbDeviceHelper.findPrinterInterface(device) != null) {
+            if((usbClass == UsbConstants.USB_CLASS_PER_INTERFACE || usbClass == UsbConstants.USB_CLASS_MISC ) && UsbDeviceHelper.findPrinterInterface(device) != null) {
                 usbClass = UsbConstants.USB_CLASS_PRINTER;
             }
             if (usbClass == UsbConstants.USB_CLASS_PRINTER) {

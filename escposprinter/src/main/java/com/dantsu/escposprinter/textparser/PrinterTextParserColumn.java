@@ -167,6 +167,21 @@ public class PrinterTextParserColumn {
                                         case PrinterTextParser.ATTR_FORMAT_TEXT_FONT_SIZE_BIG:
                                             textParser.addTextSize(EscPosPrinterCommands.TEXT_SIZE_BIG);
                                             break;
+                                        case PrinterTextParser.ATTR_FORMAT_TEXT_FONT_SIZE_BIG_2:
+                                            textParser.addTextSize(EscPosPrinterCommands.TEXT_SIZE_BIG_2);
+                                            break;
+                                        case PrinterTextParser.ATTR_FORMAT_TEXT_FONT_SIZE_BIG_3:
+                                            textParser.addTextSize(EscPosPrinterCommands.TEXT_SIZE_BIG_3);
+                                            break;
+                                        case PrinterTextParser.ATTR_FORMAT_TEXT_FONT_SIZE_BIG_4:
+                                            textParser.addTextSize(EscPosPrinterCommands.TEXT_SIZE_BIG_4);
+                                            break;
+                                        case PrinterTextParser.ATTR_FORMAT_TEXT_FONT_SIZE_BIG_5:
+                                            textParser.addTextSize(EscPosPrinterCommands.TEXT_SIZE_BIG_5);
+                                            break;
+                                        case PrinterTextParser.ATTR_FORMAT_TEXT_FONT_SIZE_BIG_6:
+                                            textParser.addTextSize(EscPosPrinterCommands.TEXT_SIZE_BIG_6);
+                                            break;
                                     }
                                 } else {
                                     textParser.addTextSize(textParser.getLastTextSize());

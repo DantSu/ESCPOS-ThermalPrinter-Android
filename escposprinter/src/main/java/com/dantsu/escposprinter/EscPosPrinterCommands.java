@@ -44,6 +44,11 @@ public class EscPosPrinterCommands {
     public static final byte[] TEXT_SIZE_DOUBLE_HEIGHT = new byte[]{0x1D, 0x21, 0x01};
     public static final byte[] TEXT_SIZE_DOUBLE_WIDTH = new byte[]{0x1D, 0x21, 0x10};
     public static final byte[] TEXT_SIZE_BIG = new byte[]{0x1D, 0x21, 0x11};
+    public static final byte[] TEXT_SIZE_BIG_2 = new byte[]{0x1D, 0x21, 0x22};
+    public static final byte[] TEXT_SIZE_BIG_3 = new byte[]{0x1D, 0x21, 0x33};
+    public static final byte[] TEXT_SIZE_BIG_4 = new byte[]{0x1D, 0x21, 0x44};
+    public static final byte[] TEXT_SIZE_BIG_5 = new byte[]{0x1D, 0x21, 0x55};
+    public static final byte[] TEXT_SIZE_BIG_6 = new byte[]{0x1D, 0x21, 0x66};
 
     public static final byte[] TEXT_UNDERLINE_OFF = new byte[]{0x1B, 0x2D, 0x00};
     public static final byte[] TEXT_UNDERLINE_ON = new byte[]{0x1B, 0x2D, 0x01};

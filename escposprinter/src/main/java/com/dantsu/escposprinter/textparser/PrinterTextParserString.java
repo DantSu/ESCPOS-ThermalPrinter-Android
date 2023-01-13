@@ -33,7 +33,19 @@ public class PrinterTextParserString implements IPrinterTextParserElement {
     public int length() throws EscPosEncodingException {
         EscPosCharsetEncoding charsetEncoding = this.printer.getEncoding();
 
-        int coef = Arrays.equals(this.textSize, EscPosPrinterCommands.TEXT_SIZE_DOUBLE_WIDTH) || Arrays.equals(this.textSize, EscPosPrinterCommands.TEXT_SIZE_BIG) ? 2 : 1;
+        int coef = 1;
+        if(Arrays.equals(this.textSize, EscPosPrinterCommands.TEXT_SIZE_DOUBLE_WIDTH) || Arrays.equals(this.textSize, EscPosPrinterCommands.TEXT_SIZE_BIG))
+            coef = 2;
+        else if(Arrays.equals(this.textSize, EscPosPrinterCommands.TEXT_SIZE_BIG_2))
+            coef = 3;
+        else if(Arrays.equals(this.textSize, EscPosPrinterCommands.TEXT_SIZE_BIG_3))
+            coef = 4;
+        else if(Arrays.equals(this.textSize, EscPosPrinterCommands.TEXT_SIZE_BIG_4))
+            coef = 5;
+        else if(Arrays.equals(this.textSize, EscPosPrinterCommands.TEXT_SIZE_BIG_5))
+            coef = 6;
+        else if(Arrays.equals(this.textSize, EscPosPrinterCommands.TEXT_SIZE_BIG_6))
+            coef = 7;
 
         if (charsetEncoding != null) {
             try {
