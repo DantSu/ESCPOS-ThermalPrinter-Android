@@ -4,13 +4,11 @@ def libraryVersionCode = 3002000
 def libraryVersionName = "3.2.0"
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 31
-        versionCode libraryVersionCode
-        versionName libraryVersionName
+        targetSdkVersion 33
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -22,6 +20,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'com.dantsu.escposprinter'
 
 }
 
