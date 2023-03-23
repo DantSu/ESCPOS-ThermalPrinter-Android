@@ -206,6 +206,18 @@ public class EscPosPrinter extends EscPosPrinterSize {
         this.printer.openCashBox();
         return this;
     }
+    
+    /**
+     * Print a formatted text, cut the paper and open the cash box. Read the README.md for more information about text formatting options.
+     *
+     * @param text          Formatted text to be printed.
+     * @param dotsFeedPaper distance feed paper at the end.
+     * @return Fluent interface
+     */
+    public EscPosPrinter openCashBox() throws EscPosConnectionException, EscPosParserException, EscPosEncodingException, EscPosBarcodeException {
+        this.printer.openCashBox();
+        return this;
+    }
 
     /**
      * @return Charset encoding
