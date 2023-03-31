@@ -465,7 +465,7 @@ public class EscPosPrinterCommands {
 
         try {
             byte[] textBytes = text.getBytes(this.charsetEncoding.getName());
-            this.printerConnection.write(this.charsetEncoding.getCommand());
+            //this.printerConnection.write(this.charsetEncoding.getCommand());
             //this.printerConnection.write(EscPosPrinterCommands.TEXT_FONT_A);
 
 
@@ -506,6 +506,11 @@ public class EscPosPrinterCommands {
             throw new EscPosEncodingException(e.getMessage());
         }
 
+        return this;
+    }
+
+    public EscPosPrinterCommands setCharsetEncoding() {
+        this.printerConnection.write(this.charsetEncoding.getCommand());
         return this;
     }
 
@@ -590,7 +595,7 @@ public class EscPosPrinterCommands {
 
         for (byte[] bytes : bytesToPrint) {
             this.printerConnection.write(bytes);
-            this.printerConnection.send();
+            //this.printerConnection.send();
         }
 
         return this;
@@ -694,7 +699,7 @@ public class EscPosPrinterCommands {
         }
 
         this.printerConnection.write(new byte[]{EscPosPrinterCommands.LF});
-        this.printerConnection.send();
+        //this.printerConnection.send();
 
         if (align != null) {
             this.printerConnection.write(align);
@@ -714,9 +719,9 @@ public class EscPosPrinterCommands {
         }
 
         if (dots > 0) {
-            this.printerConnection.write(new byte[]{0x1B, 0x4A, (byte) dots});
-            this.printerConnection.send(dots);
+            this.printerConnection.write(new byte[]{0x1B, 0x4A, (byte) dots}); 
         }
+        this.printerConnection.send(dots);
 
         return this;
     }
