@@ -118,6 +118,7 @@ public class EscPosPrinter extends EscPosPrinterSize {
                 .parse();
 
         this.printer.reset();
+        this.printer.setCharsetEncoding();
 
         for (PrinterTextParserLine line : linesParsed) {
             PrinterTextParserColumn[] columns = line.getColumns();
