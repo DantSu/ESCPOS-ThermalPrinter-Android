@@ -10,9 +10,12 @@ import com.dantsu.escposprinter.connection.DeviceConnection;
 import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.UUID;
 
 public class BluetoothConnection extends DeviceConnection {
+
+    private static final UUID SPP_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 
     private BluetoothDevice device;
     private BluetoothSocket socket = null;
@@ -81,9 +84,15 @@ public class BluetoothConnection extends DeviceConnection {
      * Get bluetooth device UUID
      */
     protected UUID getDeviceUUID() {
-        // https://developer.android.com/reference/android/bluetooth/BluetoothDevice - "00001101-0000-1000-8000-00805f9b34fb" SPP UUID
         ParcelUuid[] uuids = device.getUuids();
-        return (uuids != null && uuids.length > 0) ? uuids[0].getUuid() : UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+        if (uuids != null && uuids.length > 0) {
+            if (Arrays.asList(uuids).contains(new ParcelUuid(BluetoothConnection.SPP_UUID))) {
+                return BluetoothConnection.SPP_UUID;
+            }
+            return uuids[0].getUuid();
+        } else {
+            return BluetoothConnection.SPP_UUID;
+        }
     }
 
     /**

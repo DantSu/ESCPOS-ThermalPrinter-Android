@@ -1,7 +1,6 @@
 package com.dantsu.thermalprinter;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -12,31 +11,23 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.dantsu.escposprinter.EscPosPrinter;
 import com.dantsu.escposprinter.connection.DeviceConnection;
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothConnection;
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnections;
 import com.dantsu.escposprinter.connection.tcp.TcpConnection;
 import com.dantsu.escposprinter.connection.usb.UsbConnection;
 import com.dantsu.escposprinter.connection.usb.UsbPrintersConnections;
-import com.dantsu.escposprinter.exceptions.EscPosBarcodeException;
-import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
-import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
-import com.dantsu.escposprinter.exceptions.EscPosParserException;
 import com.dantsu.escposprinter.textparser.PrinterTextParserImg;
 import com.dantsu.thermalprinter.async.AsyncBluetoothEscPosPrint;
 import com.dantsu.thermalprinter.async.AsyncEscPosPrint;
@@ -55,33 +46,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button button = (Button) this.findViewById(R.id.button_bluetooth_browse);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                browseBluetoothDevice();
-            }
-        });
+        button.setOnClickListener(view -> browseBluetoothDevice());
         button = (Button) findViewById(R.id.button_bluetooth);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                printBluetooth();
-            }
-        });
+        button.setOnClickListener(view -> printBluetooth());
         button = (Button) this.findViewById(R.id.button_usb);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                printUsb();
-            }
-        });
+        button.setOnClickListener(view -> printUsb());
         button = (Button) this.findViewById(R.id.button_tcp);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                printTcp();
-            }
-        });
+        button.setOnClickListener(view -> printTcp());
 
     }
 
@@ -90,10 +61,16 @@ public class MainActivity extends AppCompatActivity {
     ======================================BLUETOOTH PART============================================
     ==============================================================================================*/
 
+    public interface OnBluetoothPermissionsGranted {
+        void onPermissionsGranted();
+    }
+
     public static final int PERMISSION_BLUETOOTH = 1;
     public static final int PERMISSION_BLUETOOTH_ADMIN = 2;
     public static final int PERMISSION_BLUETOOTH_CONNECT = 3;
     public static final int PERMISSION_BLUETOOTH_SCAN = 4;
+
+    public OnBluetoothPermissionsGranted onBluetoothPermissionsGranted;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -104,50 +81,15 @@ public class MainActivity extends AppCompatActivity {
                 case MainActivity.PERMISSION_BLUETOOTH_ADMIN:
                 case MainActivity.PERMISSION_BLUETOOTH_CONNECT:
                 case MainActivity.PERMISSION_BLUETOOTH_SCAN:
-                    this.printBluetooth();
+                    this.checkBluetoothPermissions(this.onBluetoothPermissionsGranted);
                     break;
             }
         }
     }
 
-    private BluetoothConnection selectedDevice;
-
-    public void browseBluetoothDevice() {
-        final BluetoothConnection[] bluetoothDevicesList = (new BluetoothPrintersConnections()).getList();
-
-        if (bluetoothDevicesList != null) {
-            final String[] items = new String[bluetoothDevicesList.length + 1];
-            items[0] = "Default printer";
-            int i = 0;
-            for (BluetoothConnection device : bluetoothDevicesList) {
-                items[++i] = device.getDevice().getName();
-            }
-
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
-            alertDialog.setTitle("Bluetooth printer selection");
-            alertDialog.setItems(items, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    int index = i - 1;
-                    if (index == -1) {
-                        selectedDevice = null;
-                    } else {
-                        selectedDevice = bluetoothDevicesList[index];
-                    }
-                    Button button = (Button) findViewById(R.id.button_bluetooth_browse);
-                    button.setText(items[i]);
-                }
-            });
-
-            AlertDialog alert = alertDialog.create();
-            alert.setCanceledOnTouchOutside(false);
-            alert.show();
-
-        }
-    }
-
-    public void printBluetooth() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
+    public void checkBluetoothPermissions(OnBluetoothPermissionsGranted onBluetoothPermissionsGranted) {
+        this.onBluetoothPermissionsGranted = onBluetoothPermissionsGranted;
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.S && ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH}, MainActivity.PERMISSION_BLUETOOTH);
         } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_ADMIN}, MainActivity.PERMISSION_BLUETOOTH_ADMIN);
@@ -156,6 +98,50 @@ public class MainActivity extends AppCompatActivity {
         } else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S && ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_SCAN}, MainActivity.PERMISSION_BLUETOOTH_SCAN);
         } else {
+            this.onBluetoothPermissionsGranted.onPermissionsGranted();
+        }
+    }
+
+    private BluetoothConnection selectedDevice;
+
+    public void browseBluetoothDevice() {
+        this.checkBluetoothPermissions(() -> {
+            final BluetoothConnection[] bluetoothDevicesList = (new BluetoothPrintersConnections()).getList();
+
+            if (bluetoothDevicesList != null) {
+                final String[] items = new String[bluetoothDevicesList.length + 1];
+                items[0] = "Default printer";
+                int i = 0;
+                for (BluetoothConnection device : bluetoothDevicesList) {
+                    items[++i] = device.getDevice().getName();
+                }
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+                alertDialog.setTitle("Bluetooth printer selection");
+                alertDialog.setItems(
+                    items,
+                    (dialogInterface, i1) -> {
+                        int index = i1 - 1;
+                        if (index == -1) {
+                            selectedDevice = null;
+                        } else {
+                            selectedDevice = bluetoothDevicesList[index];
+                        }
+                        Button button = (Button) findViewById(R.id.button_bluetooth_browse);
+                        button.setText(items[i1]);
+                    }
+                );
+
+                AlertDialog alert = alertDialog.create();
+                alert.setCanceledOnTouchOutside(false);
+                alert.show();
+            }
+        });
+
+    }
+
+    public void printBluetooth() {
+        this.checkBluetoothPermissions(() -> {
             new AsyncBluetoothEscPosPrint(
                 this,
                 new AsyncEscPosPrint.OnPrintFinished() {
@@ -171,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             )
                 .execute(this.getAsyncEscPosPrinter(selectedDevice));
-        }
+        });
     }
 
     /*==============================================================================================
