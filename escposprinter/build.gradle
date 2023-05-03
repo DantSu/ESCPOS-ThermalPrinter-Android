@@ -1,8 +1,10 @@
-apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
 
-def libraryVersionCode = 3003002
-def libraryVersionName = "3.3.2"
+def libraryVersionCode = 3003000
+def libraryVersionName = "3.3.0"
 
 android {
     compileSdkVersion 33
