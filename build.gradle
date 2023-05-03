@@ -1,3 +1,5 @@
+apply plugin: 'maven-publish'
+
 buildscript {
     repositories {
         google()
@@ -7,11 +9,6 @@ buildscript {
         classpath 'com.android.tools.build:gradle:7.4.2'
     }
 }
-
-plugins {
-    id 'maven-publish'
-}
-
 
 allprojects {
     repositories {
