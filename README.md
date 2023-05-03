@@ -521,29 +521,33 @@ Print a formatted text, feed paper (`dotsFeedPaper` dots), cut the paper and ope
 - **param** `int dotsFeedPaper` : Distance feed paper at the end.
 - **return** `Printer` : Fluent interface
 
-#### Method : `bitmapToBytes(Bitmap bitmap)`
+#### Method : `bitmapToBytes(Bitmap bitmap, boolean gradient)`
 Convert Bitmap object to ESC/POS image.
 - **param** `Bitmap bitmap` : Instance of Bitmap
+- **param** `boolean gradient` : `false` Black and white image, `true` Grayscale image
 - **return** `byte[]` : Bytes contain the image in ESC/POS command
 
 ### Class : `com.dantsu.escposprinter.textparser.PrinterTextParserImg`
 
-#### **Static** Method : `bitmapToHexadecimalString(Printer printer, Drawable drawable)`
+#### **Static** Method : `bitmapToHexadecimalString(Printer printer, Drawable drawable [, boolean gradient])`
 Convert Drawable instance to a hexadecimal string of the image data.
 - **param** `Printer printer` : A Printer instance that will print the image.
 - **param** `Drawable drawable` : Drawable instance to be converted.
+- **param** `boolean gradient` : `false` Black and white image, `true` Grayscale image
 - **return** `String` : A hexadecimal string of the image data. Empty string if Drawable cannot be cast to BitmapDrawable.
 
-#### **Static** Method : `bitmapToHexadecimalString(Printer printer, BitmapDrawable bitmapDrawable)`
+#### **Static** Method : `bitmapToHexadecimalString(Printer printer, BitmapDrawable bitmapDrawable [, boolean gradient])`
 Convert BitmapDrawable instance to a hexadecimal string of the image data.
 - **param** `Printer printer` : A Printer instance that will print the image.
 - **param** `BitmapDrawable bitmapDrawable` : BitmapDrawable instance to be converted.
+- **param** `boolean gradient` : `false` Black and white image, `true` Grayscale image
 - **return** `String` : A hexadecimal string of the image data.
 
-#### **Static** Method : `bitmapToHexadecimalString(Printer printer, Bitmap bitmap)`
+#### **Static** Method : `bitmapToHexadecimalString(Printer printer, Bitmap bitmap [, boolean gradient])`
 Convert Bitmap instance to a hexadecimal string of the image data.
 - **param** `Printer printer` : A Printer instance that will print the image.
 - **param** `Bitmap bitmap` : Bitmap instance to be converted.
+- **param** `boolean gradient` : `false` Black and white image, `true` Grayscale image
 - **return** `String` : A hexadecimal string of the image data.
 
 #### **Static** Method : `bytesToHexadecimalString(byte[] bytes)`
