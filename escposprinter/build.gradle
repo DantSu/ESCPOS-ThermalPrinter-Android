@@ -1,7 +1,8 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 
-def libraryVersionCode = 3003001
-def libraryVersionName = "3.3.1"
+def libraryVersionCode = 3003002
+def libraryVersionName = "3.3.2"
 
 android {
     compileSdkVersion 33
@@ -40,13 +41,15 @@ afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
-                from components.release
                 groupId = 'com.github.DantSu'
                 artifactId = 'ESCPOS-ThermalPrinter-Android'
                 version = libraryVersionName
                 pom {
                     name = 'Android library for ESC/POS Thermal Printer'
                     description = 'Useful library to help Android developers to print with (Bluetooth, TCP, USB) ESC/POS thermal printers.'
+                }
+                afterEvaluate {
+                    from components.release
                 }
             }
         }
