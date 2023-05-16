@@ -141,7 +141,7 @@ printer
 
 Below a picture of the receipt printed with the code above :
 
-![Example of a printed receipt](http://www.developpeur-web.dantsu.com/files/librairie/receipt-thermal-printer.png?1)
+![Example of a printed receipt](https://dantsu.com/files/receipt-thermal-printer.png?1)
 
 ## TCP
 
