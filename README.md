@@ -1,4 +1,6 @@
 [![Jitpack package repository - ESCPOS-ThermalPrinter-Android v3.3.0](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/3.3.0)
+[![](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android/month.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/3.3.0)
+[![](https://jitpack.io/v/DantSu/ESCPOS-ThermalPrinter-Android/week.svg)](https://jitpack.io/#DantSu/ESCPOS-ThermalPrinter-Android/3.3.0)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Android library for ESC/POS Thermal Printer
@@ -135,7 +137,7 @@ printer
         "[L]Tel : +33801201456\n" +
         "[L]\n" +
         "[C]<barcode type='ean13' height='10'>831254784551</barcode>\n" +
-        "[C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>"
+        "[C]<qrcode size='20'>https://dantsu.com/</qrcode>"
     );
 ```
 
@@ -185,7 +187,7 @@ new Thread(new Runnable() {
                     "[L]Tel : +33801201456\n" +
                     "[L]\n" +
                     "[C]<barcode type='ean13' height='10'>831254784551</barcode>\n" +
-                    "[C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>"
+                    "[C]<qrcode size='20'>https://dantsu.com/</qrcode>"
                 );
         } catch (Exception e) {
             e.printStackTrace();
@@ -271,7 +273,7 @@ printer
         "[L]Tel : +33801201456\n" +
         "[L]\n" +
         "[C]<barcode type='ean13' height='10'>831254784551</barcode>\n" +
-        "[C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>"
+        "[C]<qrcode size='20'>https://dantsu.com/</qrcode>"
     );
 ```
 
@@ -389,7 +391,7 @@ Prints a barcode 128 (height: 10mm, width: ~40mm, text: displayed above).
 
 `<qrcode></qrcode>` tag allows you to print a QR code. Inside the tag you need to write the QR code data.
 
-- `<qrcode>http://www.developpeur-web.dantsu.com/</qrcode>` :
+- `<qrcode>https://dantsu.com/</qrcode>` :
 Prints a QR code with a width and height of 20 millimeters.
 - `<qrcode size='25'>123456789</qrcode>` :
 Prints a QR code with a width and height of 25 millimeters.

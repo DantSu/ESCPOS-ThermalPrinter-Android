@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
                 "\n" +
                 "[C]<barcode type='ean13' height='10'>831254784551</barcode>\n" +
                 "[L]\n" +
-                "[C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>\n"
+                "[C]<qrcode size='20'>https://dantsu.com/</qrcode>\n"
         );
     }
 }
