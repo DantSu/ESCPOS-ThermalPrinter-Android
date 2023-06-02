@@ -158,6 +158,9 @@ public class PrinterTextParserColumn {
                                         default:
                                             textParser.addTextSize(EscPosPrinterCommands.TEXT_SIZE_NORMAL);
                                             break;
+                                        case PrinterTextParser.ATTR_FORMAT_TEXT_FONT_SIZE_SMALL:
+                                            textParser.addTextSize(EscPosPrinterCommands.TEXT_SIZE_SMALL);
+                                            break;
                                         case PrinterTextParser.ATTR_FORMAT_TEXT_FONT_SIZE_TALL:
                                             textParser.addTextSize(EscPosPrinterCommands.TEXT_SIZE_DOUBLE_HEIGHT);
                                             break;
