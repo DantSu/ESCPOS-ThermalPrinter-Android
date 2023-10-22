@@ -27,6 +27,7 @@ public class PrinterTextParser {
     public static final String ATTR_BARCODE_TYPE_UPCA = "upca";
     public static final String ATTR_BARCODE_TYPE_UPCE = "upce";
     public static final String ATTR_BARCODE_TYPE_128 = "128";
+    public static final String ATTR_BARCODE_TYPE_39 = "39";
     public static final String ATTR_BARCODE_TEXT_POSITION = "text";
     public static final String ATTR_BARCODE_TEXT_POSITION_NONE = "none";
     public static final String ATTR_BARCODE_TEXT_POSITION_ABOVE = "above";

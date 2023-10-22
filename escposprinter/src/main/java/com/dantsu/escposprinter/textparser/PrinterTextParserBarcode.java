@@ -6,6 +6,7 @@ import com.dantsu.escposprinter.EscPosPrinter;
 import com.dantsu.escposprinter.EscPosPrinterCommands;
 import com.dantsu.escposprinter.barcode.Barcode;
 import com.dantsu.escposprinter.barcode.Barcode128;
+import com.dantsu.escposprinter.barcode.Barcode39;
 import com.dantsu.escposprinter.barcode.BarcodeEAN13;
 import com.dantsu.escposprinter.barcode.BarcodeEAN8;
 import com.dantsu.escposprinter.barcode.BarcodeUPCA;
@@ -113,6 +114,9 @@ public class PrinterTextParserBarcode implements IPrinterTextParserElement {
                 break;
             case PrinterTextParser.ATTR_BARCODE_TYPE_128:
                 this.barcode = new Barcode128(printer, code, width, height, textPosition);
+                break;
+            case PrinterTextParser.ATTR_BARCODE_TYPE_39:
+                this.barcode = new Barcode39(printer, code, width, height, textPosition);
                 break;
             default:
                 throw new EscPosParserException("Invalid barcode attribute : " + PrinterTextParser.ATTR_BARCODE_TYPE);
