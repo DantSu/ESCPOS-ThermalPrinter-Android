@@ -68,6 +68,7 @@ public class EscPosPrinterCommands {
     public static final int BARCODE_TYPE_UPCE = 66;
     public static final int BARCODE_TYPE_EAN13 = 67;
     public static final int BARCODE_TYPE_EAN8 = 68;
+    public static final int BARCODE_TYPE_39 = 69;
     public static final int BARCODE_TYPE_ITF = 70;
     public static final int BARCODE_TYPE_128 = 73;
 
