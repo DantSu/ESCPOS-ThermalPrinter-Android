@@ -42,6 +42,9 @@ Useful library to help Android developers to print with (Bluetooth, TCP, USB) ES
 
 Developed for SDK version 16 (Android 4.1 Jelly Bean) and above.
 
+## Build Tools
+ - Android Studio Iguana | 2023.2.1
+ - SDK 34
 
 ## Tested printers
 
