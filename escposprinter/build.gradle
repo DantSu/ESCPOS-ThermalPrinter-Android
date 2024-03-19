@@ -3,17 +3,19 @@ plugins {
     id 'maven-publish'
 }
 
-def libraryVersionCode = 3003000
-def libraryVersionName = "3.3.0"
+def libraryVersionCode = 3004000
+def libraryVersionName = "3.4.0"
 
 android {
-    compileSdkVersion 33
+    compileSdk 34
+    namespace 'com.dantsu.escposprinter'
+    buildFeatures{
+        buildConfig true
+    }
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 33
-        versionCode libraryVersionCode
-        versionName libraryVersionName
+        minSdk 16
+        targetSdk 34
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -26,6 +28,11 @@ android {
         }
     }
 
+    publishing {
+        // Publishes "fullRelease" build variant with "fullRelease" component created by
+        // Android Gradle plugin
+        singleVariant("release")
+    }
 }
 
 dependencies {
