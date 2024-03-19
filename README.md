@@ -45,6 +45,7 @@ Developed for SDK version 16 (Android 4.1 Jelly Bean) and above.
 ## Build Tools
  - Android Studio Iguana | 2023.2.1
  - SDK 34
+ - JDK 17
 
 ## Tested printers
 
@@ -81,7 +82,7 @@ allprojects {
 ```
 dependencies {
     ...
-    implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:3.3.0'
+    implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:3.4.0'
 }
 ```
 
